@@ -1,5 +1,6 @@
 {
   "name": "yellow-metal",
+  "description": "Yellow Metal gold loans marketing website",
   "version": "0.1.0",
   "private": true,
   "scripts": {

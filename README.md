@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Yellow Metal
 
-## Getting Started
+Marketing website for Yellow Metal gold loans — a single landing page with footer pages for About, Blog, Contact, Privacy, and Terms.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push this folder to a new GitHub repo (e.g. `yellow-metal`).
+2. Go to [vercel.com/new](https://vercel.com/new) and import the repo.
+3. Framework preset: **Next.js** (auto-detected).
+4. Deploy — no environment variables required for the live gold rate API.
 
-## Learn More
+Optional: connect a custom domain (e.g. `yellowmetal.com`) in Vercel → Project → Settings → Domains.
 
-To learn more about Next.js, take a look at the following resources:
+## Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Route | Description |
+|-------|-------------|
+| `/` | Landing page (hero, rates, packet animation, UPI, features) |
+| `/about` | About us |
+| `/blog` | Blog index |
+| `/contact` | Contact details |
+| `/privacy` | Privacy policy |
+| `/terms` | Terms & conditions |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Gold rates
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`/api/gold-price` fetches international spot gold and USD/INR, then calculates 22K per gram and 75% LTV loan amount.

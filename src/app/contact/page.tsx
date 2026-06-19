@@ -38,7 +38,9 @@ export default function ContactPage() {
           </p>
 
           <ul className="ym-branches-list">
-            {BRANCH_LOCATIONS.map((branch) => (
+            {[...BRANCH_LOCATIONS]
+              .sort((a, b) => a.town.localeCompare(b.town))
+              .map((branch) => (
               <li key={`${branch.town}-${branch.pincode}`} className="ym-branch-card">
                 <p className="ym-branch-town">
                   {branch.town}
@@ -48,7 +50,7 @@ export default function ContactPage() {
                   Yellow Metal Gold Loans, {branch.address}
                 </p>
               </li>
-            ))}
+              ))}
           </ul>
         </section>
       </div>

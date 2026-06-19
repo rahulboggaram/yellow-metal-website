@@ -2018,6 +2018,47 @@ body.ym-jewels-flying .ym-hero-ornament {
   margin-bottom: 0.75rem;
 }
 
+.ym-prose h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000000;
+  margin-top: 1.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.ym-legal-document > :first-child {
+  margin-bottom: 0.35rem;
+}
+
+.ym-legal-subtitle {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgb(0 0 0 / 0.72);
+}
+
+.ym-legal-meta {
+  margin: 0 0 1.5rem;
+  font-size: 0.875rem;
+  color: rgb(0 0 0 / 0.45);
+}
+
+.ym-legal-emphasis {
+  font-weight: 600;
+  color: rgb(0 0 0 / 0.72);
+}
+
+.ym-legal-link {
+  color: var(--color-accent, #2563eb);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.ym-legal-link:hover {
+  color: rgb(37 99 235 / 0.8);
+}
+
 .ym-contact-grid {
   display: grid;
   gap: 1.5rem;

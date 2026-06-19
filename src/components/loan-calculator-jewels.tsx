@@ -26,7 +26,7 @@ export function LoanCalculatorJewels({
     >
       {jewels.map((jewel, index) => (
         <Image
-          key={`${side}-${jewel.id}-${index}`}
+          key={`${side}-${weightGrams}-${jewel.id}-${index}`}
           src={jewel.src}
           alt=""
           width={jewel.width}
@@ -37,7 +37,7 @@ export function LoanCalculatorJewels({
           ]
             .filter(Boolean)
             .join(" ")}
-          style={{ animationDelay: `${index * 70}ms` }}
+          style={{ animationDelay: `${index * 60}ms` }}
         />
       ))}
     </div>

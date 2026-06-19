@@ -32,13 +32,13 @@ export const CALCULATOR_JEWEL_ASSETS: CalculatorJewelAsset[] = [
   },
 ];
 
+const MAX_JEWELS = 8;
+const GRAMS_PER_JEWEL = 3;
+
 /** How many jewels to show in total (split across left & right). */
 export function calculatorJewelCount(weightGrams: number): number {
   if (weightGrams <= 0) return 0;
-  if (weightGrams < 2) return 1;
-  if (weightGrams < 6) return 2;
-  if (weightGrams < 12) return 3;
-  return 4;
+  return Math.min(MAX_JEWELS, Math.max(1, Math.ceil(weightGrams / GRAMS_PER_JEWEL)));
 }
 
 export function calculatorJewelsForSide(
@@ -53,11 +53,11 @@ export function calculatorJewelsForSide(
   const count = side === "left" ? leftCount : rightCount;
 
   const items: CalculatorJewelAsset[] = [];
-  let assetIndex = side === "left" ? 0 : 1;
+  const startIndex = side === "left" ? 0 : 1;
 
   for (let i = 0; i < count; i++) {
-    items.push(CALCULATOR_JEWEL_ASSETS[assetIndex % CALCULATOR_JEWEL_ASSETS.length]);
-    assetIndex += 2;
+    const assetIndex = (startIndex + i * 2) % CALCULATOR_JEWEL_ASSETS.length;
+    items.push(CALCULATOR_JEWEL_ASSETS[assetIndex]);
   }
 
   return items;

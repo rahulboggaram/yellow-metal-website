@@ -7,8 +7,7 @@ const FOOTER_LINKS = [
   { href: "/about", label: "About us" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
-  { href: "/privacy", label: "Privacy policy" },
-  { href: "/terms", label: "Terms & conditions" },
+  { href: "/policies", label: "Policies" },
 ];
 
 export function SiteFooter() {

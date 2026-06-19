@@ -1,0 +1,78 @@
+[
+  {
+    "id": "plan-20k-50k",
+    "amountLabel": "₹20,000 – ₹49,999",
+    "minAmountInr": 20000,
+    "maxAmountInr": 49999,
+    "category": null,
+    "ltvLabel": "up to 75%",
+    "tenureMonths": 12,
+    "annualRatePercent": 19.2,
+    "monthlyRatePercent": 1.6,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 30, "monthlyRatePercent": 1.6 },
+      { "daysFrom": 31, "daysTo": 60, "monthlyRatePercent": 1.8 },
+      { "daysFrom": 61, "daysTo": 180, "monthlyRatePercent": 1.9 },
+      { "daysFrom": 181, "daysTo": 360, "monthlyRatePercent": 2 }
+    ],
+    "sortOrder": 1,
+    "active": true
+  },
+  {
+    "id": "plan-50k-100k",
+    "amountLabel": "₹50,000 – ₹99,999",
+    "minAmountInr": 50000,
+    "maxAmountInr": 99999,
+    "category": null,
+    "ltvLabel": "up to 75%",
+    "tenureMonths": 12,
+    "annualRatePercent": 18,
+    "monthlyRatePercent": 1.5,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 30, "monthlyRatePercent": 1.5 },
+      { "daysFrom": 31, "daysTo": 60, "monthlyRatePercent": 1.6 },
+      { "daysFrom": 61, "daysTo": 180, "monthlyRatePercent": 1.8 },
+      { "daysFrom": 181, "daysTo": 360, "monthlyRatePercent": 2 }
+    ],
+    "sortOrder": 2,
+    "active": true
+  },
+  {
+    "id": "plan-100k-500k",
+    "amountLabel": "₹1,00,000 – ₹4,99,999",
+    "minAmountInr": 100000,
+    "maxAmountInr": 499999,
+    "category": "Non-Agri",
+    "ltvLabel": "up to 75%",
+    "tenureMonths": 12,
+    "annualRatePercent": 13.08,
+    "monthlyRatePercent": 1.09,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 30, "monthlyRatePercent": 1.09 },
+      { "daysFrom": 31, "daysTo": 60, "monthlyRatePercent": 1.25 },
+      { "daysFrom": 61, "daysTo": 180, "monthlyRatePercent": 1.75 },
+      { "daysFrom": 181, "daysTo": 360, "monthlyRatePercent": 2 }
+    ],
+    "sortOrder": 3,
+    "active": true
+  },
+  {
+    "id": "plan-500k-above",
+    "amountLabel": "₹5,00,000 & above",
+    "minAmountInr": 500000,
+    "maxAmountInr": null,
+    "category": "Non-Agri",
+    "ltvLabel": "up to 75%",
+    "tenureMonths": 12,
+    "annualRatePercent": 11.5,
+    "monthlyRatePercent": 0.958,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 30, "monthlyRatePercent": 0.958 },
+      { "daysFrom": 31, "daysTo": 60, "monthlyRatePercent": 1.2 },
+      { "daysFrom": 61, "daysTo": 180, "monthlyRatePercent": 1.7 },
+      { "daysFrom": 181, "daysTo": 360, "monthlyRatePercent": 2 }
+    ],
+    "sortOrder": 4,
+    "active": true
+  }
+]

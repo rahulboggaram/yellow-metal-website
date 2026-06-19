@@ -1,22 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-display-family), ui-sans-serif, system-ui, sans-serif;
   --font-brand: var(--font-brand-family), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-family), ui-sans-serif, system-ui, sans-serif;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-soft: #eff6ff;
+  --color-card-bg: #f4f4f5;
+  --height-field: 4rem;
+  --min-height-textarea: 7.5rem;
 }
 
 html {
   text-size-adjust: 100%;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
-  background-color: #fffdf7;
-  color: #1a1208;
+  -webkit-tap-highlight-color: transparent;
+  background-color: #ffffff;
+  color: #000000;
+  overflow-x: hidden;
+}
+
+.ym-site {
+  overflow-x: hidden;
 }
 
 .font-brand {
   font-family: var(--font-brand);
+}
+
+.font-tabular-nums {
+  font-variant-numeric: tabular-nums lining-nums;
 }

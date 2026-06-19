@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { SiteHeader } from "./site-header";
+
+export { SiteHeader };
 
 const FOOTER_LINKS = [
   { href: "/about", label: "About us" },
@@ -8,24 +11,6 @@ const FOOTER_LINKS = [
   { href: "/terms", label: "Terms & conditions" },
 ];
 
-export function SiteHeader() {
-  return (
-    <header className="ym-header">
-      <div className="ym-container ym-header-inner">
-        <Link href="/" className="ym-logo">
-          <span className="ym-logo-mark">YM</span>
-          <span className="ym-logo-text">Yellow Metal</span>
-        </Link>
-        <nav className="ym-nav">
-          <a href="#rates">Rates</a>
-          <a href="#features">Features</a>
-          <Link href="/contact">Contact</Link>
-        </nav>
-      </div>
-    </header>
-  );
-}
-
 export function SiteFooter() {
   return (
     <footer className="ym-footer">
@@ -33,7 +18,7 @@ export function SiteFooter() {
         <div className="ym-footer-brand">
           <p className="ym-logo-text">Yellow Metal</p>
           <p className="ym-footer-tagline">
-            Gold loans made simple. No hidden charges, ever.
+            Gold loans with no hidden charges.
           </p>
         </div>
 

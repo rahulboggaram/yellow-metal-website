@@ -93,7 +93,7 @@ export const PRIVACY_POLICY_BLOCKS = [
   { type: "h3", text: "Phone Number" },
   { type: "p", text: "9090976076" },
   { type: "h3", text: "Office Address" },
-  { type: "p", text: "Ground Floor, Building No. 1, Nisarga, 1st Main, 3rd Cross, Opp. Deccan Hospital, Ashwini Extension, Chintamani, Chikkaballapur, Karnataka - 563125" },
+  { type: "p", text: "1st Main, 3rd Cross, Opp. Deccan Hospital, Ashwini Extension, Chintamani, Chikkaballapur, Karnataka - 563125" },
   { type: "h2", text: "11. Updates to This Policy" },
   { type: "p", text: "We may update this Privacy Policy from time to time to reflect changes in our services, applicable law, or how we handle your information. When we make material changes, we will update the Last Updated date at the top of this document and notify you by SMS or WhatsApp to your registered mobile number. We encourage you to review this Policy periodically." },
 ] as const satisfies readonly LegalBlock[];

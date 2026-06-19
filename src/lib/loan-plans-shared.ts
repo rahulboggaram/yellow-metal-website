@@ -4,12 +4,15 @@ export type LoanPlanInterestTier = {
   monthlyRatePercent: number;
 };
 
+export type LoanPlanRepaymentType = "monthly" | "bullet";
+
 export type LoanPlan = {
   id: string;
   amountLabel: string;
   minAmountInr: number;
   maxAmountInr: number | null;
   category: string | null;
+  repaymentType: LoanPlanRepaymentType;
   ltvLabel: string;
   tenureMonths: number;
   annualRatePercent: number;
@@ -70,6 +73,7 @@ export function isLoanPlan(value: unknown): value is LoanPlan {
     typeof plan.minAmountInr === "number" &&
     (plan.maxAmountInr === null || typeof plan.maxAmountInr === "number") &&
     (plan.category === null || typeof plan.category === "string") &&
+    (plan.repaymentType === "monthly" || plan.repaymentType === "bullet") &&
     typeof plan.ltvLabel === "string" &&
     typeof plan.tenureMonths === "number" &&
     typeof plan.annualRatePercent === "number" &&

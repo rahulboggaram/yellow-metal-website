@@ -1,78 +1,121 @@
 [
   {
-    "id": "plan-20k-50k",
+    "id": "monthly-20k-50k",
     "amountLabel": "₹20,000 – ₹49,999",
     "minAmountInr": 20000,
     "maxAmountInr": 49999,
     "category": null,
+    "repaymentType": "monthly",
     "ltvLabel": "up to 75%",
-    "tenureMonths": 12,
-    "annualRatePercent": 19.2,
-    "monthlyRatePercent": 1.6,
+    "tenureMonths": 6,
+    "annualRatePercent": 22.5,
+    "monthlyRatePercent": 1.875,
     "interestTiers": [
-      { "daysFrom": 0, "daysTo": 30, "monthlyRatePercent": 1.6 },
-      { "daysFrom": 31, "daysTo": 60, "monthlyRatePercent": 1.8 },
-      { "daysFrom": 61, "daysTo": 180, "monthlyRatePercent": 1.9 },
-      { "daysFrom": 181, "daysTo": 360, "monthlyRatePercent": 2 }
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.875 }
     ],
     "sortOrder": 1,
     "active": true
   },
   {
-    "id": "plan-50k-100k",
+    "id": "monthly-50k-100k",
     "amountLabel": "₹50,000 – ₹99,999",
     "minAmountInr": 50000,
     "maxAmountInr": 99999,
     "category": null,
+    "repaymentType": "monthly",
     "ltvLabel": "up to 75%",
-    "tenureMonths": 12,
-    "annualRatePercent": 18,
-    "monthlyRatePercent": 1.5,
+    "tenureMonths": 6,
+    "annualRatePercent": 20.5,
+    "monthlyRatePercent": 1.7,
     "interestTiers": [
-      { "daysFrom": 0, "daysTo": 30, "monthlyRatePercent": 1.5 },
-      { "daysFrom": 31, "daysTo": 60, "monthlyRatePercent": 1.6 },
-      { "daysFrom": 61, "daysTo": 180, "monthlyRatePercent": 1.8 },
-      { "daysFrom": 181, "daysTo": 360, "monthlyRatePercent": 2 }
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.7 }
     ],
     "sortOrder": 2,
     "active": true
   },
   {
-    "id": "plan-100k-500k",
-    "amountLabel": "₹1,00,000 – ₹4,99,999",
+    "id": "monthly-100k-300k",
+    "amountLabel": "₹1,00,000 – ₹2,99,999",
     "minAmountInr": 100000,
-    "maxAmountInr": 499999,
-    "category": "Non-Agri",
+    "maxAmountInr": 299999,
+    "category": null,
+    "repaymentType": "monthly",
     "ltvLabel": "up to 75%",
-    "tenureMonths": 12,
-    "annualRatePercent": 13.08,
-    "monthlyRatePercent": 1.09,
+    "tenureMonths": 6,
+    "annualRatePercent": 19,
+    "monthlyRatePercent": 1.58,
     "interestTiers": [
-      { "daysFrom": 0, "daysTo": 30, "monthlyRatePercent": 1.09 },
-      { "daysFrom": 31, "daysTo": 60, "monthlyRatePercent": 1.25 },
-      { "daysFrom": 61, "daysTo": 180, "monthlyRatePercent": 1.75 },
-      { "daysFrom": 181, "daysTo": 360, "monthlyRatePercent": 2 }
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.58 }
     ],
     "sortOrder": 3,
     "active": true
   },
   {
-    "id": "plan-500k-above",
-    "amountLabel": "₹5,00,000 & above",
-    "minAmountInr": 500000,
-    "maxAmountInr": null,
-    "category": "Non-Agri",
+    "id": "monthly-300k-500k",
+    "amountLabel": "₹3,00,000 – ₹4,99,999",
+    "minAmountInr": 300000,
+    "maxAmountInr": 499999,
+    "category": null,
+    "repaymentType": "monthly",
     "ltvLabel": "up to 75%",
-    "tenureMonths": 12,
-    "annualRatePercent": 11.5,
-    "monthlyRatePercent": 0.958,
+    "tenureMonths": 6,
+    "annualRatePercent": 18,
+    "monthlyRatePercent": 1.5,
     "interestTiers": [
-      { "daysFrom": 0, "daysTo": 30, "monthlyRatePercent": 0.958 },
-      { "daysFrom": 31, "daysTo": 60, "monthlyRatePercent": 1.2 },
-      { "daysFrom": 61, "daysTo": 180, "monthlyRatePercent": 1.7 },
-      { "daysFrom": 181, "daysTo": 360, "monthlyRatePercent": 2 }
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.5 }
     ],
     "sortOrder": 4,
+    "active": true
+  },
+  {
+    "id": "monthly-500k-1m",
+    "amountLabel": "₹5,00,000 – ₹10,00,000",
+    "minAmountInr": 500000,
+    "maxAmountInr": 1000000,
+    "category": null,
+    "repaymentType": "monthly",
+    "ltvLabel": "up to 75%",
+    "tenureMonths": 6,
+    "annualRatePercent": 17,
+    "monthlyRatePercent": 1.416,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.416 }
+    ],
+    "sortOrder": 5,
+    "active": true
+  },
+  {
+    "id": "bullet-200k-10m",
+    "amountLabel": "₹2,00,001 – ₹10,00,000",
+    "minAmountInr": 200001,
+    "maxAmountInr": 10000000,
+    "category": null,
+    "repaymentType": "bullet",
+    "ltvLabel": "up to 75% (including accrued interest)",
+    "tenureMonths": 6,
+    "annualRatePercent": 18.5,
+    "monthlyRatePercent": 1.54,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.54 }
+    ],
+    "sortOrder": 6,
+    "active": true
+  },
+  {
+    "id": "bullet-20k-200k",
+    "amountLabel": "₹20,000 – ₹2,00,000",
+    "minAmountInr": 20000,
+    "maxAmountInr": 200000,
+    "category": null,
+    "repaymentType": "bullet",
+    "ltvLabel": "up to 75% (including accrued interest)",
+    "tenureMonths": 6,
+    "annualRatePercent": 21.5,
+    "monthlyRatePercent": 1.79,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.79 }
+    ],
+    "sortOrder": 7,
     "active": true
   }
 ]

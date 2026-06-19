@@ -16,8 +16,9 @@ const EMPTY_PLAN: LoanPlanInput = {
   minAmountInr: 0,
   maxAmountInr: null,
   category: null,
+  repaymentType: "monthly",
   ltvLabel: "up to 75%",
-  tenureMonths: 12,
+  tenureMonths: 6,
   annualRatePercent: 0,
   monthlyRatePercent: 0,
   interestTiers: [{ ...EMPTY_TIER }],
@@ -91,6 +92,7 @@ export default function LoanPlansAdminPage() {
       minAmountInr: plan.minAmountInr,
       maxAmountInr: plan.maxAmountInr,
       category: plan.category,
+      repaymentType: plan.repaymentType,
       ltvLabel: plan.ltvLabel,
       tenureMonths: plan.tenureMonths,
       annualRatePercent: plan.annualRatePercent,
@@ -250,6 +252,23 @@ export default function LoanPlansAdminPage() {
               </div>
 
               <div className="ym-admin-row">
+                <label className="ym-admin-field">
+                  <span className="ym-admin-label">Repayment type</span>
+                  <select
+                    className="ym-admin-input"
+                    value={form.repaymentType}
+                    onChange={(e) =>
+                      setForm((c) => ({
+                        ...c,
+                        repaymentType:
+                          e.target.value === "bullet" ? "bullet" : "monthly",
+                      }))
+                    }
+                  >
+                    <option value="monthly">Monthly</option>
+                    <option value="bullet">Bullet</option>
+                  </select>
+                </label>
                 <label className="ym-admin-field">
                   <span className="ym-admin-label">Category</span>
                   <input

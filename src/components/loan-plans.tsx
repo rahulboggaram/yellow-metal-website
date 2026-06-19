@@ -6,10 +6,15 @@ import type { LoanPlan } from "@/lib/loan-plans-shared";
 import { formatPlanRate } from "@/lib/loan-plans-shared";
 
 export function LoanPlanCard({ plan }: { plan: LoanPlan }) {
+  const isBullet = plan.repaymentType === "bullet";
+
   return (
     <article className="ym-loan-plan-card">
       <header className="ym-loan-plan-card-header">
         <div>
+          <p className="ym-loan-plan-type">
+            {isBullet ? "Bullet plan" : "Monthly plan"}
+          </p>
           <h4 className="ym-loan-plan-amount">{plan.amountLabel}</h4>
         </div>
         <div className="ym-loan-plan-headline-rate">
@@ -30,8 +35,8 @@ export function LoanPlanCard({ plan }: { plan: LoanPlan }) {
           <dd>{plan.tenureMonths}M</dd>
         </div>
         <div>
-          <dt>Monthly</dt>
-          <dd>{formatPlanRate(plan.monthlyRatePercent)}%</dd>
+          <dt>{isBullet ? "Bullet" : "Monthly"}</dt>
+          <dd>{formatPlanRate(plan.monthlyRatePercent)}% p.m.</dd>
         </div>
       </dl>
     </article>
@@ -131,7 +136,7 @@ export function LoanPlansModal({
               All loan plans
             </h3>
             <p className="ym-loan-plans-modal-subtitle">
-              Interest rates vary by loan amount and tenure. All plans offer up to 75% LTV.
+              6-month tenure plans with up to 75% LTV. Choose monthly interest or bullet repayment.
             </p>
           </div>
           <button

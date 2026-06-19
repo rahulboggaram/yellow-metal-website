@@ -12,6 +12,7 @@ export type {
   LoanPlan,
   LoanPlanInput,
   LoanPlanInterestTier,
+  LoanPlanRepaymentType,
 } from "./loan-plans-shared";
 
 export {

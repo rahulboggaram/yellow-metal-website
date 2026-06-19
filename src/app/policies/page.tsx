@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function PoliciesPage() {
   return (
     <div className="ym-page">
-      <div className="ym-container ym-prose">
+      <div className="ym-container ym-prose ym-policies-page">
         <h1 className="ym-page-title">Policies</h1>
         <p className="ym-section-subtitle">
           Legal and regulatory documents for Yellow Metal Loans Private Limited.

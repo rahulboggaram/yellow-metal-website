@@ -181,7 +181,53 @@ main {
 
 .ym-hero-calculator-flow .ym-loan-calculator-section {
   padding-top: clamp(2.5rem, 7vh, 4rem);
-  padding-bottom: clamp(3rem, 8vh, 4.5rem);
+  padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+/* ── RBI licensed fold ── */
+.ym-rbi-licensed-section {
+  background: #ececec;
+  border-radius: clamp(1.5rem, 4vw, 2.25rem) clamp(1.5rem, 4vw, 2.25rem) 0 0;
+  padding-block: clamp(2.25rem, 6vh, 3.25rem);
+  margin-top: calc(-1 * clamp(0.75rem, 2vh, 1.25rem));
+}
+
+.ym-rbi-licensed-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  text-align: left;
+}
+
+.ym-rbi-licensed-logo {
+  width: clamp(3.25rem, 10vw, 4.5rem);
+  height: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.ym-rbi-licensed-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #121212;
+}
+
+.ym-rbi-licensed-nbfc {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 380px) {
+  .ym-rbi-licensed-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
 }
 
 .ym-hero-calculator-flow {

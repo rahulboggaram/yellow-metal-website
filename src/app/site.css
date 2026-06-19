@@ -2037,6 +2037,53 @@ body.ym-jewels-flying .ym-hero-ornament {
   line-height: 1.75;
 }
 
+.ym-faq-page .ym-section-subtitle {
+  line-height: 1.75;
+}
+
+.ym-faq-list {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  counter-reset: ym-faq;
+}
+
+.ym-faq-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem 1rem;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid rgb(0 0 0 / 0.1);
+  border-radius: 0.9rem;
+  background: #ffffff;
+}
+
+.ym-faq-number {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgb(0 0 0 / 0.35);
+}
+
+.ym-faq-question {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-brand);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #000000;
+}
+
+.ym-faq-answer {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: rgb(0 0 0 / 0.55);
+}
+
 .ym-legal-document > :first-child {
   margin-bottom: 0.35rem;
 }

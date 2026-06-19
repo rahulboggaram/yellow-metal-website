@@ -6,6 +6,7 @@ export { SiteHeader };
 const FOOTER_LINKS = [
   { href: "/about", label: "About us" },
   { href: "/contact", label: "Contact" },
+  { href: "/faq", label: "FAQs" },
   { href: "/policies", label: "Policies" },
 ];
 

@@ -12,15 +12,19 @@ export default function ContactPage() {
         <div className="ym-contact-grid">
           <div className="ym-contact-item">
             <p className="ym-contact-label">Phone</p>
-            <p className="ym-contact-value">+91 80903 80909</p>
-          </div>
-          <div className="ym-contact-item">
-            <p className="ym-contact-label">WhatsApp</p>
-            <p className="ym-contact-value">+91 80903 80909</p>
+            <p className="ym-contact-value">
+              <a href="tel:+919090976076" className="ym-legal-link">
+                90909 76076
+              </a>
+            </p>
           </div>
           <div className="ym-contact-item">
             <p className="ym-contact-label">Email</p>
-            <p className="ym-contact-value">hello@yellowmetal.com</p>
+            <p className="ym-contact-value">
+              <a href="mailto:contact@yellowmetal.co" className="ym-legal-link">
+                contact@yellowmetal.co
+              </a>
+            </p>
           </div>
         </div>
 

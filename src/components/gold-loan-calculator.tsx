@@ -15,6 +15,7 @@ import {
 } from "@/lib/gold-price-format";
 import { LoanPlansModal, useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
+import { calculatorJewelSummary } from "@/lib/loan-calculator-jewels";
 
 /** Top flip clock — fixed 1g @ 22K; not tied to calculator inputs */
 const BRIDGE_LENDING_KARAT: GoldKarat = "22K";
@@ -116,6 +117,9 @@ export function GoldLoanCalculator() {
 
   const showBridgeFlip =
     flipRevealed && !loading && !error && bridgeLoanAmount !== null;
+
+  const jewelSummary =
+    hasWeightValue ? calculatorJewelSummary(weightGrams) : "";
 
   const amountText =
     loading || error || loanAmount === null ? "—" : formatInr(loanAmount);
@@ -244,6 +248,12 @@ export function GoldLoanCalculator() {
 
               <LoanCalculatorJewels weightGrams={weightGrams} side="right" />
             </div>
+
+            {jewelSummary && (
+              <p className="ym-loan-jewel-summary" aria-live="polite">
+                {jewelSummary}
+              </p>
+            )}
         </div>
       </section>
 

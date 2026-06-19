@@ -481,6 +481,16 @@ body.ym-jewels-flying .ym-hero-ornament {
   width: clamp(4rem, 14vw, 6.5rem);
 }
 
+.ym-loan-jewel-summary {
+  margin: 0.85rem auto 0;
+  max-width: 24rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: rgb(0 0 0 / 0.45);
+  text-align: center;
+}
+
 @keyframes ym-loan-jewel-enter {
   from {
     opacity: 0;

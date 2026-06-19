@@ -3,62 +3,112 @@ export type CalculatorJewelAsset = {
   src: string;
   width: number;
   height: number;
+  /** Typical gross weight (22K), informed by retail gold jewellery benchmarks. */
+  typicalGrams: number;
+  label: string;
 };
 
+/**
+ * Yellow Metal ornament visuals mapped to typical Indian gold piece weights.
+ * Weight benchmarks reference common retail ranges (e.g. Tanishq listings:
+ * stud earrings ~6g, mangalsutra/ring ~4g, necklace set ~24g, bangle ~25g).
+ * Images are Yellow Metal assets — not sourced from third-party catalogues.
+ */
 export const CALCULATOR_JEWEL_ASSETS: CalculatorJewelAsset[] = [
   {
-    id: "flower",
-    src: "/images/ornaments/flower.png",
-    width: 132,
-    height: 134,
-  },
-  {
-    id: "stud",
-    src: "/images/ornaments/stud.png",
-    width: 100,
-    height: 112,
+    id: "belt",
+    src: "/images/ornaments/waist-belt.png",
+    width: 404,
+    height: 91,
+    typicalGrams: 40,
+    label: "Waist belt",
   },
   {
     id: "ganesha",
     src: "/images/ornaments/ganesha.png",
     width: 86,
     height: 172,
+    typicalGrams: 20,
+    label: "Necklace / bangle",
   },
   {
-    id: "belt",
-    src: "/images/ornaments/waist-belt.png",
-    width: 404,
-    height: 91,
+    id: "stud",
+    src: "/images/ornaments/stud.png",
+    width: 100,
+    height: 112,
+    typicalGrams: 6,
+    label: "Stud earrings",
+  },
+  {
+    id: "flower",
+    src: "/images/ornaments/flower.png",
+    width: 132,
+    height: 134,
+    typicalGrams: 4,
+    label: "Ring / pendant",
   },
 ];
 
 const MAX_JEWELS = 8;
-const GRAMS_PER_JEWEL = 3;
 
-/** How many jewels to show in total (split across left & right). */
-export function calculatorJewelCount(weightGrams: number): number {
-  if (weightGrams <= 0) return 0;
-  return Math.min(MAX_JEWELS, Math.max(1, Math.ceil(weightGrams / GRAMS_PER_JEWEL)));
+const ORNAMENTS_BY_WEIGHT = [...CALCULATOR_JEWEL_ASSETS].sort(
+  (a, b) => b.typicalGrams - a.typicalGrams,
+);
+
+const SMALLEST_ORNAMENT =
+  ORNAMENTS_BY_WEIGHT[ORNAMENTS_BY_WEIGHT.length - 1];
+
+/**
+ * Build a believable set of pledged pieces that add up to roughly the entered weight.
+ * Uses a greedy fit from heavier pieces (belt, necklace) down to lighter ones (studs, rings).
+ */
+export function calculatorJewelsForWeight(weightGrams: number): CalculatorJewelAsset[] {
+  if (weightGrams <= 0) return [];
+
+  if (weightGrams < SMALLEST_ORNAMENT.typicalGrams) {
+    return [SMALLEST_ORNAMENT];
+  }
+
+  const items: CalculatorJewelAsset[] = [];
+  let remaining = weightGrams;
+
+  while (remaining >= SMALLEST_ORNAMENT.typicalGrams * 0.5 && items.length < MAX_JEWELS) {
+    const next =
+      ORNAMENTS_BY_WEIGHT.find((ornament) => ornament.typicalGrams <= remaining) ??
+      null;
+
+    if (!next) break;
+
+    items.push(next);
+    remaining -= next.typicalGrams;
+  }
+
+  if (items.length === 0) {
+    return [SMALLEST_ORNAMENT];
+  }
+
+  return items;
 }
 
 export function calculatorJewelsForSide(
   weightGrams: number,
   side: "left" | "right",
 ): CalculatorJewelAsset[] {
-  const total = calculatorJewelCount(weightGrams);
-  if (total === 0) return [];
+  const all = calculatorJewelsForWeight(weightGrams);
+  if (all.length === 0) return [];
 
-  const leftCount = Math.ceil(total / 2);
-  const rightCount = Math.floor(total / 2);
-  const count = side === "left" ? leftCount : rightCount;
+  const leftCount = Math.ceil(all.length / 2);
+  const rightCount = Math.floor(all.length / 2);
 
-  const items: CalculatorJewelAsset[] = [];
-  const startIndex = side === "left" ? 0 : 1;
+  if (side === "left") return all.slice(0, leftCount);
+  return all.slice(leftCount, leftCount + rightCount);
+}
 
-  for (let i = 0; i < count; i++) {
-    const assetIndex = (startIndex + i * 2) % CALCULATOR_JEWEL_ASSETS.length;
-    items.push(CALCULATOR_JEWEL_ASSETS[assetIndex]);
-  }
+export function calculatorJewelSummary(weightGrams: number): string {
+  const jewels = calculatorJewelsForWeight(weightGrams);
+  if (jewels.length === 0) return "";
 
-  return items;
+  return jewels
+    .map((jewel) => `${jewel.label} (~${jewel.typicalGrams}g)`)
+    .join(" + ");
 }

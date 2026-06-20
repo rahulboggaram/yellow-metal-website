@@ -2216,8 +2216,14 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-footer-logo {
   width: auto;
-  height: clamp(2.5rem, 8vw, 3.25rem);
+  height: clamp(1.875rem, 6vw, 2.4375rem);
   object-fit: contain;
+  opacity: 0.65;
+  transition: opacity 0.2s ease;
+}
+
+.ym-footer-logo-link:hover .ym-footer-logo {
+  opacity: 1;
 }
 
 .ym-footer-social {

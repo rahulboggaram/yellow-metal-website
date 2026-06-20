@@ -11,7 +11,7 @@ export type CalculatorJewelAsset = {
 /**
  * Yellow Metal ornament visuals mapped to typical Indian gold piece weights.
  * Weight benchmarks reference common retail ranges (e.g. Tanishq listings:
- * stud earrings ~6g, mangalsutra/ring ~4g, necklace set ~24g, bangle ~25g).
+ * stud earrings ~6g, Ganesha pendant ~6g, mangalsutra/ring ~4g, waist belt ~40g).
  * Images are Yellow Metal assets — not sourced from third-party catalogues.
  */
 export const CALCULATOR_JEWEL_ASSETS: CalculatorJewelAsset[] = [
@@ -24,20 +24,20 @@ export const CALCULATOR_JEWEL_ASSETS: CalculatorJewelAsset[] = [
     label: "Waist belt",
   },
   {
-    id: "ganesha",
-    src: "/images/ornaments/ganesha.png",
-    width: 86,
-    height: 172,
-    typicalGrams: 20,
-    label: "Necklace / bangle",
-  },
-  {
     id: "stud",
     src: "/images/ornaments/stud.png",
     width: 100,
     height: 112,
     typicalGrams: 6,
     label: "Stud earrings",
+  },
+  {
+    id: "ganesha",
+    src: "/images/ornaments/ganesha.png",
+    width: 86,
+    height: 172,
+    typicalGrams: 6,
+    label: "Ganesha pendant",
   },
   {
     id: "flower",

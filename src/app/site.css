@@ -73,6 +73,28 @@ main {
   padding-inline: 1.5rem;
 }
 
+.ym-header-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.ym-header-logo-link {
+  display: inline-flex;
+}
+
+.ym-header-tagline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.625rem, 2vw, 0.75rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: rgb(0 0 0 / 0.5);
+  text-align: center;
+}
+
 .ym-header-logo {
   width: auto;
   height: clamp(4rem, 20vw, 6.5rem);

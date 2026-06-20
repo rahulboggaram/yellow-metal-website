@@ -103,12 +103,3 @@ export function calculatorJewelsForSide(
   if (side === "left") return all.slice(0, leftCount);
   return all.slice(leftCount, leftCount + rightCount);
 }
-
-export function calculatorJewelSummary(weightGrams: number): string {
-  const jewels = calculatorJewelsForWeight(weightGrams);
-  if (jewels.length === 0) return "";
-
-  return jewels
-    .map((jewel) => `${jewel.label} (~${jewel.typicalGrams}g)`)
-    .join(" + ");
-}

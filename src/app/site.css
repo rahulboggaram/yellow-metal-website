@@ -2257,7 +2257,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-footer-logo {
   width: auto;
-  height: clamp(1.875rem, 6vw, 2.4375rem);
+  height: clamp(0.9375rem, 3vw, 1.21875rem);
   object-fit: contain;
   opacity: 0.65;
   transition: opacity 0.2s ease;
@@ -2307,6 +2307,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 1.75rem;
+  margin-top: 1.5rem;
 }
 
 .ym-footer-nav a {

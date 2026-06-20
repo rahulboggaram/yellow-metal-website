@@ -500,12 +500,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-loan-calculator-jewels {
   position: absolute;
   top: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(0.35rem, 1.5vw, 0.65rem);
-  min-width: clamp(3.25rem, 11vw, 5rem);
+  width: clamp(5.5rem, 20vw, 10rem);
+  min-height: clamp(9rem, 28vw, 16rem);
   pointer-events: none;
   overflow: visible;
   z-index: 2;
@@ -514,25 +510,31 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-loan-calculator-jewels--left {
   left: 0;
   transform: translateY(-50%) translateX(calc(-100% - clamp(0.35rem, 1.5vw, 0.65rem)));
-  align-items: flex-end;
 }
 
 .ym-loan-calculator-jewels--right {
   right: 0;
   transform: translateY(-50%) translateX(calc(100% + clamp(0.35rem, 1.5vw, 0.65rem)));
-  align-items: flex-start;
 }
 
 .ym-loan-calculator-jewels--empty {
   display: none;
 }
 
+.ym-loan-calculator-jewel-wrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  animation: ym-loan-jewel-wrap-enter 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
 .ym-loan-calculator-jewel {
+  display: block;
   width: clamp(2.5rem, 9vw, 4rem);
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 8px 20px rgb(0 0 0 / 0.18));
-  animation: ym-loan-jewel-enter 0.38s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .ym-loan-calculator-jewel--belt {
@@ -540,19 +542,24 @@ body.ym-jewels-flying .ym-hero-ornament {
   max-width: none;
 }
 
-@keyframes ym-loan-jewel-enter {
+@keyframes ym-loan-jewel-wrap-enter {
   from {
     opacity: 0;
-    transform: scale(0.82) translateY(6px);
+    filter: drop-shadow(0 8px 20px rgb(0 0 0 / 0));
   }
 
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 8px 20px rgb(0 0 0 / 0.18));
   }
 }
 
 @media (max-width: 380px) {
+  .ym-loan-calculator-jewels {
+    width: clamp(4.5rem, 24vw, 7rem);
+    min-height: clamp(7.5rem, 34vw, 12rem);
+  }
+
   .ym-loan-calculator-jewels--left {
     transform: translateY(-50%) translateX(calc(-100% - 0.25rem));
   }

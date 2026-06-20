@@ -103,3 +103,40 @@ export function calculatorJewelsForSide(
   if (side === "left") return all.slice(0, leftCount);
   return all.slice(leftCount, leftCount + rightCount);
 }
+
+export type CalculatorJewelPose = {
+  rotate: number;
+  x: number;
+  y: number;
+};
+
+function hashString(value: string): number {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    hash = (hash * 31 + value.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
+/** Stable scatter pose per jewel — rotated and offset so pieces feel casually piled. */
+export function calculatorJewelPose(
+  side: "left" | "right",
+  jewelId: string,
+  index: number,
+  count: number,
+): CalculatorJewelPose {
+  const hash = hashString(`${side}:${jewelId}:${index}:${count}`);
+  const unit = (shift: number) => ((hash >> shift) & 0xffff) / 0xffff;
+
+  const rotateRange = jewelId === "belt" ? 12 : 34;
+  const rotate = unit(0) * rotateRange * 2 - rotateRange;
+
+  const spread = count > 1 ? index - (count - 1) / 2 : 0;
+  const y = spread * 62 + unit(4) * 40 - 20;
+  const x =
+    (side === "left" ? -10 : 10) +
+    (unit(8) * 32 - 16) +
+    spread * (side === "left" ? -4 : 4);
+
+  return { rotate, x, y };
+}

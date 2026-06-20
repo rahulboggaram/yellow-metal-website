@@ -200,12 +200,49 @@ main {
   text-align: left;
 }
 
+.ym-rbi-licensed-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
 .ym-rbi-licensed-logo {
   width: clamp(3.25rem, 10vw, 4.5rem);
   height: auto;
-  flex-shrink: 0;
   object-fit: contain;
   background: transparent;
+}
+
+.ym-rbi-licensed-details {
+  margin: 0;
+  display: grid;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.ym-rbi-licensed-detail {
+  margin: 0;
+  font-size: clamp(0.6875rem, 2vw, 0.8125rem);
+  line-height: 1.35;
+  color: rgb(18 18 18 / 0.72);
+}
+
+.ym-rbi-licensed-detail dt {
+  display: inline;
+  font-weight: 500;
+}
+
+.ym-rbi-licensed-detail dt::after {
+  content: ":";
+}
+
+.ym-rbi-licensed-detail dd {
+  display: inline;
+  margin: 0 0 0 0.25rem;
+  font-weight: 600;
+  color: #121212;
 }
 
 .ym-rbi-licensed-text {
@@ -228,6 +265,10 @@ main {
     flex-direction: column;
     text-align: center;
     gap: 0.75rem;
+  }
+
+  .ym-rbi-licensed-brand {
+    width: 100%;
   }
 }
 

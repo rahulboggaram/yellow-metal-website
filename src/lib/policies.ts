@@ -22,6 +22,6 @@ export const SITE_POLICIES: SitePolicy[] = [
     href: "/fair-practices",
     label: "Fair Practices Code",
     description:
-      "Fair lending practices, gold loan standards, and grievance redressal for Yellow Metal Loans.",
+      "Fair lending practices, gold loan standards, and grievance redressal — available in English and Kannada.",
   },
 ];

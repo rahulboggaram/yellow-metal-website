@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalDocument } from "@/components/legal-document";
+import { LegalLanguageSwitch } from "@/components/legal-language-switch";
 import { FAIR_PRACTICES_CODE_BLOCKS } from "@/content/fair-practices-code";
 
 export const metadata: Metadata = {
@@ -9,5 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function FairPracticesPage() {
-  return <LegalDocument blocks={FAIR_PRACTICES_CODE_BLOCKS} />;
+  return (
+    <LegalDocument
+      blocks={FAIR_PRACTICES_CODE_BLOCKS}
+      languageSwitch={<LegalLanguageSwitch active="en" />}
+    />
+  );
 }

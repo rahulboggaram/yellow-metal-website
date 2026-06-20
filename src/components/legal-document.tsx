@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 export type LegalBlock =
   | { type: "title"; text: string }
@@ -28,10 +29,17 @@ function renderParagraph(text: string) {
   });
 }
 
-export function LegalDocument({ blocks }: { blocks: readonly LegalBlock[] }) {
+export function LegalDocument({
+  blocks,
+  languageSwitch,
+}: {
+  blocks: readonly LegalBlock[];
+  languageSwitch?: ReactNode;
+}) {
   return (
     <div className="ym-page">
       <div className="ym-container ym-prose ym-legal-document">
+        {languageSwitch}
         {blocks.map((block, index) => {
           switch (block.type) {
             case "title":

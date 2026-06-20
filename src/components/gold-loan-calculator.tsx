@@ -161,7 +161,7 @@ export function GoldLoanCalculator() {
             </h2>
 
             <div className="ym-loan-calculator-card-stage">
-              <LoanCalculatorJewels weightGrams={weightGrams} side="left" />
+              <LoanCalculatorJewels weightGrams={weightGrams} />
 
               <div className="ym-loan-calculator-card ym-loan-calculator-card--inputs">
               <div className="ym-loan-calculator-card-inner">
@@ -241,8 +241,6 @@ export function GoldLoanCalculator() {
                 )}
               </div>
             </div>
-
-              <LoanCalculatorJewels weightGrams={weightGrams} side="right" />
             </div>
         </div>
       </section>

@@ -535,8 +535,9 @@ body.ym-jewels-flying .ym-hero-ornament {
   animation: ym-loan-jewel-enter 0.38s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
-.ym-loan-calculator-jewel--wide {
-  width: clamp(4rem, 14vw, 6.5rem);
+.ym-loan-calculator-jewel--belt {
+  width: clamp(10rem, 30vw, 15rem);
+  max-width: none;
 }
 
 .ym-loan-jewel-summary {
@@ -574,8 +575,8 @@ body.ym-jewels-flying .ym-hero-ornament {
     width: clamp(2rem, 8vw, 2.75rem);
   }
 
-  .ym-loan-calculator-jewel--wide {
-    width: clamp(3rem, 11vw, 4rem);
+  .ym-loan-calculator-jewel--belt {
+    width: clamp(8rem, 42vw, 11rem);
   }
 }
 

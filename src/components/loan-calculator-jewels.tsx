@@ -33,7 +33,7 @@ export function LoanCalculatorJewels({
           height={jewel.height}
           className={[
             "ym-loan-calculator-jewel",
-            jewel.id === "belt" ? "ym-loan-calculator-jewel--wide" : "",
+            jewel.id === "belt" ? "ym-loan-calculator-jewel--belt" : "",
           ]
             .filter(Boolean)
             .join(" ")}

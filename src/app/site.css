@@ -508,18 +508,18 @@ body.ym-jewels-flying .ym-hero-ornament {
   min-width: clamp(3.25rem, 11vw, 5rem);
   pointer-events: none;
   overflow: visible;
-  z-index: 3;
+  z-index: 2;
 }
 
 .ym-loan-calculator-jewels--left {
-  left: clamp(-0.25rem, -2vw, 0.5rem);
-  transform: translateY(-50%) translateX(42%);
+  left: 0;
+  transform: translateY(-50%) translateX(calc(-100% - clamp(0.35rem, 1.5vw, 0.65rem)));
   align-items: flex-end;
 }
 
 .ym-loan-calculator-jewels--right {
-  right: clamp(-0.25rem, -2vw, 0.5rem);
-  transform: translateY(-50%) translateX(-42%);
+  right: 0;
+  transform: translateY(-50%) translateX(calc(100% + clamp(0.35rem, 1.5vw, 0.65rem)));
   align-items: flex-start;
 }
 
@@ -563,11 +563,11 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 @media (max-width: 380px) {
   .ym-loan-calculator-jewels--left {
-    transform: translateY(-50%) translateX(34%);
+    transform: translateY(-50%) translateX(calc(-100% - 0.25rem));
   }
 
   .ym-loan-calculator-jewels--right {
-    transform: translateY(-50%) translateX(-34%);
+    transform: translateY(-50%) translateX(calc(100% + 0.25rem));
   }
 
   .ym-loan-calculator-jewel {

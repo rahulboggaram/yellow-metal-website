@@ -18,4 +18,10 @@ export const SITE_POLICIES: SitePolicy[] = [
     description:
       "Terms governing access to and use of the Yellow Metal website.",
   },
+  {
+    href: "/fair-practices",
+    label: "Fair Practices Code",
+    description:
+      "Fair lending practices, gold loan standards, and grievance redressal for Yellow Metal Loans.",
+  },
 ];

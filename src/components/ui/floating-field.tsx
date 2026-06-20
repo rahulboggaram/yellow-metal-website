@@ -189,6 +189,12 @@ export function FloatingInput(
             setFocused(false);
             onBlur?.(e);
           }}
+          onWheel={(e) => {
+            if (inputProps.type === "number") {
+              e.currentTarget.blur();
+            }
+            inputProps.onWheel?.(e);
+          }}
           className={cn(
             controlClass,
             showValue ? valueTextClass() : "text-transparent caret-zinc-900",

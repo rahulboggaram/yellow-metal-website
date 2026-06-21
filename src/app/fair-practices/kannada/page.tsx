@@ -5,9 +5,9 @@ import { LegalPdfViewer } from "@/components/legal-pdf-viewer";
 const PDF_PATH = "/documents/fair-practices-code-kannada.pdf";
 
 export const metadata: Metadata = {
-  title: "ನ್ಯಾಯಸಮ್ಮತ ವ್ಯವಹಾರ ಪದ್ಧತಿ ಸಂಹಿತೆ — Yellow Metal",
+  title: "Fair Practices Code - Kannada — Yellow Metal",
   description:
-    "Yellow Metal Loans Private Limited ನ RBI-registered NBFC Fair Practices Code — Kannada version.",
+    "Kannada Fair Practices Code of Yellow Metal Loans Private Limited, an RBI-registered NBFC.",
 };
 
 export default function FairPracticesKannadaPage() {
@@ -15,16 +15,15 @@ export default function FairPracticesKannadaPage() {
     <div className="ym-page">
       <div className="ym-container ym-prose ym-legal-document">
         <LegalLanguageSwitch active="kn" />
-        <h1 className="ym-page-title">ನ್ಯಾಯಸಮ್ಮತ ವ್ಯವಹಾರ ಪದ್ಧತಿ ಸಂಹಿತೆ</h1>
-        <p className="ym-legal-subtitle">Fair Practices Code</p>
+        <h1 className="ym-page-title">Fair Practices Code - Kannada</h1>
+        <p className="ym-legal-subtitle">ನ್ಯಾಯಸಮ್ಮತ ವ್ಯವಹಾರ ಪದ್ಧತಿ ಸಂಹಿತೆ</p>
         <p className="ym-legal-meta">
           ಆವೃತ್ತಿ 1/2026-27 · ಜಾರಿಗೆ 8 ಜೂನ್ 2026 · ನಿರ್ದೇಶಕರ ಮಂಡಳಿಯ
           ಅನುಮೋದನೆ
         </p>
         <p>
-          ಈ ದಾಖಲೆಯು Yellow Metal Loans Private Limited ನ ಅಧಿಕೃತ ಕನ್ನಡ
-          ನ್ಯಾಯಸಮ್ಮತ ವ್ಯವಹಾರ ಪದ್ಧತಿ ಸಂಹಿತೆಯಾಗಿದೆ. ಕೆಳಗಿನ PDF ನಲ್ಲಿ
-          ಪೂರ್ಣ ವಿವರಗಳನ್ನು ಓದಬಹುದು.
+          This is the official Kannada Fair Practices Code of Yellow Metal Loans
+          Private Limited. Read the full document in the PDF below.
         </p>
         <LegalPdfViewer
           src={PDF_PATH}

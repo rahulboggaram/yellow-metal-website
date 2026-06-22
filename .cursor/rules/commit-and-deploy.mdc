@@ -1,0 +1,26 @@
+---
+description: Always commit and deploy changes to Vercel after completing work
+alwaysApply: true
+---
+
+# Commit and deploy
+
+After making code changes the user requested, always commit and deploy without waiting to be asked.
+
+## Workflow
+
+1. Finish the requested change and verify the build if practical.
+2. Commit only relevant files (never secrets like `.env`).
+3. Push to `origin/main`.
+4. Deploy with `npx vercel --prod --yes`.
+5. Tell the user the commit hash and live URL briefly.
+
+## Commit messages
+
+- One or two sentences focused on why.
+- Match the repo’s existing commit style.
+
+## Exceptions
+
+- Do not commit if the user explicitly says not to, or only asked a question with no code changes.
+- Skip unrelated untracked WIP files unless the user includes them.

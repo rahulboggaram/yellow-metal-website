@@ -121,8 +121,12 @@ export function GoldLoanCalculator() {
     loading || error || loanAmount === null ? "—" : formatInr(loanAmount);
 
   return (
-    <div className="ym-loan-estimate-column">
-      <div ref={amountCardRef} className="ym-loan-flip-bridge">
+    <section
+      className="ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash"
+      aria-labelledby="ym-loan-calculator-title"
+    >
+      <div className="ym-loan-estimate-fold-inner ym-loan-estimate-column">
+        <div ref={amountCardRef} className="ym-loan-flip-bridge">
         {(loading || error) && (
           <p className="ym-loan-flip-status">
             {loading ? "Fetching live spot rate…" : "Live rate unavailable"}
@@ -148,22 +152,18 @@ export function GoldLoanCalculator() {
           )}
           <span className="ym-sr-only">{bridgeAmountText}</span>
         </div>
-      </div>
+        </div>
 
-      <section
-        className="ym-section ym-loan-calculator-section ym-loan-calculator--dash"
-        aria-labelledby="ym-loan-calculator-title"
-      >
         <div className="ym-loan-calculator">
-            <p className="ym-eyebrow">How much can you borrow</p>
-            <h2 id="ym-loan-calculator-title" className="ym-section-title">
-              Loan Estimate
-            </h2>
+          <p className="ym-eyebrow">How much can you borrow</p>
+          <h2 id="ym-loan-calculator-title" className="ym-section-title">
+            Loan Estimate
+          </h2>
 
-            <div className="ym-loan-calculator-card-stage">
-              <LoanCalculatorJewels weightGrams={weightGrams} />
+          <div className="ym-loan-calculator-card-stage">
+            <LoanCalculatorJewels weightGrams={weightGrams} />
 
-              <div className="ym-loan-calculator-card ym-loan-calculator-card--inputs">
+            <div className="ym-loan-calculator-card ym-loan-calculator-card--inputs">
               <div className="ym-loan-calculator-card-inner">
                 <div className="ym-loan-dash-controls">
                   <div
@@ -241,9 +241,9 @@ export function GoldLoanCalculator() {
                 )}
               </div>
             </div>
-            </div>
+          </div>
         </div>
-      </section>
+      </div>
 
       <LoanPlansModal
         open={plansModalOpen}
@@ -252,6 +252,6 @@ export function GoldLoanCalculator() {
         loading={plansLoading}
         error={plansError}
       />
-    </div>
+    </section>
   );
 }

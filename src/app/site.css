@@ -206,14 +206,34 @@ main {
   height: clamp(0.25rem, 1.5vh, 0.75rem);
 }
 
-.ym-hero-calculator-flow .ym-loan-flip-bridge {
-  padding-top: calc(clamp(1.5rem, 5vh, 2.75rem) + 30px);
-  padding-bottom: calc(clamp(2.5rem, 7vh, 4rem) + 30px);
+/* ── Fold 2: Loan estimate ── */
+.ym-loan-estimate-fold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100dvh - var(--ym-header-total) - var(--ym-fold-peek));
+  min-height: calc(100svh - var(--ym-header-total) - var(--ym-fold-peek));
+  padding-block: clamp(2rem, 6vh, 3.5rem);
+  background: #000000;
+  overflow: visible;
 }
 
-.ym-hero-calculator-flow .ym-loan-calculator-section {
-  padding-top: clamp(2.5rem, 7vh, 4rem);
-  padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+.ym-loan-estimate-fold-inner {
+  width: 100%;
+}
+
+.ym-loan-estimate-fold .ym-eyebrow,
+.ym-loan-estimate-fold .ym-section-title {
+  color: #ffffff;
+}
+
+.ym-loan-estimate-fold .ym-eyebrow {
+  color: rgb(255 255 255 / 0.62);
+}
+
+.ym-loan-estimate-fold .ym-loan-ltv-caption,
+.ym-loan-estimate-fold .ym-loan-flip-status {
+  color: rgb(255 255 255 / 0.5);
 }
 
 /* ── RBI licensed fold ── */
@@ -304,12 +324,6 @@ main {
   }
 }
 
-.ym-hero-calculator-flow {
-  position: relative;
-  --ym-fold-peek: clamp(9rem, 30vh, 16rem);
-  overflow: visible;
-}
-
 .ym-hero-title-pin {
   position: sticky;
   top: calc(var(--ym-chrome-top) + clamp(0.35rem, 1.5vh, 0.75rem));
@@ -342,7 +356,11 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-calculator-section {
-  padding-block: 0 clamp(3rem, 8vh, 4.5rem);
+  padding-block: 0;
+}
+
+.ym-loan-estimate-fold.ym-loan-calculator-section {
+  padding-block: clamp(2rem, 6vh, 3.5rem);
 }
 
 .ym-loan-estimate-column {
@@ -367,6 +385,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-loan-calculator--dash .ym-loan-calculator > .ym-eyebrow,
 .ym-loan-calculator--dash .ym-loan-calculator > .ym-section-title {
   text-align: center;
+}
+
+.ym-loan-estimate-fold .ym-loan-calculator > .ym-eyebrow {
+  color: rgb(255 255 255 / 0.62);
 }
 
 .ym-loan-calculator--dash .ym-loan-calculator > .ym-eyebrow {
@@ -425,6 +447,11 @@ body.ym-jewels-flying .ym-hero-ornament {
   box-shadow: 0 24px 48px rgb(0 0 0 / 0.18);
   color: var(--ym-dash-text);
   overflow: hidden;
+}
+
+.ym-loan-estimate-fold .ym-loan-flip-bridge {
+  padding-top: clamp(0.5rem, 2vh, 1rem);
+  padding-bottom: clamp(1.25rem, 4vh, 2rem);
 }
 
 .ym-loan-flip-bridge {
@@ -2592,6 +2619,10 @@ body.ym-jewels-flying .ym-hero-ornament {
   margin-top: 1.5rem;
 }
 
+.ym-legal-document--pdf.ym-prose {
+  max-width: min(72rem, 100%);
+}
+
 .ym-legal-pdf-actions {
   display: flex;
   flex-wrap: wrap;
@@ -2599,8 +2630,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   margin-bottom: 1rem;
 }
 
-.ym-legal-pdf-download,
-.ym-legal-pdf-open {
+.ym-legal-pdf-download {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2613,9 +2643,6 @@ body.ym-jewels-flying .ym-hero-ornament {
     background 0.2s ease,
     color 0.2s ease,
     border-color 0.2s ease;
-}
-
-.ym-legal-pdf-download {
   background: #000000;
   color: #ffffff;
 }
@@ -2624,21 +2651,38 @@ body.ym-jewels-flying .ym-hero-ornament {
   background: rgb(0 0 0 / 0.85);
 }
 
-.ym-legal-pdf-open {
-  border: 1px solid rgb(0 0 0 / 0.14);
-  color: #000000;
-}
-
-.ym-legal-pdf-open:hover {
-  border-color: rgb(0 0 0 / 0.28);
-}
-
-.ym-legal-pdf-frame {
+.ym-legal-pdf-viewport {
   width: 100%;
-  min-height: clamp(28rem, 70vh, 48rem);
+  max-height: clamp(36rem, 85vh, 64rem);
+  overflow-x: hidden;
+  overflow-y: auto;
   border: 1px solid rgb(0 0 0 / 0.1);
   border-radius: 0.9rem;
+  background: rgb(0 0 0 / 0.04);
+}
+
+.ym-legal-pdf-page {
+  display: flex;
+  justify-content: center;
   background: #ffffff;
+}
+
+.ym-legal-pdf-page + .ym-legal-pdf-page {
+  border-top: 1px solid rgb(0 0 0 / 0.08);
+}
+
+.ym-legal-pdf-page canvas {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.ym-legal-pdf-loading {
+  margin: 0;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  font-size: 0.9375rem;
+  color: rgb(0 0 0 / 0.45);
 }
 
 

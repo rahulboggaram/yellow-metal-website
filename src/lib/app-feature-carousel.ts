@@ -1,34 +1,30 @@
 export type AppFeatureSlide = {
   id: string;
   title: string;
-  subtitle?: string;
-  footer?: string;
+  imageSrc: string;
+  href?: string;
 };
 
 export const APP_FEATURE_SLIDES: AppFeatureSlide[] = [
   {
     id: "download-app",
     title: "Download Yellow Metal App",
+    imageSrc: "/images/features/download-app.png",
+    href: "https://play.google.com/store/apps/details?id=com.consumer.yellow_metal",
   },
   {
     id: "interest-reminders",
     title: "Interest Reminders",
-    subtitle:
-      "You will receive 3 reminders before due. We don't want you to default your interests",
+    imageSrc: "/images/features/interest-reminders.png",
   },
   {
     id: "part-payments",
     title: "Part Payments",
-    footer:
-      "Make part payments at any time in the day & any day in the year in your Yellow Metal app",
+    imageSrc: "/images/features/part-payments.png",
   },
   {
     id: "part-release",
     title: "Part Release",
-    subtitle:
-      "Choose any jewellery to be released at any time of your choice",
+    imageSrc: "/images/features/part-release.png",
   },
 ];
-
-export const PLAY_STORE_URL =
-  "https://play.google.com/store/apps/details?id=com.consumer.yellow_metal";

@@ -206,29 +206,40 @@ main {
   height: clamp(0.25rem, 1.5vh, 0.75rem);
 }
 
+.ym-hero-lending-flow {
+  --ym-fold-peek: clamp(8rem, 24vh, 13rem);
+}
+
 /* ── Lending rate bridge (between hero and loan estimate) ── */
 .ym-loan-lending-rate-fold {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding-block: clamp(2rem, 6vh, 3.5rem);
+  margin-top: calc(-1 * clamp(3.5rem, 10vh, 6.5rem));
+  padding-top: clamp(0.75rem, 2.5vh, 1.5rem);
+  padding-bottom: clamp(2rem, 5vh, 3rem);
   background: #ffffff;
   overflow: visible;
 }
 
 .ym-loan-lending-rate-fold .ym-loan-flip-bridge {
-  padding-top: clamp(0.5rem, 2vh, 1rem);
-  padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+  padding-top: 0;
+  padding-bottom: clamp(0.75rem, 2vh, 1.25rem);
+}
+
+.ym-loan-lending-rate-fold .ym-loan-flip-result {
+  padding-bottom: 0.25rem;
 }
 
 /* ── Fold 3: Loan estimate ── */
 .ym-loan-estimate-fold {
+  --ym-loan-estimate-peek: clamp(1rem, 3vh, 1.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100dvh - var(--ym-header-total) - var(--ym-fold-peek));
-  min-height: calc(100svh - var(--ym-header-total) - var(--ym-fold-peek));
-  padding-block: clamp(2rem, 6vh, 3.5rem);
+  min-height: calc(100dvh - var(--ym-header-total) - var(--ym-loan-estimate-peek));
+  min-height: calc(100svh - var(--ym-header-total) - var(--ym-loan-estimate-peek));
+  padding-block: clamp(3.25rem, 10vh, 5.25rem);
   background: #000000;
   overflow: visible;
 }
@@ -370,7 +381,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-estimate-fold.ym-loan-calculator-section {
-  padding-block: clamp(2rem, 6vh, 3.5rem);
+  padding-block: clamp(3.25rem, 10vh, 5.25rem);
 }
 
 .ym-loan-estimate-column {

@@ -8,8 +8,10 @@ import { FeaturesSection } from "@/components/features-section";
 export default function HomePage() {
   return (
     <>
-      <HeroSection />
-      <LoanLendingRateBridge />
+      <div className="ym-hero-lending-flow">
+        <HeroSection />
+        <LoanLendingRateBridge />
+      </div>
       <GoldLoanCalculator />
       <RbiLicensedSection />
       <UpiSection />

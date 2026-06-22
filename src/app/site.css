@@ -207,7 +207,10 @@ main {
 }
 
 .ym-hero-lending-flow {
-  --ym-fold-peek: clamp(8rem, 24vh, 13rem);
+  --ym-loan-flip-cell-h: clamp(3.9rem, 11.05vw, 5.33rem);
+  --ym-loan-flip-half: calc(var(--ym-loan-flip-cell-h) / 2);
+  --ym-loan-ltv-block-h: 1.15rem;
+  --ym-fold-peek: var(--ym-loan-flip-half);
 }
 
 /* ── Lending rate bridge (between hero and loan estimate) ── */
@@ -215,8 +218,8 @@ main {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin-top: calc(-1 * clamp(3.5rem, 10vh, 6.5rem));
-  padding-top: clamp(0.75rem, 2.5vh, 1.5rem);
+  margin-top: calc(-1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)));
+  padding-top: 0;
   padding-bottom: clamp(2rem, 5vh, 3rem);
   background: #ffffff;
   overflow: visible;
@@ -225,6 +228,11 @@ main {
 .ym-loan-lending-rate-fold .ym-loan-flip-bridge {
   padding-top: 0;
   padding-bottom: clamp(0.75rem, 2vh, 1.25rem);
+}
+
+.ym-loan-lending-rate-fold:not(.is-revealed) .ym-loan-ltv-caption,
+.ym-loan-lending-rate-fold:not(.is-revealed) .ym-loan-flip-status {
+  visibility: hidden;
 }
 
 .ym-loan-lending-rate-fold .ym-loan-flip-result {
@@ -536,7 +544,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-solari-amount--loan .split-flap-cell {
   width: clamp(2.15rem, 6.76vw, 3.06rem);
-  height: clamp(3.9rem, 11.05vw, 5.33rem);
+  height: var(--ym-loan-flip-cell-h, clamp(3.9rem, 11.05vw, 5.33rem));
 }
 
 .ym-solari-amount--loan .flap-display {
@@ -1989,8 +1997,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 /* ── App features carousel ── */
 .ym-app-features {
-  background: #000000;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
   padding-block: 0;
 }
 
@@ -2047,10 +2055,10 @@ body.ym-jewels-flying .ym-hero-ornament {
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid rgb(255 255 255 / 0.18);
+  border: 1px solid rgb(0 0 0 / 0.12);
   border-radius: 9999px;
-  background: rgb(255 255 255 / 0.06);
-  color: #ffffff;
+  background: rgb(0 0 0 / 0.04);
+  color: #000000;
   font-size: 1.125rem;
   cursor: pointer;
 }
@@ -2066,12 +2074,12 @@ body.ym-jewels-flying .ym-hero-ornament {
   padding: 0;
   border: none;
   border-radius: 9999px;
-  background: rgb(255 255 255 / 0.24);
+  background: rgb(0 0 0 / 0.18);
   cursor: pointer;
 }
 
 .ym-app-features-dot--active {
-  background: #ffffff;
+  background: #000000;
   transform: scale(1.15);
 }
 
@@ -2917,6 +2925,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
+  .ym-hero-lending-flow {
+    --ym-loan-flip-cell-h: clamp(3.25rem, 8.45vw, 4.23rem);
+  }
+
   .ym-hero-headline {
     font-size: clamp(2.75rem, 12.5vw, 5.5rem);
   }
@@ -2978,7 +2990,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-solari-amount--loan .split-flap-cell {
     width: clamp(1.89rem, 5.85vw, 2.6rem);
-    height: clamp(3.25rem, 8.45vw, 4.23rem);
+    height: var(--ym-loan-flip-cell-h, clamp(3.25rem, 8.45vw, 4.23rem));
   }
 
   .ym-solari-amount--loan .flap-display {

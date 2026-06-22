@@ -87,7 +87,7 @@ export function LoanLendingRateBridge() {
 
   return (
     <section
-      className="ym-loan-lending-rate-fold"
+      className={`ym-loan-lending-rate-fold${flipRevealed ? " is-revealed" : ""}`}
       aria-label="Today's lending rate"
     >
       <div className="ym-loan-estimate-column">

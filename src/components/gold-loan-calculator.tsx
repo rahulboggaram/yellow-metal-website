@@ -1,11 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FloatingInput } from "@/components/ui/floating-field";
-import {
-  FlipClockAmount,
-  FlipClockPlaceholder,
-} from "@/components/flip-clock-amount";
 import type { GoldKarat, GoldPriceSnapshot } from "@/lib/gold-price-format";
 import {
   GOLD_KARAT_OPTIONS,
@@ -16,10 +12,6 @@ import {
 import { LoanPlansModal, useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
 
-/** Top flip clock — fixed 1g @ 22K; not tied to calculator inputs */
-const BRIDGE_LENDING_KARAT: GoldKarat = "22K";
-const BRIDGE_LENDING_GRAMS = 1;
-
 export function GoldLoanCalculator() {
   const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
   const [price, setPrice] = useState<GoldPriceSnapshot | null>(null);
@@ -29,10 +21,6 @@ export function GoldLoanCalculator() {
   const [karat, setKarat] = useState<GoldKarat>("22K");
   const [plansModalOpen, setPlansModalOpen] = useState(false);
   const [weightFocused, setWeightFocused] = useState(false);
-  const [flipRevealed, setFlipRevealed] = useState(false);
-  const [bridgeFlipKey, setBridgeFlipKey] = useState(0);
-
-  const amountCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -60,24 +48,6 @@ export function GoldLoanCalculator() {
     };
   }, []);
 
-  useEffect(() => {
-    const el = amountCardRef.current;
-    if (!el || flipRevealed) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setFlipRevealed(true);
-          setBridgeFlipKey((key) => key + 1);
-        }
-      },
-      { threshold: 0.35, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [flipRevealed]);
-
   const weightGrams = useMemo(() => {
     const parsed = Number.parseFloat(weightInput.replace(/,/g, "").trim());
     return Number.isFinite(parsed) ? parsed : 0;
@@ -93,29 +63,11 @@ export function GoldLoanCalculator() {
     );
   }, [price, weightGrams, karat]);
 
-  const bridgeLoanAmount = useMemo(() => {
-    if (!price) return null;
-    return loanAmountFromWeightGrams(
-      BRIDGE_LENDING_GRAMS,
-      BRIDGE_LENDING_KARAT,
-      price.gold999BaseRaw,
-      price.rate22kPerGramInr,
-    );
-  }, [price]);
-
   const hasWeightValue = weightInput.trim().length > 0 && weightGrams > 0;
   const weightFieldActive = weightFocused || weightInput.trim().length > 0;
 
   const showEligibleAmount =
     hasWeightValue && !loading && !error && loanAmount !== null;
-
-  const bridgeAmountText =
-    loading || error || bridgeLoanAmount === null
-      ? "—"
-      : formatInr(bridgeLoanAmount);
-
-  const showBridgeFlip =
-    flipRevealed && !loading && !error && bridgeLoanAmount !== null;
 
   const amountText =
     loading || error || loanAmount === null ? "—" : formatInr(loanAmount);
@@ -126,34 +78,6 @@ export function GoldLoanCalculator() {
       aria-labelledby="ym-loan-calculator-title"
     >
       <div className="ym-loan-estimate-fold-inner ym-loan-estimate-column">
-        <div ref={amountCardRef} className="ym-loan-flip-bridge">
-        {(loading || error) && (
-          <p className="ym-loan-flip-status">
-            {loading ? "Fetching live spot rate…" : "Live rate unavailable"}
-          </p>
-        )}
-
-        <p className="ym-loan-ltv-caption">
-          Today&apos;s lending rate for {BRIDGE_LENDING_KARAT} gold at 75% LTV
-        </p>
-
-        <div className="ym-loan-flip-result" aria-live="polite">
-          {showBridgeFlip ? (
-            <FlipClockAmount
-              amount={bridgeLoanAmount}
-              flipKey={bridgeFlipKey}
-              className="ym-solari-amount--loan"
-            />
-          ) : (
-            <FlipClockPlaceholder
-              className="ym-solari-amount--loan"
-              template="₹00000"
-            />
-          )}
-          <span className="ym-sr-only">{bridgeAmountText}</span>
-        </div>
-        </div>
-
         <div className="ym-loan-calculator">
           <p className="ym-eyebrow">How much can you borrow</p>
           <h2 id="ym-loan-calculator-title" className="ym-section-title">

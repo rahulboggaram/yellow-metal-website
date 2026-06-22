@@ -206,7 +206,22 @@ main {
   height: clamp(0.25rem, 1.5vh, 0.75rem);
 }
 
-/* ── Fold 2: Loan estimate ── */
+/* ── Lending rate bridge (between hero and loan estimate) ── */
+.ym-loan-lending-rate-fold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: clamp(2rem, 6vh, 3.5rem);
+  background: #ffffff;
+  overflow: visible;
+}
+
+.ym-loan-lending-rate-fold .ym-loan-flip-bridge {
+  padding-top: clamp(0.5rem, 2vh, 1rem);
+  padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+/* ── Fold 3: Loan estimate ── */
 .ym-loan-estimate-fold {
   display: flex;
   align-items: center;
@@ -229,11 +244,6 @@ main {
 
 .ym-loan-estimate-fold .ym-eyebrow {
   color: rgb(255 255 255 / 0.62);
-}
-
-.ym-loan-estimate-fold .ym-loan-ltv-caption,
-.ym-loan-estimate-fold .ym-loan-flip-status {
-  color: rgb(255 255 255 / 0.5);
 }
 
 /* ── RBI licensed fold ── */
@@ -447,11 +457,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   box-shadow: 0 24px 48px rgb(0 0 0 / 0.18);
   color: var(--ym-dash-text);
   overflow: hidden;
-}
-
-.ym-loan-estimate-fold .ym-loan-flip-bridge {
-  padding-top: clamp(0.5rem, 2vh, 1rem);
-  padding-bottom: clamp(1.25rem, 4vh, 2rem);
 }
 
 .ym-loan-flip-bridge {

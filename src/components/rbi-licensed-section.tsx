@@ -27,9 +27,6 @@ export function RbiLicensedSection() {
               </div>
             </dl>
           </div>
-          <p className="ym-rbi-licensed-text">
-            RBI Licensed <span className="ym-rbi-licensed-nbfc">NBFC</span>
-          </p>
         </div>
       </div>
     </section>

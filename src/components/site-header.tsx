@@ -16,7 +16,7 @@ export function SiteHeader() {
               className="ym-header-logo"
             />
           </Link>
-          <p className="ym-header-tagline">An RBI Licensed NBFC</p>
+          <p className="ym-header-tagline">A RBI Licensed NBFC</p>
         </div>
       </div>
     </header>

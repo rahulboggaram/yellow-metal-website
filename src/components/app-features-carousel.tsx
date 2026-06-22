@@ -18,13 +18,13 @@ export function AppFeaturesCarousel() {
     );
     if (!cards.length) return;
 
-    const trackCenter = track.scrollLeft + track.clientWidth / 2;
+    const paddingLeft = Number.parseFloat(getComputedStyle(track).paddingLeft);
+    const scrollStart = track.scrollLeft + paddingLeft;
     let closestIndex = 0;
     let closestDistance = Number.POSITIVE_INFINITY;
 
     cards.forEach((card, index) => {
-      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const distance = Math.abs(trackCenter - cardCenter);
+      const distance = Math.abs(card.offsetLeft - scrollStart);
       if (distance < closestDistance) {
         closestDistance = distance;
         closestIndex = index;
@@ -56,8 +56,10 @@ export function AppFeaturesCarousel() {
     const target = cards[index];
     if (!target) return;
 
+    const paddingLeft = Number.parseFloat(getComputedStyle(track).paddingLeft);
+
     track.scrollTo({
-      left: target.offsetLeft - (track.clientWidth - target.offsetWidth) / 2,
+      left: target.offsetLeft - paddingLeft,
       behavior: "smooth",
     });
     setActiveIndex(index);

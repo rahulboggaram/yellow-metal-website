@@ -1,30 +1,19 @@
-import { FeaturesCarousel } from "@/components/features-carousel";
+import { AppFeaturesCarousel } from "@/components/app-features-carousel";
 
 export function FeaturesSection() {
   return (
-    <section className="ym-section ym-features" id="features">
+    <section className="ym-section ym-app-features" id="features">
       <div className="ym-container">
-        <p className="ym-eyebrow">Why Yellow Metal</p>
-        <h2 className="ym-section-title">Everything you need, in one place</h2>
-        <p className="ym-section-subtitle">
-          From applying to closing — manage your gold loan without visiting a
-          branch for every little thing.
+        <p className="ym-eyebrow ym-app-features-eyebrow">Yellow Metal app</p>
+        <h2 className="ym-section-title ym-app-features-title">
+          Manage your loan from your phone
+        </h2>
+        <p className="ym-section-subtitle ym-app-features-subtitle">
+          Download the app to track loans, pay interest, release jewellery, and
+          make part payments — anytime.
         </p>
 
-        <FeaturesCarousel />
-
-        <div className="ym-cta-banner">
-          <div>
-            <p className="ym-cta-banner-title">Ready to get started?</p>
-            <p className="ym-cta-banner-text">
-              Visit your nearest Yellow Metal branch or call us — we&apos;ll walk
-              you through every step.
-            </p>
-          </div>
-          <a href="/contact" className="ym-btn ym-btn--primary">
-            Contact us
-          </a>
-        </div>
+        <AppFeaturesCarousel />
       </div>
     </section>
   );

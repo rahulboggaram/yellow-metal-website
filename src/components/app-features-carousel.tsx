@@ -123,7 +123,22 @@ export function AppFeaturesCarousel() {
           }
           aria-label="Previous feature"
         >
-          ←
+          <svg
+            className="ym-app-features-arrow-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            aria-hidden
+          >
+            <path
+              d="M11 4.5 6.5 9 11 13.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
 
         <div className="ym-app-features-dots" role="tablist" aria-label="Choose feature">
@@ -151,7 +166,22 @@ export function AppFeaturesCarousel() {
           onClick={() => goTo((activeIndex + 1) % APP_FEATURE_SLIDES.length)}
           aria-label="Next feature"
         >
-          →
+          <svg
+            className="ym-app-features-arrow-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            aria-hidden
+          >
+            <path
+              d="m7 4.5 4.5 4.5L7 13.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       </div>
     </div>

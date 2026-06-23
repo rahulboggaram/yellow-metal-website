@@ -5,9 +5,9 @@ import "./globals.css";
 import "./site.css";
 
 export const metadata: Metadata = {
-  title: "Yellow Metal — Gold Loans with no hidden fees",
+  title: "Yellow Metal, Gold Loans in 10 mins with no hidden charges",
   description:
-    "Gold loans with no hidden fees. Transparent IBJA rates, insured storage, and UPI disbursement from Yellow Metal.",
+    "Gold Loans in 10 mins with no hidden charges and Insured gold storage. Regular reminders and app to track your loans and jewels",
   applicationName: "Yellow Metal",
 };
 

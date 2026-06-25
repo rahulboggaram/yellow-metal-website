@@ -90,9 +90,10 @@ export default function AboutPage() {
         <section className="ym-about-office">
           <h2>Our office</h2>
           <p>
-            Yellow Fintech Pvt Ltd
+            Yellow Metal Loans Private Limited
             <br />
-            #677, 27th main, 13th cross, sector 1, HSR Layout, Bangalore 560102
+            Nisarga, 1st Main, 3rd Cross, Opp Deccan Hospital, Ashwini Extension,
+            Chintamani, Chikkaballapur, Karnataka, India, 563125
           </p>
           <p>
             <a href="tel:+919090976076" className="ym-legal-link">

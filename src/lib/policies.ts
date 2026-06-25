@@ -9,4 +9,8 @@ export const SITE_POLICIES: SitePolicy[] = [
   { href: "/terms", label: "Terms & conditions" },
   { href: "/fair-practices", label: "Fair Practices Code" },
   { href: "/fair-practices/kannada", label: "Fair Practices Code - Kannada" },
+  {
+    href: "/policies/grievance-redressal",
+    label: "Grievance Redressal",
+  },
 ];

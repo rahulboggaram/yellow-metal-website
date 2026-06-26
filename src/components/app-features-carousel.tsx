@@ -9,22 +9,27 @@ export function AppFeaturesCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const getTrackPadStart = useCallback((track: HTMLDivElement) => {
+    const style = getComputedStyle(track);
+    return Number.parseFloat(style.paddingInlineStart || style.paddingLeft);
+  }, []);
+
   const updateActiveFromScroll = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
 
     const cards = Array.from(
-      track.querySelectorAll<HTMLElement>("[data-app-feature-slide]"),
+      track.querySelectorAll<HTMLElement>("[data-feature-card]"),
     );
     if (!cards.length) return;
 
-    const paddingLeft = Number.parseFloat(getComputedStyle(track).paddingLeft);
-    const scrollStart = track.scrollLeft + paddingLeft;
+    const padStart = getTrackPadStart(track);
+    const anchor = track.scrollLeft + padStart;
     let closestIndex = 0;
     let closestDistance = Number.POSITIVE_INFINITY;
 
     cards.forEach((card, index) => {
-      const distance = Math.abs(card.offsetLeft - scrollStart);
+      const distance = Math.abs(card.offsetLeft - anchor);
       if (distance < closestDistance) {
         closestDistance = distance;
         closestIndex = index;
@@ -32,7 +37,7 @@ export function AppFeaturesCarousel() {
     });
 
     setActiveIndex(closestIndex);
-  }, []);
+  }, [getTrackPadStart]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -48,28 +53,31 @@ export function AppFeaturesCarousel() {
     };
   }, [updateActiveFromScroll]);
 
-  const goTo = useCallback((index: number) => {
-    const track = trackRef.current;
-    if (!track) return;
+  const goTo = useCallback(
+    (index: number) => {
+      const track = trackRef.current;
+      if (!track) return;
 
-    const cards = track.querySelectorAll<HTMLElement>("[data-app-feature-slide]");
-    const target = cards[index];
-    if (!target) return;
+      const cards = track.querySelectorAll<HTMLElement>("[data-feature-card]");
+      const target = cards[index];
+      if (!target) return;
 
-    const paddingLeft = Number.parseFloat(getComputedStyle(track).paddingLeft);
+      const padStart = getTrackPadStart(track);
 
-    track.scrollTo({
-      left: target.offsetLeft - paddingLeft,
-      behavior: "smooth",
-    });
-    setActiveIndex(index);
-  }, []);
+      track.scrollTo({
+        left: target.offsetLeft - padStart,
+        behavior: "smooth",
+      });
+      setActiveIndex(index);
+    },
+    [getTrackPadStart],
+  );
 
   return (
-    <div className="ym-app-features-carousel">
+    <div className="ym-features-carousel">
       <div
         ref={trackRef}
-        className="ym-app-features-track"
+        className="ym-features-track"
         aria-live="polite"
         aria-roledescription="carousel"
         aria-label="Yellow Metal app features"
@@ -81,17 +89,17 @@ export function AppFeaturesCarousel() {
               alt={slide.title}
               width={848}
               height={1024}
-              className="ym-app-features-image"
+              className="ym-features-card-image"
               priority={index === 0}
-              sizes="(max-width: 768px) 88vw, 24rem"
+              sizes="(max-width: 768px) 82vw, 24rem"
             />
           );
 
           return (
             <article
               key={slide.id}
-              data-app-feature-slide
-              className="ym-app-features-slide"
+              data-feature-card
+              className="ym-features-card"
               aria-label={slide.title}
             >
               {slide.href ? (
@@ -99,7 +107,7 @@ export function AppFeaturesCarousel() {
                   href={slide.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ym-app-features-image-link"
+                  className="ym-features-card-link"
                 >
                   {image}
                 </Link>
@@ -111,10 +119,10 @@ export function AppFeaturesCarousel() {
         })}
       </div>
 
-      <div className="ym-app-features-controls">
+      <nav className="ym-features-nav" aria-label="Carousel controls">
         <button
           type="button"
-          className="ym-app-features-arrow"
+          className="ym-features-nav-btn"
           onClick={() =>
             goTo(
               (activeIndex - 1 + APP_FEATURE_SLIDES.length) %
@@ -124,7 +132,7 @@ export function AppFeaturesCarousel() {
           aria-label="Previous feature"
         >
           <svg
-            className="ym-app-features-arrow-icon"
+            className="ym-features-nav-icon"
             width="18"
             height="18"
             viewBox="0 0 18 18"
@@ -141,7 +149,7 @@ export function AppFeaturesCarousel() {
           </svg>
         </button>
 
-        <div className="ym-app-features-dots" role="tablist" aria-label="Choose feature">
+        <div className="ym-features-dots" role="tablist" aria-label="Choose feature">
           {APP_FEATURE_SLIDES.map((slide, index) => (
             <button
               key={slide.id}
@@ -150,8 +158,8 @@ export function AppFeaturesCarousel() {
               aria-selected={index === activeIndex}
               aria-label={slide.title}
               className={[
-                "ym-app-features-dot",
-                index === activeIndex ? "ym-app-features-dot--active" : "",
+                "ym-features-dot",
+                index === activeIndex ? "ym-features-dot--active" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
@@ -162,12 +170,12 @@ export function AppFeaturesCarousel() {
 
         <button
           type="button"
-          className="ym-app-features-arrow"
+          className="ym-features-nav-btn"
           onClick={() => goTo((activeIndex + 1) % APP_FEATURE_SLIDES.length)}
           aria-label="Next feature"
         >
           <svg
-            className="ym-app-features-arrow-icon"
+            className="ym-features-nav-icon"
             width="18"
             height="18"
             viewBox="0 0 18 18"
@@ -183,7 +191,7 @@ export function AppFeaturesCarousel() {
             />
           </svg>
         </button>
-      </div>
+      </nav>
     </div>
   );
 }

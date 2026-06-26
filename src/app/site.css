@@ -2014,71 +2014,79 @@ body.ym-jewels-flying .ym-hero-ornament {
   to { opacity: 1; }
 }
 
-/* ── App features carousel ── */
-.ym-app-features {
+/* ── Fold 4: App features carousel ── */
+.ym-features-fold {
+  --ym-features-card-width: min(82vw, 20rem);
+  --ym-features-card-gap: clamp(0.75rem, 2.5vw, 1rem);
+  --ym-features-lead-space: calc(var(--ym-features-card-width) / 2);
+  --ym-features-track-pad-start: calc(
+    env(safe-area-inset-left, 0px) + var(--ym-features-lead-space)
+  );
+  --ym-features-track-pad-end: calc(
+    env(safe-area-inset-right, 0px) + var(--ym-features-lead-space)
+  );
   background: #ffffff;
   color: #000000;
-  padding-block: 0;
+  padding-block: clamp(2.5rem, 8vh, 4rem);
 }
 
-.ym-app-features-carousel {
-  padding-top: clamp(2rem, 6vh, 3rem);
-  padding-bottom: clamp(2rem, 6vh, 3rem);
-}
-
-.ym-app-features-track {
-  --ym-app-features-card-width: min(88vw, 22rem);
-  --ym-features-track-pad-start: calc(var(--ym-app-features-card-width) / 2);
+.ym-features-carousel {
   display: flex;
-  gap: clamp(0.85rem, 3vw, 1.25rem);
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ym-features-track {
+  display: flex;
+  gap: var(--ym-features-card-gap);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: var(--ym-features-track-pad-start);
+  scroll-padding-inline-end: var(--ym-features-track-pad-end);
+  padding-inline-start: var(--ym-features-track-pad-start);
+  padding-inline-end: var(--ym-features-track-pad-end);
+  padding-block: 0.25rem;
   -webkit-overflow-scrolling: touch;
-  padding-inline-start: calc(
-    max(var(--ym-content-inset-start), env(safe-area-inset-left, 0px)) +
-      var(--ym-features-track-pad-start)
-  );
-  padding-inline-end: var(--ym-container-pad);
-  padding-block: 0.25rem 0.5rem;
   scrollbar-width: none;
 }
 
-.ym-app-features-track::-webkit-scrollbar {
+.ym-features-track::-webkit-scrollbar {
   display: none;
 }
 
-.ym-app-features-slide {
-  flex: 0 0 var(--ym-app-features-card-width);
+.ym-features-card {
+  flex: 0 0 var(--ym-features-card-width);
   scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
-.ym-app-features-image-link {
+.ym-features-card-link {
   display: block;
   border-radius: 1.25rem;
   overflow: hidden;
 }
 
-.ym-app-features-image {
+.ym-features-card-image {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 1.25rem;
 }
 
-.ym-app-features-controls {
+.ym-features-nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.625rem;
-  margin-top: 0.875rem;
+  gap: 0.75rem;
+  padding-inline: var(--ym-container-pad);
 }
 
-.ym-app-features-arrow {
+.ym-features-nav-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.125rem;
+  padding: 0.25rem;
   border: none;
   background: transparent;
   color: rgb(0 0 0 / 0.32);
@@ -2086,21 +2094,21 @@ body.ym-jewels-flying .ym-hero-ornament {
   transition: color 0.15s ease;
 }
 
-.ym-app-features-arrow:hover {
+.ym-features-nav-btn:hover {
   color: rgb(0 0 0 / 0.72);
 }
 
-.ym-app-features-arrow-icon {
+.ym-features-nav-icon {
   display: block;
 }
 
-.ym-app-features-dots {
+.ym-features-dots {
   display: flex;
   align-items: center;
   gap: 0.375rem;
 }
 
-.ym-app-features-dot {
+.ym-features-dot {
   width: 0.3125rem;
   height: 0.3125rem;
   padding: 0;
@@ -2111,18 +2119,18 @@ body.ym-jewels-flying .ym-hero-ornament {
   transition: width 0.2s ease, background-color 0.2s ease;
 }
 
-.ym-app-features-dot--active {
+.ym-features-dot--active {
   width: 1.125rem;
   background: #000000;
 }
 
-@media (min-width: 768px) {
-  .ym-app-features-track {
-    --ym-app-features-card-width: min(42vw, 24rem);
+@media (min-width: 769px) {
+  .ym-features-fold {
+    --ym-features-card-width: min(24rem, 36vw);
   }
 }
 
-/* ── Fold 4: Features (legacy carousel styles) ── */
+/* ── Legacy features carousel (unused on homepage) ── */
 .ym-features {
   background: #ffffff;
 }

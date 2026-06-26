@@ -1127,28 +1127,29 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-loan-plans-modal-list .ym-loan-plan-card {
   flex: none;
   width: 100%;
-  border: 1px solid rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(0 0 0 / 0.08);
   border-radius: 1rem;
-  background: #232323;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
 }
 
 .ym-loan-plans-modal-list .ym-loan-plan-amount,
 .ym-loan-plans-modal-list .ym-loan-plan-rate-value {
-  color: #ffffff;
+  color: #000000;
 }
 
+.ym-loan-plans-modal-list .ym-loan-plan-type,
 .ym-loan-plans-modal-list .ym-loan-plan-rate-label,
 .ym-loan-plans-modal-list .ym-loan-plan-meta dt {
-  color: rgb(255 255 255 / 0.45);
+  color: rgb(0 0 0 / 0.45);
 }
 
 .ym-loan-plans-modal-list .ym-loan-plan-meta dd {
-  color: #ffffff;
+  color: #000000;
 }
 
 .ym-loan-plans-modal-list .ym-loan-plan-meta {
-  border-top: 1px solid rgb(255 255 255 / 0.08);
+  border-top: 1px solid rgb(0 0 0 / 0.08);
   padding-top: 0.65rem;
   margin-top: 0.75rem;
 }

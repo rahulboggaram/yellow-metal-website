@@ -2987,7 +2987,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   .ym-loan-lending-rate-fold {
     flex-shrink: 0;
     margin-top: calc(-1 * var(--ym-loan-flip-half));
-    padding-bottom: clamp(2rem, 5vh, 3rem);
+    padding-bottom: 0;
   }
 
   .ym-loan-lending-rate-fold:not(.is-revealed) .ym-loan-ltv-caption,
@@ -3003,7 +3003,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-loan-lending-rate-fold .ym-loan-flip-result {
-    padding-bottom: max(30px, clamp(2rem, 5vh, 3rem));
+    padding-bottom: 30px;
   }
 
   .ym-loan-estimate-fold {

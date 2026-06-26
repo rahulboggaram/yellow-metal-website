@@ -3007,7 +3007,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     --ym-hero-area: calc(
       100svh - var(--ym-header-total) - var(--ym-loan-flip-cell-h)
     );
-    --ym-hero-mobile-scale: 1.5;
+    --ym-hero-mobile-scale: calc(1.5 * 0.85);
     display: flex;
     flex: 0 0 auto;
     align-items: center;

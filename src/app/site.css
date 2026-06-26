@@ -2976,7 +2976,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     --ym-loan-flip-cell-h: clamp(3.25rem, 8.45vw, 4.23rem);
     --ym-loan-flip-half: calc(var(--ym-loan-flip-cell-h) / 2);
     --ym-fold-peek: var(--ym-loan-flip-half);
-    --ym-loan-ltv-block-h: calc(0.72rem * 1.5 * 2);
+    --ym-loan-ltv-block-h: calc(0.72rem * 1.8 * 2);
     display: flex;
     flex-direction: column;
     min-height: calc(100dvh - var(--ym-header-total));
@@ -3011,7 +3011,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-loan-ltv-caption {
-    line-height: 1.5;
+    line-height: 1.8;
   }
 
   .ym-page {

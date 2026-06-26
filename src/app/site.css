@@ -228,7 +228,7 @@ main {
 .ym-hero-ornament--belt {
   left: 0;
   top: 100%;
-  width: 3.1em;
+  width: 4.03em;
   height: auto;
   max-width: none;
   /* em-only offsets — scales with headline (0.29em ≈ prior 40px shift at max size) */
@@ -3118,7 +3118,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-ornament--belt {
-    width: 5em;
+    width: 6.5em;
     transform: translate(calc(-0.14em), calc(0.02em - 0.45em)) scale(1);
   }
 

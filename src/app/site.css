@@ -2961,14 +2961,18 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero {
+    --ym-hero-mobile-scale: 1.5;
     padding-block: clamp(0.15rem, 1vh, 0.75rem);
   }
 
   .ym-hero-headline {
     font-size: clamp(
-      3.1rem,
-      min(26vw, calc(var(--ym-hero-area) * 0.7 / 3.85)),
-      5.5rem
+      calc(3.1rem * var(--ym-hero-mobile-scale)),
+      min(
+        calc(26vw * var(--ym-hero-mobile-scale)),
+        calc(var(--ym-hero-area) * 0.7 / 3.85 * var(--ym-hero-mobile-scale))
+      ),
+      calc(5.5rem * var(--ym-hero-mobile-scale))
     );
     gap: 0.02em;
     padding: 0.1em 0.2em;
@@ -3053,16 +3057,6 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-todays-pill-per {
     font-size: clamp(0.95rem, 3vw, 1.25rem);
-  }
-}
-
-@media (max-width: 480px) {
-  .ym-hero-headline {
-    font-size: clamp(
-      2.85rem,
-      min(24vw, calc(var(--ym-hero-area) * 0.7 / 4)),
-      4.75rem
-    );
   }
 }
 

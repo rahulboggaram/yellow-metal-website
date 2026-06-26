@@ -7,7 +7,7 @@ export function HeroSection() {
       <div className="ym-hero-inner">
         <div className="ym-hero-title-pin">
           <h1 className="ym-hero-headline">
-            <span className="ym-hero-line ym-hero-line--gold-loans">
+            <span className="ym-hero-line ym-hero-line--title">
               <span className="ym-hero-chunk">
                 <span className="ym-hero-anchor">
                   <Image
@@ -24,7 +24,7 @@ export function HeroSection() {
                 </span>
                 old
               </span>
-              <span className="ym-hero-chunk">
+              <span className="ym-hero-chunk ym-hero-chunk--loans">
                 L
                 <span className="ym-hero-anchor">
                   <Image
@@ -55,21 +55,24 @@ export function HeroSection() {
                 </span>
               </span>
             </span>
-            <span className="ym-hero-line">
-              <span className="ym-hero-anchor">
-                <Image
-                  src="/images/ornaments/waist-belt.png"
-                  alt=""
-                  width={404}
-                  height={91}
-                  data-ornament-id="belt"
-                  className="ym-hero-ornament ym-hero-ornament--belt"
-                  priority
-                  aria-hidden
-                />
-                N
+            <span className="ym-hero-line ym-hero-line--fees">
+              <span className="ym-hero-chunk ym-hero-chunk--no-hidden">
+                <span className="ym-hero-anchor">
+                  <Image
+                    src="/images/ornaments/waist-belt.png"
+                    alt=""
+                    width={404}
+                    height={91}
+                    data-ornament-id="belt"
+                    className="ym-hero-ornament ym-hero-ornament--belt"
+                    priority
+                    aria-hidden
+                  />
+                  N
+                </span>
+                o Hidden
               </span>
-              o hidden fees
+              <span className="ym-hero-chunk ym-hero-chunk--fees-only">Fees</span>
             </span>
           </h1>
         </div>

@@ -158,13 +158,33 @@ main {
   white-space: nowrap;
 }
 
-.ym-hero-line--gold-loans {
+.ym-hero-line--title {
+  display: block;
+  white-space: nowrap;
+}
+
+.ym-hero-line--fees {
   display: block;
   white-space: nowrap;
 }
 
 .ym-hero-chunk {
   display: inline;
+}
+
+.ym-hero-chunk--loans::before {
+  content: " ";
+}
+
+@media (min-width: 769px) {
+  .ym-hero-line--fees .ym-hero-chunk--fees-only::before {
+    content: " ";
+  }
+
+  .ym-hero-line--fees .ym-hero-chunk--no-hidden,
+  .ym-hero-line--fees .ym-hero-chunk--fees-only {
+    text-transform: lowercase;
+  }
 }
 
 .ym-hero-anchor {
@@ -2951,14 +2971,15 @@ body.ym-jewels-flying .ym-hero-ornament {
     line-height: 1;
   }
 
-  .ym-hero-line--gold-loans {
+  .ym-hero-line--fees {
     display: flex;
     flex-direction: column;
     align-items: center;
     white-space: normal;
   }
 
-  .ym-hero-chunk {
+  .ym-hero-chunk--no-hidden,
+  .ym-hero-chunk--fees-only {
     display: block;
     white-space: nowrap;
   }

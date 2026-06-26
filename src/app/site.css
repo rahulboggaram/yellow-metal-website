@@ -446,7 +446,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-calculator--dash .ym-loan-calculator > .ym-section-title {
-  margin-bottom: 0.35rem;
+  margin-bottom: 1rem;
   font-family: var(--font-brand-family), ui-sans-serif, system-ui, sans-serif !important;
   font-weight: 800;
 }
@@ -590,7 +590,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   width: 100%;
   max-width: min(28rem, 100%);
   margin-inline: auto;
-  margin-top: clamp(1.25rem, 3.5vw, 1.65rem);
+  margin-top: clamp(1.75rem, 5vw, 2.5rem);
   overflow: visible;
 }
 

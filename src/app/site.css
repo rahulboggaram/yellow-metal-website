@@ -2961,8 +2961,8 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-page {
-    padding-left: max(clamp(1.25rem, 4.5vw, 1.5rem), env(safe-area-inset-left, 0px));
-    padding-right: max(clamp(1.25rem, 4.5vw, 1.5rem), env(safe-area-inset-right, 0px));
+    padding-left: max(clamp(1.65rem, 6vw, 2.25rem), env(safe-area-inset-left, 0px));
+    padding-right: max(clamp(1.65rem, 6vw, 2.25rem), env(safe-area-inset-right, 0px));
   }
 
   .ym-hero-headline {

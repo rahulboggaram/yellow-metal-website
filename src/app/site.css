@@ -3137,6 +3137,10 @@ body.ym-jewels-flying .ym-hero-ornament {
     transform: translate(calc(-50% + 0.18em), calc(0.08em - 0.5em - 20px)) scale(0.78);
   }
 
+  .ym-features-fold {
+    --ym-features-lead-space: calc(var(--ym-features-card-width) / 4);
+  }
+
   .ym-upi-grid {
     grid-template-columns: 1fr;
     gap: 2rem;

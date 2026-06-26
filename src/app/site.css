@@ -3113,7 +3113,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-ornament--ganesha {
-    transform: translate(calc(-50% + 0.18em), calc(0.08em - 0.5em)) scale(0.78);
+    transform: translate(calc(-50% + 0.18em), calc(0.08em - 0.5em - 20px)) scale(0.78);
   }
 
   .ym-upi-grid {

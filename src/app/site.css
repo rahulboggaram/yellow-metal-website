@@ -2458,15 +2458,19 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-footer-top {
+  display: block;
+}
+
+.ym-footer-brand-row {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .ym-footer-logo-link {
   display: inline-flex;
+  flex-shrink: 0;
 }
 
 .ym-footer-logo {
@@ -2480,7 +2484,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   display: flex;
   align-items: center;
   gap: 0.625rem;
-  margin-left: auto;
   flex-shrink: 0;
 }
 

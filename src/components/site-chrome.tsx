@@ -18,39 +18,42 @@ export function SiteFooter() {
       <div className="ym-container ym-footer-inner">
         <div className="ym-footer-top">
           <div className="ym-footer-brand">
-            <Link href="/" className="ym-footer-logo-link" aria-label="Yellow Metal home">
-              <Image
-                src={FOOTER_LOGO.src}
-                alt={FOOTER_LOGO.alt}
-                width={FOOTER_LOGO.width}
-                height={FOOTER_LOGO.height}
-                className="ym-footer-logo"
-              />
-            </Link>
+            <div className="ym-footer-brand-row">
+              <Link href="/" className="ym-footer-logo-link" aria-label="Yellow Metal home">
+                <Image
+                  src={FOOTER_LOGO.src}
+                  alt={FOOTER_LOGO.alt}
+                  width={FOOTER_LOGO.width}
+                  height={FOOTER_LOGO.height}
+                  className="ym-footer-logo"
+                />
+              </Link>
+
+              <div className="ym-footer-social" aria-label="Social media">
+                {SOCIAL_LINKS.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ym-footer-social-link"
+                    aria-label={link.label}
+                  >
+                    <Image
+                      src={link.icon}
+                      alt=""
+                      width={16}
+                      height={16}
+                      className="ym-footer-social-icon"
+                    />
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <p className="ym-footer-tagline">
               Gold loans with no hidden charges.
             </p>
-          </div>
-
-          <div className="ym-footer-social" aria-label="Social media">
-            {SOCIAL_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ym-footer-social-link"
-                aria-label={link.label}
-              >
-                <Image
-                  src={link.icon}
-                  alt=""
-                  width={16}
-                  height={16}
-                  className="ym-footer-social-icon"
-                />
-              </a>
-            ))}
           </div>
         </div>
 

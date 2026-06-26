@@ -2966,9 +2966,9 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-headline {
-    font-size: clamp(3.5rem, 16.5vw, 6rem);
+    font-size: clamp(5rem, 26vw, 8.75rem);
     gap: 0.04em;
-    line-height: 1;
+    line-height: 0.98;
   }
 
   .ym-hero-line--fees {
@@ -3055,7 +3055,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 @media (max-width: 480px) {
   .ym-hero-headline {
-    font-size: clamp(3.75rem, 17.5vw, 5.5rem);
+    font-size: clamp(5.35rem, 28vw, 9rem);
   }
 }
 

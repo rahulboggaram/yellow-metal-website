@@ -53,17 +53,30 @@ export function LoanLendingRateBridge() {
     const el = bridgeRef.current;
     if (!el || flipRevealed) return;
 
+    const reveal = () => {
+      setFlipRevealed(true);
+      setBridgeFlipKey((key) => key + 1);
+    };
+
+    const revealIfInView = () => {
+      const rect = el.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setFlipRevealed(true);
-          setBridgeFlipKey((key) => key + 1);
-        }
+        if (entry.isIntersecting) reveal();
       },
-      { threshold: 0.35, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0, rootMargin: "0px" },
     );
 
     observer.observe(el);
+
+    // Already in the first fold on load — observer may not fire until scroll
+    requestAnimationFrame(() => {
+      if (revealIfInView()) reveal();
+    });
+
     return () => observer.disconnect();
   }, [flipRevealed]);
 

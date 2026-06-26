@@ -2978,7 +2978,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-loan-lending-rate-fold {
     flex-shrink: 0;
-    margin-top: calc(-1 * var(--ym-loan-flip-half));
+    margin-top: 0;
   }
 
   .ym-loan-lending-rate-fold:not(.is-revealed) .ym-loan-ltv-caption,
@@ -2990,7 +2990,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-loan-lending-rate-fold.is-revealed {
-    margin-top: calc(-1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)));
+    margin-top: calc(-1 * var(--ym-loan-ltv-block-h));
   }
 
   .ym-loan-lending-rate-fold .ym-loan-flip-result {
@@ -3003,13 +3003,15 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero {
-    --ym-hero-area: calc(100svh - var(--ym-header-total) - var(--ym-fold-peek));
+    /* Center headline in the band above the flip clock (equal gaps logo↔hero and hero↔flip) */
+    --ym-hero-area: calc(
+      100svh - var(--ym-header-total) - var(--ym-loan-flip-cell-h)
+    );
     --ym-hero-mobile-scale: 1.5;
     display: flex;
-    flex: 1 1 0;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    min-height: 0;
     height: var(--ym-hero-area);
     max-height: var(--ym-hero-area);
     padding-block: 0;

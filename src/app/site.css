@@ -2965,10 +2965,34 @@ body.ym-jewels-flying .ym-hero-ornament {
     padding-right: max(clamp(1.65rem, 6vw, 2.25rem), env(safe-area-inset-right, 0px));
   }
 
+  .ym-hero {
+    padding-block: clamp(1rem, 3vh, 2rem);
+  }
+
+  .ym-hero-inner {
+    transform: none;
+  }
+
+  .ym-hero-title-pin {
+    padding-bottom: clamp(0.35rem, 1vh, 0.75rem);
+  }
+
   .ym-hero-headline {
-    font-size: clamp(5rem, 26vw, 8.75rem);
-    gap: 0.04em;
-    line-height: 0.98;
+    width: fit-content;
+    max-width: 100%;
+    font-size: clamp(3.35rem, min(20vw, 9.25dvh), 4.75rem);
+    gap: 0.02em;
+    line-height: 0.95;
+    padding: 0.2em 0.25em;
+  }
+
+  .ym-hero-ornament--belt {
+    width: 2.75em;
+    transform: translate(calc(-0.14em), calc(0.02em - 0.4em)) scale(1);
+  }
+
+  .ym-hero-ornament--ganesha {
+    transform: translate(calc(-50% + 0.18em), calc(0.08em - 0.5em)) scale(0.78);
   }
 
   .ym-hero-line--fees {
@@ -3055,7 +3079,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 @media (max-width: 480px) {
   .ym-hero-headline {
-    font-size: clamp(5.35rem, 28vw, 9rem);
+    font-size: clamp(3.1rem, min(18.5vw, 8.5dvh), 4.35rem);
   }
 }
 

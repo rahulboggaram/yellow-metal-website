@@ -118,50 +118,37 @@ main {
 
 /* ── Fold 1: Hero ── */
 .ym-hero {
-  --ym-hero-area: calc(100dvh - var(--ym-header-total) - var(--ym-fold-peek));
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: var(--ym-hero-area);
+  min-height: calc(100dvh - var(--ym-header-total) - var(--ym-fold-peek));
   min-height: calc(100svh - var(--ym-header-total) - var(--ym-fold-peek));
-  padding-block: clamp(0.25rem, 1.5vh, 1rem);
+  padding-block: 50px;
   padding-inline: clamp(0.75rem, 3vw, 1.5rem);
   background: #ffffff;
   overflow: hidden;
 }
 
 .ym-hero-inner {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   max-width: 64rem;
-  min-height: var(--ym-hero-area);
   margin-inline: auto;
   text-align: center;
+  transform: translateY(-20px);
 }
 
 .ym-hero-headline {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.03em;
-  width: fit-content;
-  max-width: 100%;
+  gap: 0.04em;
   margin: 0;
-  padding: 0.15em 0.35em;
+  padding: 0.4em 0.5em;
   font-family: var(--font-display);
   font-weight: 400;
-  /* ~70% of fold height across Gold + Loans + tagline — ornaments track via em */
-  font-size: clamp(
-    3.25rem,
-    min(28vw, calc(var(--ym-hero-area) * 0.7 / 3.75)),
-    9.5rem
-  );
-  line-height: 1;
+  /* Title lines (Gold / Loans) — ornaments track this via em */
+  font-size: clamp(3rem, 13.5vw, 8.75rem);
+  line-height: 1.02;
   letter-spacing: -0.025em;
   color: #000000;
 }
@@ -172,9 +159,9 @@ main {
 }
 
 .ym-hero-line--tagline {
-  margin-top: 0.1em;
-  font-size: 0.36em;
-  line-height: 1.12;
+  margin-top: 0.12em;
+  font-size: clamp(1.2rem, 3.8vw, 2.35rem);
+  line-height: 1.15;
   letter-spacing: -0.02em;
 }
 
@@ -363,14 +350,10 @@ main {
 }
 
 .ym-hero-title-pin {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
   position: sticky;
   top: calc(var(--ym-chrome-top) + clamp(0.35rem, 1.5vh, 0.75rem));
   z-index: 20;
-  padding-bottom: clamp(0.35rem, 1vh, 0.75rem);
+  padding-bottom: clamp(0.75rem, 2vh, 1.25rem);
   background: linear-gradient(
     to bottom,
     #ffffff 78%,
@@ -2961,11 +2944,34 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero {
+    --ym-hero-area: calc(100dvh - var(--ym-header-total) - var(--ym-fold-peek));
     --ym-hero-mobile-scale: 1.5;
+    min-height: var(--ym-hero-area);
     padding-block: clamp(0.15rem, 1vh, 0.75rem);
   }
 
+  .ym-hero-inner {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--ym-hero-area);
+    transform: none;
+  }
+
+  .ym-hero-title-pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: clamp(0.35rem, 1vh, 0.75rem);
+  }
+
   .ym-hero-headline {
+    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
     font-size: clamp(
       calc(3.1rem * var(--ym-hero-mobile-scale)),
       min(
@@ -2975,11 +2981,14 @@ body.ym-jewels-flying .ym-hero-ornament {
       calc(5.5rem * var(--ym-hero-mobile-scale))
     );
     gap: 0.02em;
+    line-height: 1;
     padding: 0.1em 0.2em;
   }
 
   .ym-hero-line--tagline {
     margin-top: 0.12em;
+    font-size: 0.36em;
+    line-height: 1.12;
   }
 
   .ym-hero-ornament--belt {

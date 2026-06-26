@@ -2507,7 +2507,14 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-page {
   padding-top: calc(2rem + env(safe-area-inset-top, 0px));
   padding-bottom: 4rem;
+  padding-left: max(var(--ym-container-pad), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--ym-container-pad), env(safe-area-inset-right, 0px));
   min-height: 60vh;
+  box-sizing: border-box;
+}
+
+.ym-page > .ym-container {
+  padding-inline: 0;
 }
 
 .ym-page-title {
@@ -2931,6 +2938,11 @@ body.ym-jewels-flying .ym-hero-ornament {
 @media (max-width: 768px) {
   .ym-hero-lending-flow {
     --ym-loan-flip-cell-h: clamp(3.25rem, 8.45vw, 4.23rem);
+  }
+
+  .ym-page {
+    padding-left: max(clamp(1.25rem, 4.5vw, 1.5rem), env(safe-area-inset-left, 0px));
+    padding-right: max(clamp(1.25rem, 4.5vw, 1.5rem), env(safe-area-inset-right, 0px));
   }
 
   .ym-hero-headline {

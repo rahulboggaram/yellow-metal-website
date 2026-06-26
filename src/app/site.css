@@ -228,7 +228,7 @@ main {
 .ym-hero-ornament--belt {
   left: 0;
   top: 100%;
-  width: 4.03em;
+  width: 3.1em;
   height: auto;
   max-width: none;
   /* em-only offsets — scales with headline (0.29em ≈ prior 40px shift at max size) */

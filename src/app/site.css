@@ -3108,8 +3108,8 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-ornament--belt {
-    width: 4.25em;
-    transform: translate(calc(-0.14em), calc(0.02em - 0.48em)) scale(1.2);
+    width: 5.5em;
+    transform: translate(calc(-0.14em), calc(0.02em - 0.52em)) scale(1.35);
   }
 
   .ym-hero-ornament--ganesha {

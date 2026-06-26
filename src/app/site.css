@@ -3003,7 +3003,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-loan-lending-rate-fold .ym-loan-flip-result {
-    padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+    padding-bottom: max(30px, clamp(2rem, 5vh, 3rem));
   }
 
   .ym-loan-estimate-fold {
@@ -3118,8 +3118,8 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-ornament--belt {
-    width: 5.5em;
-    transform: translate(calc(-0.14em), calc(0.02em - 0.52em)) scale(1.35);
+    width: 6.75em;
+    transform: translate(calc(-0.14em), calc(0.02em - 0.55em)) scale(1.45);
   }
 
   .ym-hero-ornament--ganesha {

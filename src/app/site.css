@@ -3060,6 +3060,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     flex-direction: column;
     align-items: center;
     white-space: normal;
+    font-weight: 300;
   }
 
   .ym-hero-chunk {

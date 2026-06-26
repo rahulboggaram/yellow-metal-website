@@ -3044,7 +3044,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     width: 100%;
     min-height: 0;
     max-height: 100%;
-    transform: none;
+    transform: translateY(-50px);
   }
 
   .ym-hero-title-pin {

@@ -45,8 +45,8 @@ export function SiteFooter() {
                 <Image
                   src={link.icon}
                   alt=""
-                  width={24}
-                  height={24}
+                  width={16}
+                  height={16}
                   className="ym-footer-social-icon"
                 />
               </a>

@@ -2967,6 +2967,34 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-lending-flow {
     --ym-loan-flip-cell-h: clamp(3.25rem, 8.45vw, 4.23rem);
+    --ym-loan-flip-half: calc(var(--ym-loan-flip-cell-h) / 2);
+    --ym-fold-peek: var(--ym-loan-flip-half);
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - var(--ym-header-total));
+    min-height: calc(100svh - var(--ym-header-total));
+    overflow: visible;
+  }
+
+  .ym-loan-lending-rate-fold {
+    flex-shrink: 0;
+    margin-top: calc(-1 * var(--ym-loan-flip-half));
+  }
+
+  .ym-loan-lending-rate-fold:not(.is-revealed) .ym-loan-ltv-caption,
+  .ym-loan-lending-rate-fold:not(.is-revealed) .ym-loan-flip-status {
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .ym-loan-lending-rate-fold.is-revealed {
+    margin-top: calc(-1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)));
+  }
+
+  .ym-loan-lending-rate-fold .ym-loan-flip-result {
+    padding-bottom: 0.25rem;
   }
 
   .ym-page {
@@ -2975,13 +3003,17 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero {
-    --ym-hero-area: calc(100dvh - var(--ym-header-total) - var(--ym-fold-peek));
+    --ym-hero-area: calc(100svh - var(--ym-header-total) - var(--ym-fold-peek));
     --ym-hero-mobile-scale: 1.5;
     display: flex;
+    flex: 1 1 0;
     align-items: center;
     justify-content: center;
-    min-height: var(--ym-hero-area);
+    min-height: 0;
+    height: var(--ym-hero-area);
+    max-height: var(--ym-hero-area);
     padding-block: 0;
+    overflow: visible;
   }
 
   .ym-hero-inner {
@@ -2990,7 +3022,9 @@ body.ym-jewels-flying .ym-hero-ornament {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: var(--ym-hero-area);
+    width: 100%;
+    min-height: 0;
+    max-height: 100%;
     transform: none;
   }
 

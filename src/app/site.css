@@ -15,7 +15,6 @@
     var(--ym-container-pad),
     calc((100% - var(--ym-container-max)) / 2 + var(--ym-container-pad))
   );
-  --ym-features-track-pad-start: clamp(1.25rem, 4vw, 1.75rem);
   --ym-chrome-top: env(safe-area-inset-top, 0px);
   width: 100%;
 }
@@ -2028,6 +2027,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-app-features-track {
+  --ym-app-features-card-width: min(88vw, 22rem);
+  --ym-features-track-pad-start: calc(var(--ym-app-features-card-width) / 2);
   display: flex;
   gap: clamp(0.85rem, 3vw, 1.25rem);
   overflow-x: auto;
@@ -2048,7 +2049,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-app-features-slide {
-  flex: 0 0 min(88vw, 22rem);
+  flex: 0 0 var(--ym-app-features-card-width);
   scroll-snap-align: start;
 }
 
@@ -2116,8 +2117,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 @media (min-width: 768px) {
-  .ym-app-features-slide {
-    flex-basis: min(42vw, 24rem);
+  .ym-app-features-track {
+    --ym-app-features-card-width: min(42vw, 24rem);
   }
 }
 
@@ -2965,7 +2966,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   .ym-site {
     --ym-header-offset: 10px;
     --ym-header-gap: clamp(0.25rem, 1vh, 0.5rem);
-    --ym-features-track-pad-start: 50px;
     --ym-header-total: calc(
       var(--ym-header-height) + var(--ym-header-offset) + var(--ym-header-gap) +
         env(safe-area-inset-top, 0px)

@@ -3006,6 +3006,16 @@ body.ym-jewels-flying .ym-hero-ornament {
     padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
   }
 
+  .ym-loan-estimate-fold {
+    --ym-loan-estimate-peek: 0px;
+    min-height: calc(100svh - var(--ym-header-total));
+    padding-block: clamp(5rem, 16vh, 7.5rem);
+  }
+
+  .ym-loan-estimate-fold.ym-loan-calculator-section {
+    padding-block: clamp(5rem, 16vh, 7.5rem);
+  }
+
   .ym-loan-ltv-caption-line {
     display: block;
   }

@@ -105,10 +105,8 @@ export function LoanLendingRateBridge() {
     >
       <div className="ym-loan-estimate-column">
         <div ref={bridgeRef} className="ym-loan-flip-bridge">
-          {(loading || error) && (
-            <p className="ym-loan-flip-status">
-              {loading ? "Fetching live spot rate…" : "Live rate unavailable"}
-            </p>
+          {error && (
+            <p className="ym-loan-flip-status">Live rate unavailable</p>
           )}
 
           <p className="ym-loan-ltv-caption">

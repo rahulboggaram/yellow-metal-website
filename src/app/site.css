@@ -141,14 +141,14 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.08em;
+  gap: 0.04em;
   margin: 0;
   padding: 0.4em 0.5em;
   font-family: var(--font-display);
   font-weight: 400;
-  /* Single source of size — all jewel offsets use em so they track this */
+  /* Title lines (Gold / Loans) — ornaments track this via em */
   font-size: clamp(3rem, 13.5vw, 8.75rem);
-  line-height: 1.05;
+  line-height: 1.02;
   letter-spacing: -0.025em;
   color: #000000;
 }
@@ -158,33 +158,11 @@ main {
   white-space: nowrap;
 }
 
-.ym-hero-line--title {
-  display: block;
-  white-space: nowrap;
-}
-
-.ym-hero-line--fees {
-  display: block;
-  white-space: nowrap;
-}
-
-.ym-hero-chunk {
-  display: inline;
-}
-
-.ym-hero-chunk--loans::before {
-  content: " ";
-}
-
-@media (min-width: 769px) {
-  .ym-hero-line--fees .ym-hero-chunk--fees-only::before {
-    content: " ";
-  }
-
-  .ym-hero-line--fees .ym-hero-chunk--no-hidden,
-  .ym-hero-line--fees .ym-hero-chunk--fees-only {
-    text-transform: lowercase;
-  }
+.ym-hero-line--tagline {
+  margin-top: 0.12em;
+  font-size: clamp(1.2rem, 3.8vw, 2.35rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 .ym-hero-anchor {
@@ -2986,6 +2964,12 @@ body.ym-jewels-flying .ym-hero-ornament {
     padding: 0.2em 0.25em;
   }
 
+  .ym-hero-line--tagline {
+    margin-top: 0.18em;
+    font-size: clamp(1.1rem, min(5.25vw, 2.65dvh), 1.55rem);
+    line-height: 1.1;
+  }
+
   .ym-hero-ornament--belt {
     width: 2.75em;
     transform: translate(calc(-0.14em), calc(0.02em - 0.4em)) scale(1);
@@ -2993,19 +2977,6 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-ornament--ganesha {
     transform: translate(calc(-50% + 0.18em), calc(0.08em - 0.5em)) scale(0.78);
-  }
-
-  .ym-hero-line--fees {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    white-space: normal;
-  }
-
-  .ym-hero-chunk--no-hidden,
-  .ym-hero-chunk--fees-only {
-    display: block;
-    white-space: nowrap;
   }
 
   .ym-upi-grid {
@@ -3080,6 +3051,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 @media (max-width: 480px) {
   .ym-hero-headline {
     font-size: clamp(3.1rem, min(18.5vw, 8.5dvh), 4.35rem);
+  }
+
+  .ym-hero-line--tagline {
+    font-size: clamp(1rem, min(4.75vw, 2.4dvh), 1.4rem);
   }
 }
 

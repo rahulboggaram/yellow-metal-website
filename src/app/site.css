@@ -141,14 +141,14 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.04em;
+  gap: 0.08em;
   margin: 0;
   padding: 0.4em 0.5em;
   font-family: var(--font-display);
   font-weight: 400;
-  /* Title lines (Gold / Loans) — ornaments track this via em */
+  /* Single source of size — all jewel offsets use em so they track this */
   font-size: clamp(3rem, 13.5vw, 8.75rem);
-  line-height: 1.02;
+  line-height: 1.05;
   letter-spacing: -0.025em;
   color: #000000;
 }
@@ -158,11 +158,33 @@ main {
   white-space: nowrap;
 }
 
-.ym-hero-line--tagline {
-  margin-top: 0.12em;
-  font-size: clamp(1.2rem, 3.8vw, 2.35rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+.ym-hero-line--title {
+  display: block;
+  white-space: nowrap;
+}
+
+.ym-hero-line--fees {
+  display: block;
+  white-space: nowrap;
+}
+
+.ym-hero-chunk {
+  display: inline;
+}
+
+.ym-hero-chunk--loans::before {
+  content: " ";
+}
+
+@media (min-width: 769px) {
+  .ym-hero-line--fees .ym-hero-chunk--fees-only::before {
+    content: " ";
+  }
+
+  .ym-hero-line--fees .ym-hero-chunk--no-hidden,
+  .ym-hero-line--fees .ym-hero-chunk--fees-only {
+    text-transform: lowercase;
+  }
 }
 
 .ym-hero-anchor {
@@ -2985,10 +3007,38 @@ body.ym-jewels-flying .ym-hero-ornament {
     padding: 0.1em 0.2em;
   }
 
-  .ym-hero-line--tagline {
+  .ym-hero-line--title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    white-space: normal;
+  }
+
+  .ym-hero-chunk {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .ym-hero-chunk--loans::before {
+    content: none;
+  }
+
+  .ym-hero-line--fees {
     margin-top: 0.12em;
     font-size: 0.36em;
     line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+
+  .ym-hero-line--fees .ym-hero-chunk--no-hidden,
+  .ym-hero-line--fees .ym-hero-chunk--fees-only {
+    display: inline;
+    white-space: nowrap;
+    text-transform: lowercase;
+  }
+
+  .ym-hero-line--fees .ym-hero-chunk--fees-only::before {
+    content: " ";
   }
 
   .ym-hero-ornament--belt {

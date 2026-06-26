@@ -2956,6 +2956,15 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
+  .ym-site {
+    --ym-header-offset: 10px;
+    --ym-header-gap: clamp(0.25rem, 1vh, 0.5rem);
+    --ym-header-total: calc(
+      var(--ym-header-height) + var(--ym-header-offset) + var(--ym-header-gap) +
+        env(safe-area-inset-top, 0px)
+    );
+  }
+
   .ym-hero-lending-flow {
     --ym-loan-flip-cell-h: clamp(3.25rem, 8.45vw, 4.23rem);
   }
@@ -2969,7 +2978,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     --ym-hero-area: calc(100dvh - var(--ym-header-total) - var(--ym-fold-peek));
     --ym-hero-mobile-scale: 1.5;
     min-height: var(--ym-hero-area);
-    padding-block: clamp(0.15rem, 1vh, 0.75rem);
+    padding-block: 0;
   }
 
   .ym-hero-inner {
@@ -2977,8 +2986,9 @@ body.ym-jewels-flying .ym-hero-ornament {
     flex: 1;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: var(--ym-hero-area);
+    padding-top: clamp(0.1rem, 0.5vh, 0.35rem);
     transform: none;
   }
 
@@ -2987,7 +2997,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding-bottom: clamp(0.35rem, 1vh, 0.75rem);
+    padding-bottom: 0;
   }
 
   .ym-hero-headline {

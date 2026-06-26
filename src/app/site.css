@@ -2965,7 +2965,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   .ym-site {
     --ym-header-offset: 10px;
     --ym-header-gap: clamp(0.25rem, 1vh, 0.5rem);
-    --ym-features-track-pad-start: clamp(2.25rem, 8vw, 3rem);
+    --ym-features-track-pad-start: clamp(3rem, 10vw, 3.75rem);
     --ym-header-total: calc(
       var(--ym-header-height) + var(--ym-header-offset) + var(--ym-header-gap) +
         env(safe-area-inset-top, 0px)

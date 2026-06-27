@@ -163,39 +163,50 @@ export function GoldLoanCalculator() {
                     </p>
 
                     {!plansLoading && !plansError && matchedPlans.length > 0 && (
-                      <div className="ym-loan-interest-estimates">
+                      <div className="ym-loan-interest-section">
                         <p className="ym-loan-eligible-label">
                           Estimated monthly interest
                         </p>
-                        {matchedPlans.map((plan) => {
-                          const monthlyInterest =
-                            loanAmount === null
-                              ? 0
-                              : calculateMonthlyInterestInr(loanAmount, plan);
+                        <div
+                          className={[
+                            "ym-loan-interest-cards",
+                            matchedPlans.length === 1
+                              ? "ym-loan-interest-cards--single"
+                              : "",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                        >
+                          {matchedPlans.map((plan) => {
+                            const monthlyInterest =
+                              loanAmount === null
+                                ? 0
+                                : calculateMonthlyInterestInr(loanAmount, plan);
 
-                          return (
-                            <article
-                              key={plan.id}
-                              className="ym-loan-interest-estimate"
-                            >
-                              <p className="ym-loan-interest-value font-tabular-nums">
-                                {formatInr(monthlyInterest)}
-                                <span className="ym-loan-interest-period">
-                                  {" "}
-                                  / month
-                                </span>
-                              </p>
-                              <p className="ym-loan-interest-meta">
-                                <span className="ym-loan-interest-plan-type">
-                                  {formatPlanRepaymentLabel(plan.repaymentType)}
-                                </span>
-                                <span className="ym-loan-interest-rate">
-                                  {formatPlanRate(plan.monthlyRatePercent)}% p.m.
-                                </span>
-                              </p>
-                            </article>
-                          );
-                        })}
+                            return (
+                              <article
+                                key={plan.id}
+                                className="ym-loan-interest-card"
+                              >
+                                <p className="ym-loan-interest-value font-tabular-nums">
+                                  {formatInr(monthlyInterest)}
+                                  <span className="ym-loan-interest-period">
+                                    {" "}
+                                    / month
+                                  </span>
+                                </p>
+                                <p className="ym-loan-interest-meta">
+                                  <span className="ym-loan-interest-plan-type">
+                                    {formatPlanRepaymentLabel(plan.repaymentType)}
+                                  </span>
+                                  <span className="ym-loan-interest-rate">
+                                    {formatPlanRate(plan.monthlyRatePercent)}% p.m.
+                                  </span>
+                                </p>
+                              </article>
+                            );
+                          })}
+                        </div>
                       </div>
                     )}
 

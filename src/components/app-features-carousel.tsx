@@ -91,7 +91,7 @@ export function AppFeaturesCarousel() {
               height={1024}
               className="ym-features-card-image"
               priority={index === 0}
-              sizes="(max-width: 768px) calc((100vw - 1rem) / 1.45), 24rem"
+              sizes="(max-width: 768px) calc((100vw - 1rem) / 1.225), 24rem"
             />
           );
 

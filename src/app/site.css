@@ -458,16 +458,15 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 /*
- * Loan calculator body text: Inter only.
- * displayFont.className on the section loads Inter; this rule keeps nested
- * components (floating fields, buttons) from overriding with another family.
+ * Loan calculator body text: inherit Inter from displayFont.style on section/card.
+ * Do not set font-family here with CSS variables — that overrides the loaded font.
  */
 .ym-loan-calculator--dash :where(
   .ym-loan-calculator > .ym-eyebrow,
   .ym-loan-calculator-card,
   .ym-loan-calculator-card *
 ) {
-  font-family: var(--ym-loan-font) !important;
+  font-family: inherit;
 }
 
 .ym-loan-calculator-section.ym-loan-calculator--dash {

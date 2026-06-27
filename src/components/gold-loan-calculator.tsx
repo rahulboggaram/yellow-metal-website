@@ -84,7 +84,8 @@ export function GoldLoanCalculator() {
 
   return (
     <section
-      className={`ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash ${displayFont.className}`}
+      className="ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash"
+      style={displayFont.style}
       aria-labelledby="ym-loan-calculator-title"
     >
       <div className="ym-loan-estimate-fold-inner ym-loan-estimate-column">
@@ -100,7 +101,10 @@ export function GoldLoanCalculator() {
           <div className="ym-loan-calculator-card-stage">
             <LoanCalculatorJewels weightGrams={weightGrams} />
 
-            <div className="ym-loan-calculator-card ym-loan-calculator-card--inputs">
+            <div
+              className="ym-loan-calculator-card ym-loan-calculator-card--inputs"
+              style={displayFont.style}
+            >
               <div className="ym-loan-calculator-card-inner">
                 <div className="ym-loan-dash-controls">
                   <div

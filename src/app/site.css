@@ -254,7 +254,9 @@ main {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin-top: calc(-1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)));
+  margin-top: calc(
+    -1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)) + var(--ym-loan-flip-drop)
+  );
   padding-top: 0;
   padding-bottom: clamp(2rem, 5vh, 3rem);
   background: #ffffff;

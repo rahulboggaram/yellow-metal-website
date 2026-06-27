@@ -210,7 +210,7 @@ export function GoldLoanCalculator() {
                       onClick={() => setPlansModalOpen(true)}
                       aria-haspopup="dialog"
                     >
-                      View loan plans
+                      View Loan Plans
                       <span className="ym-loan-plans-link-arrow" aria-hidden>
                         {">"}
                       </span>

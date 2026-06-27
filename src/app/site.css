@@ -917,15 +917,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: var(--ym-dash-muted);
 }
 
-.ym-loan-interest-rate {
-  color: var(--ym-dash-muted);
-}
-
-.ym-loan-interest-rate::before {
-  content: "·";
-  margin-right: 0.4rem;
-}
-
 .ym-loan-plans-link {
   display: inline-flex;
   align-items: center;

@@ -924,34 +924,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: var(--ym-dash-muted);
 }
 
-.ym-loan-plans-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin: 0.85rem 0 0;
-  padding: 0;
-  border: none;
-  background: none;
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-accent);
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.15s ease;
-}
-
-.ym-loan-plans-link:hover {
-  color: var(--color-accent-hover);
-}
-
-.ym-loan-plans-link-arrow {
-  font-size: 1em;
-  font-weight: 600;
-  line-height: 1;
-  text-decoration: none;
-}
-
 .ym-purity-pills {
   display: grid;
   gap: 0.55rem;

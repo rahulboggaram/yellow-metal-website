@@ -14,7 +14,7 @@ import {
   formatPlanRepaymentLabel,
   getMatchingLoanPlansByType,
 } from "@/lib/loan-plans-shared";
-import { LoanPlansModal, useLoanPlans } from "@/components/loan-plans";
+import { useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
 
 export function GoldLoanCalculator() {
@@ -24,7 +24,6 @@ export function GoldLoanCalculator() {
   const [error, setError] = useState(false);
   const [weightInput, setWeightInput] = useState("");
   const [karat, setKarat] = useState<GoldKarat>("22K");
-  const [plansModalOpen, setPlansModalOpen] = useState(false);
   const [weightFocused, setWeightFocused] = useState(false);
 
   useEffect(() => {
@@ -198,17 +197,6 @@ export function GoldLoanCalculator() {
                       </div>
                     )}
 
-                    <button
-                      type="button"
-                      className="ym-loan-plans-link"
-                      onClick={() => setPlansModalOpen(true)}
-                      aria-haspopup="dialog"
-                    >
-                      View Loan Plans
-                      <span className="ym-loan-plans-link-arrow" aria-hidden>
-                        {">"}
-                      </span>
-                    </button>
                   </div>
                 )}
               </div>
@@ -216,14 +204,6 @@ export function GoldLoanCalculator() {
           </div>
         </div>
       </div>
-
-      <LoanPlansModal
-        open={plansModalOpen}
-        onClose={() => setPlansModalOpen(false)}
-        plans={plans}
-        loading={plansLoading}
-        error={plansError}
-      />
     </section>
   );
 }

@@ -45,12 +45,7 @@ export function LoanCalculatorJewels({ weightGrams }: { weightGrams: number }) {
               alt=""
               width={jewel.width}
               height={jewel.height}
-              className={[
-                "ym-loan-calculator-jewel",
-                jewel.id === "belt" ? "ym-loan-calculator-jewel--belt" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
+              className="ym-loan-calculator-jewel"
             />
           </div>
         );

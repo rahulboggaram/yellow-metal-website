@@ -634,11 +634,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   filter: drop-shadow(0 8px 20px rgb(0 0 0 / 0.18));
 }
 
-.ym-loan-calculator-jewel--belt {
-  width: clamp(3.75rem, 13vw, 5.25rem);
-  max-width: none;
-}
-
 @keyframes ym-loan-jewel-wrap-enter {
   from {
     opacity: 0;
@@ -661,10 +656,6 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-loan-calculator-jewel {
     width: clamp(1.85rem, 7vw, 2.5rem);
-  }
-
-  .ym-loan-calculator-jewel--belt {
-    width: clamp(3.1rem, 15vw, 4rem);
   }
 }
 

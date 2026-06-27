@@ -11,18 +11,10 @@ export type CalculatorJewelAsset = {
 /**
  * Yellow Metal ornament visuals mapped to typical Indian gold piece weights.
  * Weight benchmarks reference common retail ranges (e.g. Tanishq listings:
- * stud earrings ~6g, Ganesha pendant ~6g, mangalsutra/ring ~4g, waist belt ~40g).
+ * stud earrings ~6g, Ganesha pendant ~6g, mangalsutra/ring ~4g).
  * Images are Yellow Metal assets — not sourced from third-party catalogues.
  */
 export const CALCULATOR_JEWEL_ASSETS: CalculatorJewelAsset[] = [
-  {
-    id: "belt",
-    src: "/images/ornaments/waist-belt.png",
-    width: 404,
-    height: 91,
-    typicalGrams: 40,
-    label: "Waist belt",
-  },
   {
     id: "stud",
     src: "/images/ornaments/stud.png",
@@ -60,7 +52,7 @@ const SMALLEST_ORNAMENT =
 
 /**
  * Build a believable set of pledged pieces that add up to roughly the entered weight.
- * Uses a greedy fit from heavier pieces (belt, necklace) down to lighter ones (studs, rings).
+ * Uses a greedy fit from heavier pieces down to lighter ones (studs, rings).
  */
 export function calculatorJewelsForWeight(weightGrams: number): CalculatorJewelAsset[] {
   if (weightGrams <= 0) return [];
@@ -99,7 +91,6 @@ export type CalculatorJewelLayout = {
 
 /** Normalized footprint inside the jewel cluster (0–1). */
 const JEWEL_LAYOUT_SIZE: Record<string, { w: number; h: number }> = {
-  belt: { w: 0.82, h: 0.22 },
   stud: { w: 0.42, h: 0.46 },
   ganesha: { w: 0.38, h: 0.58 },
   flower: { w: 0.42, h: 0.42 },

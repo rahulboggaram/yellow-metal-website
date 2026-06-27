@@ -2275,8 +2275,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-accent, #2563eb);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
+  text-decoration: none;
 }
 
 .ym-carousel-app-download-media {
@@ -2807,8 +2806,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-legal-link {
   color: var(--color-accent, #2563eb);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
+  text-decoration: none;
 }
 
 .ym-legal-link:hover {

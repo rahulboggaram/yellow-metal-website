@@ -33,6 +33,10 @@ body {
   overflow-x: hidden;
 }
 
+.ym-site a {
+  text-decoration: none;
+}
+
 .font-brand {
   font-family: var(--font-brand);
 }

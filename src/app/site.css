@@ -2112,7 +2112,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   );
   background: #ffffff;
   color: #000000;
-  padding-block: clamp(3.125rem, 10vh, 5rem);
+  padding-block: clamp(3.4375rem, 11vh, 5.5rem);
 }
 
 .ym-features-fold-header {

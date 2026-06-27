@@ -9,6 +9,12 @@ import {
   isGoldPriceSnapshot,
   loanAmountFromWeightGrams,
 } from "@/lib/gold-price-format";
+import {
+  calculateMonthlyInterestInr,
+  formatPlanRate,
+  formatPlanRepaymentLabel,
+  getMatchingLoanPlansByType,
+} from "@/lib/loan-plans-shared";
 import { LoanPlansModal, useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
 
@@ -62,6 +68,11 @@ export function GoldLoanCalculator() {
       price.rate22kPerGramInr,
     );
   }, [price, weightGrams, karat]);
+
+  const matchedPlans = useMemo(() => {
+    if (loanAmount === null || loanAmount <= 0) return [];
+    return getMatchingLoanPlansByType(loanAmount, plans);
+  }, [loanAmount, plans]);
 
   const hasWeightValue = weightInput.trim().length > 0 && weightGrams > 0;
   const weightFieldActive = weightFocused || weightInput.trim().length > 0;
@@ -150,6 +161,47 @@ export function GoldLoanCalculator() {
                     <p className="ym-loan-eligible-value font-tabular-nums">
                       {amountText}
                     </p>
+
+                    {!plansLoading && !plansError && matchedPlans.length > 0 && (
+                      <div className="ym-loan-interest-estimates">
+                        <p className="ym-loan-eligible-label">
+                          Estimated monthly interest
+                        </p>
+                        {matchedPlans.map((plan) => {
+                          const monthlyInterest =
+                            loanAmount === null
+                              ? 0
+                              : calculateMonthlyInterestInr(loanAmount, plan);
+
+                          return (
+                            <article
+                              key={plan.id}
+                              className="ym-loan-interest-estimate"
+                            >
+                              <p className="ym-loan-interest-plan-type">
+                                {formatPlanRepaymentLabel(plan.repaymentType)}
+                              </p>
+                              <p className="ym-loan-interest-value font-tabular-nums">
+                                {formatInr(monthlyInterest)}
+                                <span className="ym-loan-interest-period">
+                                  {" "}
+                                  / month
+                                </span>
+                              </p>
+                              <p className="ym-loan-interest-meta">
+                                <span className="ym-loan-interest-amount">
+                                  {plan.amountLabel}
+                                </span>
+                                <span className="ym-loan-interest-rate">
+                                  {formatPlanRate(plan.monthlyRatePercent)}% p.m.
+                                </span>
+                              </p>
+                            </article>
+                          );
+                        })}
+                      </div>
+                    )}
+
                     <button
                       type="button"
                       className="ym-loan-plans-link"

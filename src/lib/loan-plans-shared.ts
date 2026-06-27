@@ -28,18 +28,46 @@ export function matchLoanPlan(
   amountInr: number,
   plans: LoanPlan[],
 ): LoanPlan | null {
-  if (!Number.isFinite(amountInr) || amountInr <= 0) return null;
+  return getMatchingLoanPlansByType(amountInr, plans)[0] ?? null;
+}
 
-  return (
-    plans
-      .filter((plan) => plan.active)
-      .sort((a, b) => a.sortOrder - b.sortOrder)
-      .find(
-        (plan) =>
-          amountInr >= plan.minAmountInr &&
-          (plan.maxAmountInr === null || amountInr <= plan.maxAmountInr),
-      ) ?? null
-  );
+export function getMatchingLoanPlansByType(
+  amountInr: number,
+  plans: LoanPlan[],
+): LoanPlan[] {
+  if (!Number.isFinite(amountInr) || amountInr <= 0) return [];
+
+  const matching = plans
+    .filter(
+      (plan) =>
+        plan.active &&
+        amountInr >= plan.minAmountInr &&
+        (plan.maxAmountInr === null || amountInr <= plan.maxAmountInr),
+    )
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+
+  const byType = new Map<LoanPlanRepaymentType, LoanPlan>();
+  for (const plan of matching) {
+    if (!byType.has(plan.repaymentType)) {
+      byType.set(plan.repaymentType, plan);
+    }
+  }
+
+  return Array.from(byType.values()).sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
+export function calculateMonthlyInterestInr(
+  principalInr: number,
+  plan: LoanPlan,
+): number {
+  if (!Number.isFinite(principalInr) || principalInr <= 0) return 0;
+  return (principalInr * plan.monthlyRatePercent) / 100;
+}
+
+export function formatPlanRepaymentLabel(
+  repaymentType: LoanPlanRepaymentType,
+): string {
+  return repaymentType === "bullet" ? "Bullet plan" : "Monthly plan";
 }
 
 export function formatPlanRate(value: number): string {

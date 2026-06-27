@@ -2092,6 +2092,16 @@ body.ym-jewels-flying .ym-hero-ornament {
   padding-block: clamp(3.125rem, 10vh, 5rem);
 }
 
+.ym-features-fold-header {
+  text-align: center;
+  padding-inline: var(--ym-container-pad);
+  margin-bottom: clamp(1.25rem, 3.5vh, 1.75rem);
+}
+
+.ym-features-fold-header .ym-eyebrow {
+  margin-bottom: 0.5rem;
+}
+
 .ym-features-carousel {
   display: flex;
   flex-direction: column;

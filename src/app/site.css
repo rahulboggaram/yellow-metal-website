@@ -451,8 +451,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-loan-calculator--dash .ym-loan-calculator > .ym-section-title {
   margin-bottom: 1rem;
-  font-family: var(--ym-loan-font) !important;
-  font-weight: 700;
+  font-family: var(--font-brand) !important;
+  font-weight: 800;
 }
 
 .ym-loan-calculator-section.ym-loan-calculator--dash {

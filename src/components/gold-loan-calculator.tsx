@@ -187,7 +187,7 @@ export function GoldLoanCalculator() {
                                 <p className="ym-loan-interest-value font-tabular-nums">
                                   {formatInr(monthlyInterest)}
                                 </p>
-                                <p className="ym-loan-interest-period">per month</p>
+                                <p className="ym-loan-interest-period">Per Month</p>
                                 <p className="ym-loan-interest-meta">
                                   {formatPlanRepaymentLabel(plan.repaymentType)}
                                 </p>

@@ -67,7 +67,7 @@ export function calculateMonthlyInterestInr(
 export function formatPlanRepaymentLabel(
   repaymentType: LoanPlanRepaymentType,
 ): string {
-  return repaymentType === "bullet" ? "Bullet plan" : "Monthly plan";
+  return repaymentType === "bullet" ? "Bullet Plan" : "Monthly Plan";
 }
 
 export function formatPlanRate(value: number): string {

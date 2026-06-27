@@ -834,9 +834,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-loan-eligible-label {
   margin: 0;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: var(--ym-loan-font);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ym-dash-muted);
 }

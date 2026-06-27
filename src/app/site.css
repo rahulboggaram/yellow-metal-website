@@ -856,17 +856,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-loan-interest-estimate {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.35rem;
   justify-items: center;
-}
-
-.ym-loan-interest-plan-type {
-  margin: 0;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ym-dash-muted);
 }
 
 .ym-loan-interest-value {
@@ -887,10 +878,29 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-interest-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 0.5rem;
   margin: 0;
   font-size: 0.78rem;
   line-height: 1.35;
   color: var(--ym-dash-muted);
+}
+
+.ym-loan-interest-plan-type {
+  font-weight: 500;
+  color: var(--ym-dash-muted);
+}
+
+.ym-loan-interest-rate {
+  color: var(--ym-dash-muted);
+}
+
+.ym-loan-interest-rate::before {
+  content: "·";
+  margin-right: 0.5rem;
 }
 
 .ym-loan-plans-link {

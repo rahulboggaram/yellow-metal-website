@@ -178,9 +178,6 @@ export function GoldLoanCalculator() {
                               key={plan.id}
                               className="ym-loan-interest-estimate"
                             >
-                              <p className="ym-loan-interest-plan-type">
-                                {formatPlanRepaymentLabel(plan.repaymentType)}
-                              </p>
                               <p className="ym-loan-interest-value font-tabular-nums">
                                 {formatInr(monthlyInterest)}
                                 <span className="ym-loan-interest-period">
@@ -189,7 +186,12 @@ export function GoldLoanCalculator() {
                                 </span>
                               </p>
                               <p className="ym-loan-interest-meta">
-                                {formatPlanRate(plan.monthlyRatePercent)}% p.m.
+                                <span className="ym-loan-interest-plan-type">
+                                  {formatPlanRepaymentLabel(plan.repaymentType)}
+                                </span>
+                                <span className="ym-loan-interest-rate">
+                                  {formatPlanRate(plan.monthlyRatePercent)}% p.m.
+                                </span>
                               </p>
                             </article>
                           );

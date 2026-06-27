@@ -245,6 +245,7 @@ main {
   --ym-loan-flip-cell-h: clamp(3.9rem, 11.05vw, 5.33rem);
   --ym-loan-flip-half: calc(var(--ym-loan-flip-cell-h) / 2);
   --ym-loan-ltv-block-h: 1.15rem;
+  --ym-loan-flip-drop: 1.25rem;
   --ym-fold-peek: var(--ym-loan-flip-half);
 }
 
@@ -3084,7 +3085,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-loan-lending-rate-fold {
     flex-shrink: 0;
-    margin-top: calc(-1 * var(--ym-loan-flip-half));
+    margin-top: calc(-1 * var(--ym-loan-flip-half) + var(--ym-loan-flip-drop));
     padding-bottom: 0;
   }
 
@@ -3097,7 +3098,9 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-loan-lending-rate-fold.is-revealed {
-    margin-top: calc(-1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)));
+    margin-top: calc(
+      -1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)) + var(--ym-loan-flip-drop)
+    );
   }
 
   .ym-loan-lending-rate-fold .ym-loan-flip-result {

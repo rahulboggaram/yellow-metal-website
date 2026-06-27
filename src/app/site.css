@@ -3049,6 +3049,11 @@ body.ym-jewels-flying .ym-hero-ornament {
     );
   }
 
+  .ym-footer .ym-container {
+    padding-left: max(3rem, env(safe-area-inset-left, 0px));
+    padding-right: max(3rem, env(safe-area-inset-right, 0px));
+  }
+
   .ym-hero-lending-flow {
     --ym-loan-flip-cell-h: clamp(4.23rem, 11vw, 5.5rem);
     --ym-loan-flip-half: calc(var(--ym-loan-flip-cell-h) / 2);

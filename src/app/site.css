@@ -3056,7 +3056,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-lending-flow {
-    --ym-loan-flip-cell-h: clamp(3.25rem, 8.45vw, 4.23rem);
+    --ym-loan-flip-cell-h: clamp(4.23rem, 11vw, 5.5rem);
     --ym-loan-flip-half: calc(var(--ym-loan-flip-cell-h) / 2);
     --ym-fold-peek: var(--ym-loan-flip-half);
     --ym-loan-ltv-block-h: calc(0.72rem * 1.8 * 2);
@@ -3277,12 +3277,17 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-solari-amount--loan .split-flap-cell {
-    width: clamp(1.89rem, 5.85vw, 2.6rem);
-    height: var(--ym-loan-flip-cell-h, clamp(3.25rem, 8.45vw, 4.23rem));
+    width: clamp(2.46rem, 7.6vw, 3.38rem);
+    height: var(--ym-loan-flip-cell-h, clamp(4.23rem, 11vw, 5.5rem));
+  }
+
+  .ym-solari-amount--loan .split-flap-board,
+  .ym-solari-amount--loan .split-flap-row {
+    gap: 5px;
   }
 
   .ym-solari-amount--loan .flap-display {
-    font-size: clamp(1.17rem, 4.16vw, 1.76rem);
+    font-size: clamp(1.52rem, 5.4vw, 2.29rem);
   }
 
   .ym-todays-pill-per {

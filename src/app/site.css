@@ -458,14 +458,24 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 /*
- * Loan calculator UI: Inter via loanCalculatorFontClassName on section/card/inputs.
- * Inherit keeps nested floating-field wrappers on Inter; never use var(--font-display) here.
+ * Loan calculator numbers & labels: bind to the Inter face loaded on <html>.
+ * Uses --font-display-family from next/font (not nested theme tokens).
  */
-.ym-loan-calculator--dash :where(
+.ym-loan-calculator--dash :is(
   .ym-loan-calculator > .ym-eyebrow,
-  .ym-loan-calculator-card :is(input, button, select, textarea, label, p, span)
+  .ym-loan-eligible-label,
+  .ym-loan-eligible-value,
+  .ym-loan-interest-value,
+  .ym-loan-interest-period,
+  .ym-loan-interest-meta,
+  .ym-purity-pills-label,
+  .ym-purity-pill,
+  .ym-loan-field input,
+  .ym-loan-field label
 ) {
-  font-family: inherit;
+  font-family: var(--font-display-family, Inter), ui-sans-serif, system-ui, sans-serif !important;
+  font-style: normal;
+  font-synthesis: none;
 }
 
 .ym-loan-calculator-section.ym-loan-calculator--dash {
@@ -751,7 +761,6 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-loan-field input {
   color: #000000 !important;
-  font-family: inherit !important;
   font-weight: 600 !important;
   caret-color: #000000;
 }
@@ -768,7 +777,6 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-field label {
-  font-family: inherit !important;
   font-weight: 500 !important;
   letter-spacing: 0.02em !important;
   text-transform: none !important;

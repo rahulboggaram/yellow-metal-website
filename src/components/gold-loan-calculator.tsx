@@ -162,7 +162,7 @@ export function GoldLoanCalculator() {
                 {showEligibleAmount && (
                   <div className="ym-loan-eligible-amount" aria-live="polite">
                     <p className="ym-loan-eligible-label">Eligible loan amount</p>
-                    <p className="ym-loan-eligible-value font-tabular-nums">
+                    <p className={`ym-loan-eligible-value font-tabular-nums ${loanCalculatorFontClassName}`}>
                       {amountText}
                     </p>
 
@@ -189,7 +189,9 @@ export function GoldLoanCalculator() {
                                 key={plan.id}
                                 className="ym-loan-interest-card"
                               >
-                                <p className="ym-loan-interest-value font-tabular-nums">
+                                <p
+                                  className={`ym-loan-interest-value font-tabular-nums ${loanCalculatorFontClassName}`}
+                                >
                                   {formatInr(monthlyInterest)}
                                 </p>
                                 <p className="ym-loan-interest-period">Per Month</p>

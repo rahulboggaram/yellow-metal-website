@@ -23,3 +23,6 @@ export const displayFont = Inter({
  */
 export const INTER_FONT_STACK =
   "var(--font-display-family, Inter), ui-sans-serif, system-ui, sans-serif";
+
+/** Apply on loan calculator roots and inputs — uses the loaded Inter face, not CSS tokens. */
+export const loanCalculatorFontClassName = displayFont.className;

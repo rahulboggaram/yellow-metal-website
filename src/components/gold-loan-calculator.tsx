@@ -16,7 +16,7 @@ import {
 } from "@/lib/loan-plans-shared";
 import { useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
-import { brandFont, displayFont } from "@/lib/fonts";
+import { brandFont, loanCalculatorFontClassName } from "@/lib/fonts";
 
 export function GoldLoanCalculator() {
   const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
@@ -84,8 +84,7 @@ export function GoldLoanCalculator() {
 
   return (
     <section
-      className="ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash"
-      style={displayFont.style}
+      className={`ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash ${loanCalculatorFontClassName}`}
       aria-labelledby="ym-loan-calculator-title"
     >
       <div className="ym-loan-estimate-fold-inner ym-loan-estimate-column">
@@ -102,8 +101,7 @@ export function GoldLoanCalculator() {
             <LoanCalculatorJewels weightGrams={weightGrams} />
 
             <div
-              className="ym-loan-calculator-card ym-loan-calculator-card--inputs"
-              style={displayFont.style}
+              className={`ym-loan-calculator-card ym-loan-calculator-card--inputs ${loanCalculatorFontClassName}`}
             >
               <div className="ym-loan-calculator-card-inner">
                 <div className="ym-loan-dash-controls">
@@ -124,7 +122,7 @@ export function GoldLoanCalculator() {
                       onChange={(event) => setWeightInput(event.target.value)}
                       onFocus={() => setWeightFocused(true)}
                       onBlur={() => setWeightFocused(false)}
-                      className="font-tabular-nums"
+                      className={`font-tabular-nums ${loanCalculatorFontClassName}`}
                     />
                   </div>
 

@@ -15,3 +15,11 @@ export const displayFont = Inter({
   variable: "--font-display-family",
   display: "swap",
 });
+
+/**
+ * Inter stack for loan calculator and other UI surfaces.
+ * Use with displayFont.className on the root element, or var(--font-inter-stack) in CSS.
+ * Always includes a literal Inter fallback so font-family never invalidates if the variable is missing.
+ */
+export const INTER_FONT_STACK =
+  "var(--font-display-family, Inter), ui-sans-serif, system-ui, sans-serif";

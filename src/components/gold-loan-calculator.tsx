@@ -16,6 +16,7 @@ import {
 } from "@/lib/loan-plans-shared";
 import { useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
+import { brandFont, displayFont } from "@/lib/fonts";
 
 export function GoldLoanCalculator() {
   const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
@@ -83,13 +84,16 @@ export function GoldLoanCalculator() {
 
   return (
     <section
-      className="ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash"
+      className={`ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash ${displayFont.className}`}
       aria-labelledby="ym-loan-calculator-title"
     >
       <div className="ym-loan-estimate-fold-inner ym-loan-estimate-column">
         <div className="ym-loan-calculator">
           <p className="ym-eyebrow">How much can you borrow</p>
-          <h2 id="ym-loan-calculator-title" className="ym-section-title">
+          <h2
+            id="ym-loan-calculator-title"
+            className={`ym-section-title ym-loan-calculator-title ${brandFont.className}`}
+          >
             Loan Estimate
           </h2>
 

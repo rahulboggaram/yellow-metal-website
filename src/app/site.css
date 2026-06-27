@@ -21,7 +21,7 @@
 
 main {
   width: 100%;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 2rem);
+  padding-bottom: 2rem;
 }
 
 .ym-container {
@@ -2511,7 +2511,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 /* Footer */
 .ym-footer {
-  padding-block: 4.35rem 3.15rem;
+  padding-top: 4.35rem;
+  padding-bottom: calc(3.15rem + env(safe-area-inset-bottom, 0px));
   background: #000000;
   color: rgb(255 255 255 / 0.7);
 }

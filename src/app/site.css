@@ -3160,6 +3160,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     );
     gap: 0.02em;
     line-height: 1;
+    letter-spacing: -0.05em;
     padding: 0.1em 0.2em;
   }
 
@@ -3184,7 +3185,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     margin-top: 0.12em;
     font-size: 0.36em;
     line-height: 1.12;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
   }
 
   .ym-hero-line--fees .ym-hero-chunk--no-hidden,

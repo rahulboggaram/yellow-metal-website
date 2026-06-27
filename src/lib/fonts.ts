@@ -26,3 +26,6 @@ export const INTER_FONT_STACK =
 
 /** Apply on loan calculator roots and inputs — uses the loaded Inter face, not CSS tokens. */
 export const loanCalculatorFontClassName = displayFont.className;
+
+/** Stable CSS class — literal Inter family name (see globals.css .ym-font-inter). */
+export const LOAN_CALCULATOR_INTER_CLASS = "ym-font-inter";

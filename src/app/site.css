@@ -458,10 +458,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 /*
- * Loan calculator numbers & labels: bind to the Inter face loaded on <html>.
- * Uses --font-display-family from next/font (not nested theme tokens).
+ * Loan calculator UI: literal Inter (matches next/font @font-face in app bundle).
  */
 .ym-loan-calculator--dash :is(
+  .ym-font-inter,
   .ym-loan-calculator > .ym-eyebrow,
   .ym-loan-eligible-label,
   .ym-loan-eligible-value,
@@ -473,7 +473,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   .ym-loan-field input,
   .ym-loan-field label
 ) {
-  font-family: var(--font-display-family, Inter), ui-sans-serif, system-ui, sans-serif !important;
+  font-family: Inter, "Inter Fallback", ui-sans-serif, system-ui, sans-serif !important;
   font-style: normal;
   font-synthesis: none;
 }
@@ -763,6 +763,12 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: #000000 !important;
   font-weight: 600 !important;
   caret-color: #000000;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.ym-loan-eligible-value,
+.ym-loan-interest-value {
+  font-feature-settings: "tnum" 1, "lnum" 1;
 }
 
 .ym-loan-field--weight input[type="number"] {

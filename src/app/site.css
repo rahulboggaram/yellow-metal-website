@@ -3142,6 +3142,13 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-features-fold {
+    --ym-features-viewport-w: calc(
+      100vw - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)
+    );
+    /* lead (1/4 card) + 1 card + gap + 0.2 next card = viewport */
+    --ym-features-card-width: calc(
+      (var(--ym-features-viewport-w) - var(--ym-features-card-gap)) / 1.45
+    );
     --ym-features-lead-space: calc(var(--ym-features-card-width) / 4);
   }
 

@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, type CSSProperties } from "react";
 import {
+  calculatorJewelGrid,
   calculatorJewelLayouts,
   calculatorJewelsForWeight,
 } from "@/lib/loan-calculator-jewels";
@@ -18,12 +19,23 @@ export function LoanCalculatorJewels({ weightGrams }: { weightGrams: number }) {
     [jewels, weightGrams],
   );
 
+  const grid = useMemo(() => calculatorJewelGrid(jewels.length), [jewels.length]);
+
   if (jewels.length === 0) {
     return null;
   }
 
   return (
-    <div className="ym-loan-calculator-jewels" aria-hidden>
+    <div
+      className="ym-loan-calculator-jewels"
+      style={
+        {
+          "--jewel-rows": grid.rows,
+          "--jewel-cols": grid.cols,
+        } as CSSProperties
+      }
+      aria-hidden
+    >
       {jewels.map((jewel, index) => {
         const layout = layouts[index];
         if (!layout) return null;
@@ -35,8 +47,9 @@ export function LoanCalculatorJewels({ weightGrams }: { weightGrams: number }) {
             style={{
               left: `${layout.x}%`,
               top: `${layout.y}%`,
+              width: `${layout.slotW}%`,
+              height: `${layout.slotH}%`,
               zIndex: layout.z,
-              transform: `rotate(${layout.rotate}deg)`,
               animationDelay: `${index * 70}ms`,
             }}
           >

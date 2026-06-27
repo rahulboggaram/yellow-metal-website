@@ -118,6 +118,7 @@ main {
 
 /* ── Fold 1: Hero ── */
 .ym-hero {
+  --ym-hero-scale: 0.95;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,7 +148,7 @@ main {
   font-family: var(--font-display);
   font-weight: 400;
   /* Single source of size — all jewel offsets use em so they track this */
-  font-size: clamp(3rem, 13.5vw, 8.75rem);
+  font-size: calc(clamp(3rem, 13.5vw, 8.75rem) * var(--ym-hero-scale));
   line-height: 1.05;
   letter-spacing: -0.025em;
   color: #000000;
@@ -3131,7 +3132,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     --ym-hero-area: calc(
       100svh - var(--ym-header-total) - var(--ym-fold-peek)
     );
-    --ym-hero-mobile-scale: calc(1.5 * 0.85);
+    --ym-hero-mobile-scale: calc(1.5 * 0.85 * var(--ym-hero-scale));
     display: flex;
     flex: 0 0 auto;
     align-items: center;

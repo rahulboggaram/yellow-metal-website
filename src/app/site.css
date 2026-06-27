@@ -604,10 +604,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-loan-calculator-jewels {
   position: absolute;
-  top: clamp(0.65rem, 2.5vw, 1.1rem);
-  right: clamp(0.65rem, 2.5vw, 1.1rem);
-  width: clamp(3.5rem, 12vw, 5.5rem);
-  height: clamp(3.5rem, 12vw, 5.5rem);
+  top: clamp(0.35rem, 1.5vw, 0.75rem);
+  right: clamp(0.35rem, 1.5vw, 0.75rem);
+  width: clamp(4.75rem, 17vw, 7.25rem);
+  height: clamp(4.75rem, 17vw, 7.25rem);
   pointer-events: none;
   overflow: visible;
   z-index: 3;
@@ -615,9 +615,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-loan-calculator-jewel-wrap {
   position: absolute;
-  top: 0;
-  right: 0;
-  transform-origin: top right;
+  transform-origin: center center;
   animation: ym-loan-jewel-wrap-enter 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
@@ -630,7 +628,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-calculator-jewel--belt {
-  width: clamp(5.5rem, 18vw, 8rem);
+  width: clamp(3.75rem, 13vw, 5.25rem);
   max-width: none;
 }
 
@@ -648,10 +646,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 @media (max-width: 380px) {
   .ym-loan-calculator-jewels {
-    top: 0.5rem;
-    right: 0.5rem;
-    width: clamp(3rem, 14vw, 4.25rem);
-    height: clamp(3rem, 14vw, 4.25rem);
+    top: 0.35rem;
+    right: 0.35rem;
+    width: clamp(4rem, 20vw, 5.5rem);
+    height: clamp(4rem, 20vw, 5.5rem);
   }
 
   .ym-loan-calculator-jewel {
@@ -659,7 +657,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-loan-calculator-jewel--belt {
-    width: clamp(4.25rem, 20vw, 5.5rem);
+    width: clamp(3.1rem, 15vw, 4rem);
   }
 }
 

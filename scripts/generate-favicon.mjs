@@ -1,67 +1,22 @@
-import { writeFileSync } from "node:fs";
-import { deflateSync } from "node:zlib";
+import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { Resvg } from "@resvg/resvg-js";
 
-const GOLD = { r: 212, g: 175, b: 55 };
 const appDir = join(dirname(fileURLToPath(import.meta.url)), "..", "src", "app");
+const svgPath = join(appDir, "icon.svg");
+const svg = readFileSync(svgPath, "utf8");
 
-function crc32(buffer) {
-  let crc = 0xffffffff;
-  for (const byte of buffer) {
-    crc ^= byte;
-    for (let i = 0; i < 8; i += 1) {
-      crc = crc & 1 ? 0xedb88320 ^ (crc >>> 1) : crc >>> 1;
-    }
-  }
-  return (crc ^ 0xffffffff) >>> 0;
+function renderSvgPng(size) {
+  const resvg = new Resvg(svg, {
+    fitTo: { mode: "width", value: size },
+    background: "transparent",
+  });
+  return resvg.render().asPng();
 }
 
-function pngChunk(type, data) {
-  const typeBuf = Buffer.from(type, "ascii");
-  const length = Buffer.alloc(4);
-  length.writeUInt32BE(data.length);
-  const crc = Buffer.alloc(4);
-  crc.writeUInt32BE(crc32(Buffer.concat([typeBuf, data])));
-  return Buffer.concat([length, typeBuf, data, crc]);
-}
-
-function createSolidPng(width, height, color) {
-  const { r, g, b } = color;
-  const rowSize = width * 4 + 1;
-  const raw = Buffer.alloc(rowSize * height);
-
-  for (let y = 0; y < height; y += 1) {
-    const rowStart = y * rowSize;
-    raw[rowStart] = 0;
-    for (let x = 0; x < width; x += 1) {
-      const i = rowStart + 1 + x * 4;
-      raw[i] = r;
-      raw[i + 1] = g;
-      raw[i + 2] = b;
-      raw[i + 3] = 255;
-    }
-  }
-
-  const ihdr = Buffer.alloc(13);
-  ihdr.writeUInt32BE(width, 0);
-  ihdr.writeUInt32BE(height, 4);
-  ihdr[8] = 8;
-  ihdr[9] = 6;
-  ihdr[10] = 0;
-  ihdr[11] = 0;
-  ihdr[12] = 0;
-
-  return Buffer.concat([
-    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
-    pngChunk("IHDR", ihdr),
-    pngChunk("IDAT", deflateSync(raw)),
-    pngChunk("IEND", Buffer.alloc(0)),
-  ]);
-}
-
-function createIco(sizes, color) {
-  const images = sizes.map((size) => createSolidPng(size, size, color));
+function createIco(sizes) {
+  const images = sizes.map((size) => renderSvgPng(size));
   const count = images.length;
   const header = Buffer.alloc(6);
   header.writeUInt16LE(0, 0);
@@ -91,8 +46,8 @@ function createIco(sizes, color) {
   return Buffer.concat([header, ...entries, ...images]);
 }
 
-writeFileSync(join(appDir, "favicon.ico"), createIco([16, 32, 48], GOLD));
-writeFileSync(join(appDir, "apple-icon.png"), createSolidPng(180, 180, GOLD));
-writeFileSync(join(appDir, "icon.png"), createSolidPng(32, 32, GOLD));
+writeFileSync(join(appDir, "favicon.ico"), createIco([16, 32, 48]));
+writeFileSync(join(appDir, "apple-icon.png"), renderSvgPng(180));
+writeFileSync(join(appDir, "icon.png"), renderSvgPng(32));
 
-console.log("Generated favicon.ico, icon.png, and apple-icon.png in src/app/");
+console.log("Generated favicon.ico, icon.png, and apple-icon.png from icon.svg");

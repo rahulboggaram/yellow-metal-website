@@ -896,7 +896,8 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: var(--ym-dash-text);
 }
 
-.ym-loan-interest-period {
+.ym-loan-interest-period,
+.ym-loan-interest-meta {
   margin: 0;
   font-family: var(--ym-loan-font);
   font-size: 0.75rem;
@@ -912,11 +913,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   align-items: center;
   justify-content: center;
   gap: 0.25rem 0.4rem;
-  margin: 0.15rem 0 0;
-  font-family: var(--ym-loan-font);
-  font-size: 0.72rem;
-  line-height: 1.35;
-  color: var(--ym-dash-muted);
 }
 
 .ym-loan-interest-plan-type {

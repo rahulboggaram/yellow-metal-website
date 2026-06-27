@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-display-family), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-display-family), Inter, ui-sans-serif, system-ui, sans-serif;
   --font-brand: var(--font-brand-family), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display-family), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-family), Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-inter: var(--font-display-family), Inter, ui-sans-serif, system-ui, sans-serif;
   --color-accent: #2563eb;
   --color-accent-hover: #1d4ed8;
   --color-accent-soft: #eff6ff;

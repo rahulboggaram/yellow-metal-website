@@ -279,9 +279,13 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100dvh - var(--ym-header-total) - var(--ym-loan-estimate-peek));
-  min-height: calc(100svh - var(--ym-header-total) - var(--ym-loan-estimate-peek));
-  padding-block: clamp(4.4rem, 13.2vh, 7.15rem);
+  min-height: calc(
+    (100dvh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.15
+  );
+  min-height: calc(
+    (100svh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.15
+  );
+  padding-block: clamp(5.1rem, 15.2vh, 8.25rem);
   background: #000000;
   overflow: visible;
 }
@@ -407,7 +411,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-estimate-fold.ym-loan-calculator-section {
-  padding-block: clamp(4.4rem, 13.2vh, 7.15rem);
+  padding-block: clamp(5.1rem, 15.2vh, 8.25rem);
 }
 
 .ym-loan-estimate-column {
@@ -3019,12 +3023,12 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-loan-estimate-fold {
     --ym-loan-estimate-peek: 0px;
-    min-height: calc(100svh - var(--ym-header-total) + 4rem);
-    padding-block: clamp(6.6rem, 19.8vh, 9.9rem);
+    min-height: calc((100svh - var(--ym-header-total) + 4rem) * 1.15);
+    padding-block: clamp(7.6rem, 22.8vh, 11.4rem);
   }
 
   .ym-loan-estimate-fold.ym-loan-calculator-section {
-    padding-block: clamp(6.6rem, 19.8vh, 9.9rem);
+    padding-block: clamp(7.6rem, 22.8vh, 11.4rem);
   }
 
   .ym-loan-ltv-caption-line {

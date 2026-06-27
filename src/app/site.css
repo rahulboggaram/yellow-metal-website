@@ -897,8 +897,9 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-interest-period {
-  font-size: 0.72em;
+  font-size: 0.62em;
   font-weight: 500;
+  letter-spacing: 0.01em;
   color: var(--ym-dash-muted);
 }
 

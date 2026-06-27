@@ -875,9 +875,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-interest-card {
-  display: grid;
-  gap: 0.35rem;
-  align-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
   min-width: 0;
   padding: 0.85rem 0.6rem;
   border: 1px solid var(--ym-dash-border);
@@ -898,9 +899,12 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-interest-period {
-  font-size: 0.62em;
+  margin: 0;
+  font-family: var(--ym-loan-font);
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.01em;
+  line-height: 1.2;
   color: var(--ym-dash-muted);
 }
 
@@ -910,7 +914,8 @@ body.ym-jewels-flying .ym-hero-ornament {
   align-items: center;
   justify-content: center;
   gap: 0.25rem 0.4rem;
-  margin: 0;
+  margin: 0.15rem 0 0;
+  font-family: var(--ym-loan-font);
   font-size: 0.72rem;
   line-height: 1.35;
   color: var(--ym-dash-muted);

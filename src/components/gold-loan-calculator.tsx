@@ -189,12 +189,7 @@ export function GoldLoanCalculator() {
                                 </span>
                               </p>
                               <p className="ym-loan-interest-meta">
-                                <span className="ym-loan-interest-amount">
-                                  {plan.amountLabel}
-                                </span>
-                                <span className="ym-loan-interest-rate">
-                                  {formatPlanRate(plan.monthlyRatePercent)}% p.m.
-                                </span>
+                                {formatPlanRate(plan.monthlyRatePercent)}% p.m.
                               </p>
                             </article>
                           );

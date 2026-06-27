@@ -879,7 +879,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-interest-value {
-  margin: 0;
+  margin: 0 0 0.4rem;
   font-family: var(--ym-loan-font);
   font-size: clamp(1.05rem, 3.8vw, 1.35rem);
   font-weight: 600;

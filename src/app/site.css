@@ -935,8 +935,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-accent);
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
+  text-decoration: none;
   cursor: pointer;
   transition: color 0.15s ease;
 }

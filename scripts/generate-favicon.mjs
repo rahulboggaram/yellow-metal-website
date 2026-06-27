@@ -1,22 +1,29 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { execSync } from "node:child_process";
+import { readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
-import { Resvg } from "@resvg/resvg-js";
+import { dirname } from "node:path";
 
-const appDir = join(dirname(fileURLToPath(import.meta.url)), "..", "src", "app");
-const svgPath = join(appDir, "icon.svg");
-const svg = readFileSync(svgPath, "utf8");
+const rootDir = join(dirname(fileURLToPath(import.meta.url)), "..");
+const appDir = join(rootDir, "src", "app");
+const sourcePath = join(rootDir, "public", "images", "site", "ym-favicon-source.png");
 
-function renderSvgPng(size) {
-  const resvg = new Resvg(svg, {
-    fitTo: { mode: "width", value: size },
-    background: "transparent",
+function resizePng(size, outputPath) {
+  execSync(`sips -z ${size} ${size} "${sourcePath}" --out "${outputPath}"`, {
+    stdio: "pipe",
   });
-  return resvg.render().asPng();
 }
 
 function createIco(sizes) {
-  const images = sizes.map((size) => renderSvgPng(size));
+  const images = sizes.map((size) => {
+    const tempPath = join(tmpdir(), `ym-favicon-${size}.png`);
+    resizePng(size, tempPath);
+    const png = readFileSync(tempPath);
+    unlinkSync(tempPath);
+    return png;
+  });
+
   const count = images.length;
   const header = Buffer.alloc(6);
   header.writeUInt16LE(0, 0);
@@ -47,7 +54,7 @@ function createIco(sizes) {
 }
 
 writeFileSync(join(appDir, "favicon.ico"), createIco([16, 32, 48]));
-writeFileSync(join(appDir, "apple-icon.png"), renderSvgPng(180));
-writeFileSync(join(appDir, "icon.png"), renderSvgPng(32));
+resizePng(32, join(appDir, "icon.png"));
+resizePng(180, join(appDir, "apple-icon.png"));
 
-console.log("Generated favicon.ico, icon.png, and apple-icon.png from icon.svg");
+console.log("Generated favicon.ico, icon.png, and apple-icon.png from ym-favicon-source.png");

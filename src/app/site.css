@@ -468,6 +468,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-style: normal !important;
   font-weight: 600 !important;
   font-synthesis: none !important;
+  font-feature-settings: var(--ym-inter-tabular-features) !important;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -527,6 +528,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-family: var(--font-display-family), Inter, ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
   font-synthesis: none;
+  font-feature-settings: var(--ym-inter-tabular-features);
 }
 
 .ym-solari-amount .flap-display,
@@ -727,7 +729,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-weight: 700;
   font-style: normal;
   font-variant-numeric: tabular-nums lining-nums;
-  font-feature-settings: "tnum" 1, "lnum" 1;
+  font-feature-settings: var(--ym-inter-tabular-features);
   line-height: 0.95;
   letter-spacing: -0.02em;
   color: var(--ym-dash-text);
@@ -758,14 +760,14 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-weight: 600 !important;
   font-style: normal !important;
   caret-color: #000000;
-  font-feature-settings: "tnum" 1, "lnum" 1;
+  font-feature-settings: var(--ym-inter-tabular-features) !important;
   font-synthesis: none !important;
   -webkit-font-smoothing: antialiased;
 }
 
 .ym-loan-eligible-value,
 .ym-loan-interest-value {
-  font-feature-settings: "tnum" 1, "lnum" 1;
+  font-feature-settings: var(--ym-inter-tabular-features);
 }
 
 .ym-loan-field--weight input[type="number"] {

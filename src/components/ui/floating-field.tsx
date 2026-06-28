@@ -153,6 +153,7 @@ export function FloatingInput(
     error,
     fieldError,
     className,
+    style,
     id: idProp,
     value,
     required,
@@ -181,6 +182,7 @@ export function FloatingInput(
           id={id}
           required={required}
           value={value}
+          style={style}
           onFocus={(e) => {
             setFocused(true);
             onFocus?.(e);

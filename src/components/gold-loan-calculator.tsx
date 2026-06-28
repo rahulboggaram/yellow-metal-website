@@ -16,7 +16,8 @@ import {
 } from "@/lib/loan-plans-shared";
 import { useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
-import { brandFont, LOAN_CALCULATOR_INTER_CLASS } from "@/lib/fonts";
+import { InterNumeric } from "@/components/inter-numeric";
+import { brandFont, interFontBindings } from "@/lib/fonts";
 
 export function GoldLoanCalculator() {
   const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
@@ -82,14 +83,16 @@ export function GoldLoanCalculator() {
   const amountText =
     loading || error || loanAmount === null ? "—" : formatInr(loanAmount);
 
+  const weightInputBindings = interFontBindings("font-tabular-nums");
+
   return (
     <section
-      className={`ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash ${LOAN_CALCULATOR_INTER_CLASS}`}
+      className="ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash"
       aria-labelledby="ym-loan-calculator-title"
     >
       <div className="ym-loan-estimate-fold-inner ym-loan-estimate-column">
         <div className="ym-loan-calculator">
-          <p className={`ym-eyebrow ${LOAN_CALCULATOR_INTER_CLASS}`}>How much can you borrow</p>
+          <p className="ym-eyebrow">How much can you borrow</p>
           <h2
             id="ym-loan-calculator-title"
             className={`ym-section-title ym-loan-calculator-title ${brandFont.className}`}
@@ -100,15 +103,12 @@ export function GoldLoanCalculator() {
           <div className="ym-loan-calculator-card-stage">
             <LoanCalculatorJewels weightGrams={weightGrams} />
 
-            <div
-              className={`ym-loan-calculator-card ym-loan-calculator-card--inputs ${LOAN_CALCULATOR_INTER_CLASS}`}
-            >
-              <div className={`ym-loan-calculator-card-inner ${LOAN_CALCULATOR_INTER_CLASS}`}>
+            <div className="ym-loan-calculator-card ym-loan-calculator-card--inputs">
+              <div className="ym-loan-calculator-card-inner">
                 <div className="ym-loan-dash-controls">
                   <div
                     className={[
                       "ym-loan-field ym-loan-field--weight",
-                      LOAN_CALCULATOR_INTER_CLASS,
                       weightFieldActive ? "ym-loan-field--active" : "ym-loan-field--idle",
                     ].join(" ")}
                   >
@@ -123,12 +123,13 @@ export function GoldLoanCalculator() {
                       onChange={(event) => setWeightInput(event.target.value)}
                       onFocus={() => setWeightFocused(true)}
                       onBlur={() => setWeightFocused(false)}
-                      className={`font-tabular-nums ${LOAN_CALCULATOR_INTER_CLASS}`}
+                      className={weightInputBindings.className}
+                      style={weightInputBindings.style}
                     />
                   </div>
 
                   <div className="ym-purity-pills">
-                    <p className={`ym-purity-pills-label ${LOAN_CALCULATOR_INTER_CLASS}`} id="ym-gold-purity-label">
+                    <p className="ym-purity-pills-label" id="ym-gold-purity-label">
                       Purity
                     </p>
                     <div
@@ -146,7 +147,6 @@ export function GoldLoanCalculator() {
                             aria-checked={selected}
                             className={[
                               "ym-purity-pill",
-                              LOAN_CALCULATOR_INTER_CLASS,
                               selected ? "ym-purity-pill--selected" : "",
                             ]
                               .filter(Boolean)
@@ -163,12 +163,13 @@ export function GoldLoanCalculator() {
 
                 {showEligibleAmount && (
                   <div className="ym-loan-eligible-amount" aria-live="polite">
-                    <p className={`ym-loan-eligible-label ${LOAN_CALCULATOR_INTER_CLASS}`}>
-                      Eligible loan amount
-                    </p>
-                    <p className={`ym-loan-eligible-value font-tabular-nums ${LOAN_CALCULATOR_INTER_CLASS}`}>
+                    <p className="ym-loan-eligible-label">Eligible loan amount</p>
+                    <InterNumeric
+                      as="p"
+                      className="ym-loan-eligible-value font-tabular-nums"
+                    >
                       {amountText}
-                    </p>
+                    </InterNumeric>
 
                     {!plansLoading && !plansError && matchedPlans.length > 0 && (
                       <div className="ym-loan-interest-section">
@@ -193,13 +194,14 @@ export function GoldLoanCalculator() {
                                 key={plan.id}
                                 className="ym-loan-interest-card"
                               >
-                                <p
-                                  className={`ym-loan-interest-value font-tabular-nums ${LOAN_CALCULATOR_INTER_CLASS}`}
+                                <InterNumeric
+                                  as="p"
+                                  className="ym-loan-interest-value font-tabular-nums"
                                 >
                                   {formatInr(monthlyInterest)}
-                                </p>
-                                <p className={`ym-loan-interest-period ${LOAN_CALCULATOR_INTER_CLASS}`}>Per Month</p>
-                                <p className={`ym-loan-interest-meta ${LOAN_CALCULATOR_INTER_CLASS}`}>
+                                </InterNumeric>
+                                <p className="ym-loan-interest-period">Per Month</p>
+                                <p className="ym-loan-interest-meta">
                                   {formatPlanRepaymentLabel(plan.repaymentType)}
                                 </p>
                               </article>

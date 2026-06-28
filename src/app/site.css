@@ -458,24 +458,16 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 /*
- * Loan calculator UI: literal Inter (matches next/font @font-face in app bundle).
+ * Loan calculator numbers: triple-bind Inter (next/font variable + inline style + !important).
  */
-.ym-loan-calculator--dash :is(
-  .ym-font-inter,
-  .ym-loan-calculator > .ym-eyebrow,
-  .ym-loan-eligible-label,
-  .ym-loan-eligible-value,
-  .ym-loan-interest-value,
-  .ym-loan-interest-period,
-  .ym-loan-interest-meta,
-  .ym-purity-pills-label,
-  .ym-purity-pill,
-  .ym-loan-field input,
-  .ym-loan-field label
-) {
-  font-family: Inter, "Inter Fallback", ui-sans-serif, system-ui, sans-serif !important;
-  font-style: normal;
-  font-synthesis: none;
+.ym-loan-calculator--dash [data-ym-inter],
+.ym-loan-calculator--dash #ym-gold-weight,
+.ym-loan-calculator--dash .ym-loan-eligible-value,
+.ym-loan-calculator--dash .ym-loan-interest-value {
+  font-family: var(--font-display-family, Inter), "Inter Fallback", ui-sans-serif,
+    system-ui, sans-serif !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
 }
 
 .ym-loan-calculator-section.ym-loan-calculator--dash {

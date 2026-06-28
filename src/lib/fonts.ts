@@ -1,4 +1,5 @@
 import { Bricolage_Grotesque, Inter } from "next/font/google";
+import type { CSSProperties } from "react";
 
 /** Section headings */
 export const brandFont = Bricolage_Grotesque({
@@ -17,15 +18,19 @@ export const displayFont = Inter({
 });
 
 /**
- * Inter stack for loan calculator and other UI surfaces.
- * Use with displayFont.className on the root element, or var(--font-inter-stack) in CSS.
- * Always includes a literal Inter fallback so font-family never invalidates if the variable is missing.
+ * Bind Inter via next/font on a single element.
+ * Use both className and inline style — inline style wins over CSS inherit chains
+ * (critical for <input type="number"> on iOS).
  */
-export const INTER_FONT_STACK =
-  "var(--font-display-family, Inter), ui-sans-serif, system-ui, sans-serif";
+export const interFontClassName = displayFont.className;
+export const interFontStyle: CSSProperties = displayFont.style;
 
-/** Apply on loan calculator roots and inputs — uses the loaded Inter face, not CSS tokens. */
-export const loanCalculatorFontClassName = displayFont.className;
+export const YM_INTER_DATA_ATTR = "data-ym-inter";
 
-/** Stable CSS class — literal Inter family name (see globals.css .ym-font-inter). */
-export const LOAN_CALCULATOR_INTER_CLASS = "ym-font-inter";
+export function interFontBindings(className?: string, style?: CSSProperties) {
+  return {
+    [YM_INTER_DATA_ATTR]: "",
+    className: [interFontClassName, className].filter(Boolean).join(" "),
+    style: { ...interFontStyle, ...style },
+  };
+}

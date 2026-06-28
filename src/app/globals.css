@@ -49,9 +49,3 @@ body {
   font-variant-numeric: tabular-nums lining-nums;
 }
 
-/* Literal Inter — pairs with next/font @font-face in the app bundle */
-.ym-font-inter {
-  font-family: Inter, "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
-  font-style: normal;
-  font-synthesis: none;
-}

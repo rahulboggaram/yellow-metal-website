@@ -39,6 +39,15 @@ export default function RootLayout({
       lang="en"
       className={`h-full antialiased ${brandFont.variable} ${displayFont.variable}`}
     >
+      <head>
+        <link
+          rel="preload"
+          href="/fonts/inter-latin-600.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className={`min-h-dvh ${displayFont.className}`}>
         <div className="ym-site">
           <SiteHeader />

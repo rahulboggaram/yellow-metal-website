@@ -49,3 +49,20 @@ body {
   font-variant-numeric: tabular-nums lining-nums;
 }
 
+/* Self-hosted Inter — calculator numbers always load from /public/fonts */
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/inter-latin-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/inter-latin-600.woff2") format("woff2");
+}
+

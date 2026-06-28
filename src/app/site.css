@@ -458,16 +458,17 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 /*
- * Loan calculator numbers: triple-bind Inter (next/font variable + inline style + !important).
+ * Calculator numbers: self-hosted Inter + same binding as flip clock (displayFont + weight 600).
  */
-.ym-loan-calculator--dash [data-ym-inter],
+.ym-loan-calculator-inter,
 .ym-loan-calculator--dash #ym-gold-weight,
 .ym-loan-calculator--dash .ym-loan-eligible-value,
 .ym-loan-calculator--dash .ym-loan-interest-value {
-  font-family: var(--font-display-family, Inter), "Inter Fallback", ui-sans-serif,
-    system-ui, sans-serif !important;
+  font-family: Inter, "Inter Fallback", ui-sans-serif, system-ui, sans-serif !important;
   font-style: normal !important;
+  font-weight: 600 !important;
   font-synthesis: none !important;
+  -webkit-font-smoothing: antialiased;
 }
 
 .ym-loan-calculator-section.ym-loan-calculator--dash {
@@ -753,9 +754,13 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-loan-field input {
   color: #000000 !important;
+  font-family: Inter, "Inter Fallback", ui-sans-serif, system-ui, sans-serif !important;
   font-weight: 600 !important;
+  font-style: normal !important;
   caret-color: #000000;
   font-feature-settings: "tnum" 1, "lnum" 1;
+  font-synthesis: none !important;
+  -webkit-font-smoothing: antialiased;
 }
 
 .ym-loan-eligible-value,

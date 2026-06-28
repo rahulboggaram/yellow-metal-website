@@ -18,19 +18,22 @@ export const displayFont = Inter({
 });
 
 /**
- * Bind Inter via next/font on a single element.
- * Use both className and inline style — inline style wins over CSS inherit chains
- * (critical for <input type="number"> on iOS).
+ * Bind Inter on calculator numbers — mirrors flip-clock-amount.tsx exactly,
+ * plus a self-hosted @font-face fallback in globals.css.
  */
 export const interFontClassName = displayFont.className;
-export const interFontStyle: CSSProperties = displayFont.style;
 
-export const YM_INTER_DATA_ATTR = "data-ym-inter";
+export const calculatorInterStyle: CSSProperties = {
+  ...displayFont.style,
+  fontWeight: 600,
+  fontSynthesis: "none",
+};
 
 export function interFontBindings(className?: string, style?: CSSProperties) {
   return {
-    [YM_INTER_DATA_ATTR]: "",
-    className: [interFontClassName, className].filter(Boolean).join(" "),
-    style: { ...interFontStyle, ...style },
+    className: [interFontClassName, "ym-loan-calculator-inter", className]
+      .filter(Boolean)
+      .join(" "),
+    style: { ...calculatorInterStyle, ...style },
   };
 }

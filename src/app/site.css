@@ -166,7 +166,6 @@ main {
 
 .ym-hero-line--fees {
   display: block;
-  white-space: nowrap;
 }
 
 .ym-hero-line--mins {
@@ -176,13 +175,18 @@ main {
 
 .ym-hero-subtext {
   margin: 0;
-  line-height: 1.15;
+  max-width: min(40rem, 94vw);
+  line-height: 1.8;
   font-family: var(--font-display);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgb(0 0 0 / 0.45);
+}
+
+.ym-hero-subtext-line {
+  display: block;
 }
 
 .ym-hero-chunk {
@@ -3185,12 +3189,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-line--fees {
     margin-top: 0.5rem;
-    font-size: 0.72rem;
-    line-height: 1.15;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: rgb(0 0 0 / 0.45);
+    max-width: min(22rem, 92vw);
+    line-height: 1.8;
   }
 
   .ym-hero-ornament--belt {

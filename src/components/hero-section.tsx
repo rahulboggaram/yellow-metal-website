@@ -57,7 +57,12 @@ export function HeroSection() {
             </span>
             <span className="ym-hero-line ym-hero-line--mins">In 10 Mins</span>
             <span className="ym-hero-line ym-hero-line--fees ym-hero-subtext">
-              no hidden fees
+              <span className="ym-hero-subtext-line">
+                No hidden fees · No processing · No valuation charges
+              </span>
+              <span className="ym-hero-subtext-line">
+                No prepayment penalties · No fees to store your gold · No insurance
+              </span>
             </span>
           </h1>
         </div>

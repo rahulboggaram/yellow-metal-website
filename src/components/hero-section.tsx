@@ -54,28 +54,10 @@ export function HeroSection() {
                   s
                 </span>
               </span>
-              <span className="ym-hero-chunk ym-hero-chunk--mins ym-hero-chunk--desktop-only">
-                In 10 Mins
-              </span>
             </span>
-            <span className="ym-hero-line ym-hero-line--fees">
-              <span className="ym-hero-chunk ym-hero-chunk--no-hidden">
-                <span className="ym-hero-anchor">
-                  <Image
-                    src="/images/ornaments/waist-belt.png"
-                    alt=""
-                    width={404}
-                    height={91}
-                    data-ornament-id="belt"
-                    className="ym-hero-ornament ym-hero-ornament--belt"
-                    priority
-                    aria-hidden
-                  />
-                  N
-                </span>
-                o Hidden
-              </span>
-              <span className="ym-hero-chunk ym-hero-chunk--fees-only">Fees</span>
+            <span className="ym-hero-line ym-hero-line--mins">In 10 Mins</span>
+            <span className="ym-hero-line ym-hero-line--fees ym-hero-subtext">
+              no hidden fees
             </span>
           </h1>
         </div>

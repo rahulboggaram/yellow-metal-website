@@ -169,6 +169,22 @@ main {
   white-space: nowrap;
 }
 
+.ym-hero-line--mins {
+  display: block;
+  white-space: nowrap;
+}
+
+.ym-hero-subtext {
+  margin: 0;
+  line-height: 1.15;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(0 0 0 / 0.45);
+}
+
 .ym-hero-chunk {
   display: inline;
 }
@@ -177,26 +193,22 @@ main {
   content: " ";
 }
 
-.ym-hero-chunk--desktop-only {
-  display: none;
-}
-
 @media (min-width: 769px) {
-  .ym-hero-chunk--desktop-only {
-    display: inline;
+  .ym-hero-line--title {
+    display: block;
+    white-space: nowrap;
   }
 
-  .ym-hero-chunk--mins::before {
-    content: " ";
+  .ym-hero-headline {
+    gap: 0.04em;
   }
 
-  .ym-hero-line--fees .ym-hero-chunk--fees-only::before {
-    content: " ";
+  .ym-hero-line--mins {
+    margin-top: -0.02em;
   }
 
-  .ym-hero-line--fees .ym-hero-chunk--no-hidden,
-  .ym-hero-line--fees .ym-hero-chunk--fees-only {
-    text-transform: lowercase;
+  .ym-hero-line--fees {
+    margin-top: 0.35rem;
   }
 }
 
@@ -3166,22 +3178,19 @@ body.ym-jewels-flying .ym-hero-ornament {
     content: none;
   }
 
-  .ym-hero-line--fees {
-    margin-top: 0.12em;
-    font-size: 0.36em;
-    line-height: 1.12;
-    letter-spacing: -0.04em;
-  }
-
-  .ym-hero-line--fees .ym-hero-chunk--no-hidden,
-  .ym-hero-line--fees .ym-hero-chunk--fees-only {
-    display: inline;
+  .ym-hero-line--mins {
+    display: block;
     white-space: nowrap;
-    text-transform: lowercase;
   }
 
-  .ym-hero-line--fees .ym-hero-chunk--fees-only::before {
-    content: " ";
+  .ym-hero-line--fees {
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    line-height: 1.15;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgb(0 0 0 / 0.45);
   }
 
   .ym-hero-ornament--belt {

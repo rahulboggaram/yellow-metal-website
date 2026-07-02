@@ -224,6 +224,17 @@ main {
   letter-spacing: inherit;
 }
 
+.ym-hero-belt-row {
+  display: none;
+  width: 100%;
+  margin-top: -0.12em;
+  padding-bottom: 0;
+  font-size: calc(1em * 0.36);
+  line-height: 0;
+  text-align: center;
+  overflow: visible;
+}
+
 .ym-hero-subtext {
   margin: 0;
   max-width: min(40rem, 94vw);
@@ -302,12 +313,38 @@ main {
     gap: 0.04em;
   }
 
+  .ym-hero-belt-row {
+    display: block;
+    font-size: 1em;
+    margin-top: -0.08em;
+    padding-bottom: 0;
+  }
+
+  .ym-hero-belt-row .ym-hero-ornament--belt {
+    position: relative;
+    left: auto;
+    top: auto;
+    display: inline-block;
+    vertical-align: top;
+    width: 3.1em;
+    transform: translate(-125px, calc(-0.48em + 10px)) scale(1.2);
+    transform-origin: center top;
+  }
+
+  .ym-hero-anchor--belt .ym-hero-ornament--belt {
+    display: none;
+  }
+
+  .ym-hero-mins-rotator {
+    padding-bottom: 0;
+  }
+
   .ym-hero-line--mins {
     margin-top: -0.02em;
   }
 
   .ym-hero-line--fees {
-    margin-top: -0.5rem;
+    margin-top: -1.5rem;
     overflow: visible;
   }
 }
@@ -351,13 +388,13 @@ main {
 }
 
 .ym-hero-ornament--belt {
-  left: 50%;
+  left: 0;
   top: 100%;
-  width: 3.6em;
+  width: 3.1em;
   height: auto;
   max-width: none;
-  transform: translate(-50%, calc(0.08em - 0.38em)) scale(1.55);
-  transform-origin: center top;
+  transform: translate(calc(-0.16em), calc(0.04em - 0.52em)) scale(1.2);
+  transform-origin: left top;
 }
 
 .ym-hero-spacer {
@@ -3384,9 +3421,11 @@ body.ym-jewels-flying .ym-hero-ornament {
     overflow: visible;
   }
 
-  .ym-hero-ornament--belt {
+  .ym-hero-anchor--belt .ym-hero-ornament--belt {
+    left: 50%;
     width: 4.2em;
     transform: translate(-50%, calc(0.1em - 0.34em)) scale(1.45);
+    transform-origin: center top;
   }
 
   .ym-hero-ornament--ganesha {

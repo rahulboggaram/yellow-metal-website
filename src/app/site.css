@@ -3405,7 +3405,11 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-mins-live[lang="en"] {
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
+  }
+
+  .ym-hero-mins-live[lang="en"] .ym-hero-anchor--ten {
+    margin-inline: 0.14em;
   }
 
   .ym-hero-mins-live[lang="kn"],

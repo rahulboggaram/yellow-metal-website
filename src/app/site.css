@@ -2267,11 +2267,16 @@ body.ym-jewels-flying .ym-hero-ornament {
 @media (min-width: 769px) {
   .ym-loan-estimate-fold {
     min-height: calc(
-      (100dvh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.15
+      (100dvh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.32
     );
     min-height: calc(
-      (100svh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.15
+      (100svh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.32
     );
+    padding-block: clamp(6rem, 18vh, 10rem);
+  }
+
+  .ym-loan-estimate-fold.ym-loan-calculator-section {
+    padding-block: clamp(6rem, 18vh, 10rem);
   }
 
   .ym-features-fold {

@@ -109,13 +109,6 @@ export function LoanLendingRateBridge() {
             <p className="ym-loan-flip-status">Live rate unavailable</p>
           )}
 
-          <p className="ym-loan-ltv-caption">
-            <span className="ym-loan-ltv-caption-line">Today&apos;s lending rate</span>{" "}
-            <span className="ym-loan-ltv-caption-line">
-              for {BRIDGE_LENDING_KARAT} gold at 75% LTV
-            </span>
-          </p>
-
           <div className="ym-loan-flip-result" aria-live="polite">
             {showBridgeFlip ? (
               <FlipClockAmount
@@ -131,6 +124,13 @@ export function LoanLendingRateBridge() {
             )}
             <span className="ym-sr-only">{bridgeAmountText}</span>
           </div>
+
+          <p className="ym-loan-ltv-caption">
+            <span className="ym-loan-ltv-caption-line">Today&apos;s lending rate</span>{" "}
+            <span className="ym-loan-ltv-caption-line">
+              for {BRIDGE_LENDING_KARAT} gold at 75% LTV
+            </span>
+          </p>
         </div>
       </div>
     </section>

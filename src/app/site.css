@@ -352,9 +352,7 @@ main {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin-top: calc(
-    -1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)) + var(--ym-loan-flip-drop)
-  );
+  margin-top: calc(-1 * var(--ym-loan-flip-half) + var(--ym-loan-flip-drop));
   padding-top: 0;
   padding-bottom: clamp(2rem, 5vh, 3rem);
   background: #ffffff;
@@ -373,6 +371,10 @@ main {
 
 .ym-loan-lending-rate-fold .ym-loan-flip-result {
   padding-bottom: 0.25rem;
+}
+
+.ym-loan-lending-rate-fold .ym-loan-ltv-caption {
+  margin-top: 0.35rem;
 }
 
 /* ── Fold 3: Loan estimate ── */
@@ -3149,9 +3151,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-loan-lending-rate-fold.is-revealed {
-    margin-top: calc(
-      -1 * (var(--ym-loan-ltv-block-h) + var(--ym-loan-flip-half)) + var(--ym-loan-flip-drop)
-    );
+    margin-top: calc(-1 * var(--ym-loan-flip-half) + var(--ym-loan-flip-drop));
   }
 
   .ym-loan-lending-rate-fold .ym-loan-flip-result {

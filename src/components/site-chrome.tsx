@@ -68,10 +68,11 @@ export function SiteFooter() {
         <p className="ym-footer-copy">
           © {new Date().getFullYear()} Yellow Metal. All rights reserved.
         </p>
+
+        <p className="ym-footer-wordmark" aria-hidden>
+          YELLOW METAL
+        </p>
       </div>
-      <p className="ym-footer-wordmark" aria-hidden>
-        YELLOW METAL
-      </p>
     </footer>
   );
 }

@@ -2615,6 +2615,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-footer-inner {
   display: grid;
   gap: 2.4rem;
+  container-type: inline-size;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 .ym-footer-top {
@@ -2702,16 +2704,17 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-footer-wordmark {
-  margin: clamp(2.5rem, 7vh, 4rem) 0 0;
-  padding: 0 clamp(0.75rem, 3vw, 1.5rem)
-    calc(0.75rem + env(safe-area-inset-bottom, 0px));
   width: 100%;
+  margin: clamp(1.25rem, 3.5vh, 2rem) 0 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: var(--font-brand);
-  font-weight: 800;
-  font-size: clamp(3.75rem, 17.5vw, 14rem);
-  line-height: 0.88;
-  letter-spacing: -0.035em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-synthesis: none;
+  font-feature-settings: var(--ym-inter-features);
+  font-size: 14.2cqw;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   text-align: center;
   color: rgb(255 255 255 / 0.1);
@@ -2724,8 +2727,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 @media (min-width: 769px) {
   .ym-footer-wordmark {
-    font-size: clamp(5rem, 14.5vw, 15.5rem);
-    letter-spacing: -0.04em;
+    font-size: min(14.2cqw, 9.75rem);
     color: rgb(255 255 255 / 0.12);
   }
 }

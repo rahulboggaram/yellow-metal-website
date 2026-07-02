@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { HeroFeesTypewriter } from "@/components/hero-fees-typewriter";
 
 /** Fold 1 — headline + jewels. Sizes with CSS clamp (no JS scaling). */
 export function HeroSection() {
@@ -56,14 +57,7 @@ export function HeroSection() {
               </span>
             </span>
             <span className="ym-hero-line ym-hero-line--mins">In 10 Mins</span>
-            <span className="ym-hero-line ym-hero-line--fees ym-hero-subtext">
-              <span className="ym-hero-subtext-line">
-                · No hidden fees · No processing · No valuation charges
-              </span>
-              <span className="ym-hero-subtext-line">
-                · No prepayment penalties · No fees to store your gold · No insurance
-              </span>
-            </span>
+            <HeroFeesTypewriter />
           </h1>
         </div>
       </div>

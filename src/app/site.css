@@ -189,6 +189,49 @@ main {
   display: block;
 }
 
+.ym-hero-subtext-typewriter {
+  position: relative;
+  width: 100%;
+}
+
+.ym-hero-subtext-ghost {
+  visibility: hidden;
+  user-select: none;
+  pointer-events: none;
+}
+
+.ym-hero-subtext-live {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+}
+
+.ym-hero-subtext-cursor {
+  display: inline-block;
+  margin-left: 0.04em;
+  font-weight: 400;
+  color: rgb(0 0 0 / 0.35);
+  animation: ym-hero-typewriter-cursor 1s step-end infinite;
+}
+
+@keyframes ym-hero-typewriter-cursor {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ym-hero-subtext-cursor {
+    display: none;
+    animation: none;
+  }
+}
+
 .ym-hero-chunk {
   display: inline;
 }

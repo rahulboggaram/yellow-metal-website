@@ -175,6 +175,46 @@ main {
   white-space: nowrap;
 }
 
+.ym-hero-mins-rotator {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.ym-hero-mins-ghost {
+  display: block;
+  visibility: hidden;
+  user-select: none;
+  pointer-events: none;
+}
+
+.ym-hero-mins-live {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.ym-hero-mins-live.is-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ym-hero-mins-live {
+    position: static;
+    display: block;
+    opacity: 1;
+    transition: none;
+  }
+
+  .ym-hero-mins-ghost {
+    display: none;
+  }
+}
+
 .ym-hero-belt-row {
   display: block;
   width: 100%;

@@ -2724,22 +2724,6 @@ body.ym-jewels-flying .ym-hero-ornament {
     );
 }
 
-.ym-footer-quote {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(0.85rem, 2.5vh, 1.35rem);
-  z-index: 1;
-  margin: 0;
-  padding: 0 clamp(1rem, 3vw, 1.5rem);
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
-  overflow-x: auto;
-  scrollbar-width: none;
-  pointer-events: auto;
-}
-
 .ym-footer-top {
   display: block;
 }
@@ -2823,38 +2807,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   padding-top: 1.8rem;
   border-top: 1px solid rgb(255 255 255 / 0.12);
 }
-
-.ym-footer-quote::-webkit-scrollbar {
-  display: none;
-}
-
-.ym-footer-quote-text {
-  margin: 0;
-  max-width: none;
-  margin-inline: auto;
-  display: inline-block;
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 5.2vw, 3.15rem);
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-  color: rgb(255 255 255 / 0.94);
-  text-shadow: 0 2px 24px rgb(0 0 0 / 0.55);
-  white-space: nowrap;
-}
-
-.ym-footer-quote-attribution {
-  margin: 0.75rem 0 0;
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 0.5);
-  text-shadow: 0 1px 14px rgb(0 0 0 / 0.45);
-}
-
 
 /* Ancillary pages */
 .ym-page {

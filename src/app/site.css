@@ -2670,14 +2670,15 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-footer-scene {
   position: relative;
   width: 100%;
-  height: clamp(11rem, 24vh, 17.5rem);
+  height: clamp(18rem, 42vh, 30rem);
+  background: #000000;
   pointer-events: none;
 }
 
 .ym-footer-scene-img {
-  object-fit: cover;
-  object-position: center 42%;
-  filter: grayscale(100%) contrast(1.08) brightness(0.58);
+  object-fit: contain;
+  object-position: center bottom;
+  filter: grayscale(100%) contrast(1.04) brightness(0.78);
 }
 
 .ym-footer-scene-fade {
@@ -2686,9 +2687,10 @@ body.ym-jewels-flying .ym-hero-ornament {
   background: linear-gradient(
     180deg,
     #000000 0%,
-    rgb(0 0 0 / 0.78) 20%,
-    rgb(0 0 0 / 0.28) 52%,
-    rgb(0 0 0 / 0.5) 100%
+    rgb(0 0 0 / 0.62) 12%,
+    rgb(0 0 0 / 0.12) 34%,
+    transparent 52%,
+    rgb(0 0 0 / 0.18) 100%
   );
 }
 
@@ -2697,10 +2699,10 @@ body.ym-jewels-flying .ym-hero-ornament {
   inset: 0;
   z-index: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   padding-inline: var(--ym-container-pad);
-  padding-bottom: clamp(1rem, 3vh, 1.5rem);
+  padding-bottom: clamp(1.25rem, 3.5vh, 2rem);
   pointer-events: none;
 }
 
@@ -2831,7 +2833,11 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 @media (min-width: 769px) {
   .ym-footer-scene {
-    height: clamp(12.5rem, 26vh, 19rem);
+    height: clamp(20rem, 46vh, 34rem);
+  }
+
+  .ym-footer-scene-img {
+    object-position: center center;
   }
 }
 

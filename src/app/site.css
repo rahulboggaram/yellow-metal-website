@@ -2605,15 +2605,45 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 /* Footer */
 .ym-footer {
-  padding-top: 4.35rem;
-  padding-bottom: calc(3.15rem + env(safe-area-inset-bottom, 0px));
+  position: relative;
+  padding: 0 0 calc(3.15rem + env(safe-area-inset-bottom, 0px));
   background: #000000;
   color: rgb(255 255 255 / 0.7);
+  overflow: hidden;
+}
+
+.ym-footer-scene {
+  position: relative;
+  width: 100%;
+  height: clamp(11rem, 24vh, 17.5rem);
+  pointer-events: none;
+}
+
+.ym-footer-scene-img {
+  object-fit: cover;
+  object-position: center 42%;
+  filter: grayscale(100%) contrast(1.08) brightness(0.58);
+}
+
+.ym-footer-scene-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.08) 0%,
+    rgb(0 0 0 / 0.42) 42%,
+    rgb(0 0 0 / 0.82) 72%,
+    #000000 100%
+  );
 }
 
 .ym-footer-inner {
+  position: relative;
+  z-index: 1;
   display: grid;
-  gap: 2.4rem;
+  gap: 2rem;
+  margin-top: clamp(-5.5rem, -10vh, -3.75rem);
+  padding-top: 0;
 }
 
 .ym-footer-top {
@@ -2680,7 +2710,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 1.75rem;
-  margin-top: 1.8rem;
+  margin-top: 0.25rem;
 }
 
 .ym-footer-nav a {
@@ -2701,8 +2731,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-footer-quote {
-  margin: clamp(2rem, 5vh, 3rem) 0 0;
-  padding: 0;
+  margin: 0;
+  padding: 0 0 clamp(1.25rem, 3vh, 2rem);
   width: 100%;
   text-align: center;
   overflow-x: auto;
@@ -2724,18 +2754,31 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-style: italic;
   line-height: 1.45;
   letter-spacing: -0.01em;
-  color: rgb(255 255 255 / 0.88);
+  color: rgb(255 255 255 / 0.94);
+  text-shadow: 0 2px 28px rgb(0 0 0 / 0.55);
   white-space: nowrap;
 }
 
 .ym-footer-quote-attribution {
-  margin: 0.85rem 0 0;
+  margin: 0.75rem 0 0;
   font-family: var(--font-display);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 0.38);
+  color: rgb(255 255 255 / 0.5);
+  text-shadow: 0 1px 16px rgb(0 0 0 / 0.45);
+}
+
+@media (min-width: 769px) {
+  .ym-footer-scene {
+    height: clamp(12.5rem, 26vh, 19rem);
+  }
+
+  .ym-footer-inner {
+    margin-top: clamp(-6rem, -11vh, -4.25rem);
+    gap: 2.25rem;
+  }
 }
 
 /* Ancillary pages */

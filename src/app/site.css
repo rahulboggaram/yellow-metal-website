@@ -2705,19 +2705,27 @@ body.ym-jewels-flying .ym-hero-ornament {
   padding: 0;
   width: 100%;
   text-align: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ym-footer-quote::-webkit-scrollbar {
+  display: none;
 }
 
 .ym-footer-quote-text {
   margin: 0;
-  max-width: min(36rem, 100%);
+  max-width: none;
   margin-inline: auto;
+  display: inline-block;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4.8vw, 2.35rem);
+  font-size: clamp(0.9rem, 3.85vw, 2.35rem);
   font-weight: 700;
   font-style: italic;
   line-height: 1.45;
   letter-spacing: -0.01em;
   color: rgb(255 255 255 / 0.88);
+  white-space: nowrap;
 }
 
 .ym-footer-quote-attribution {

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const PHRASES = [
@@ -20,33 +19,11 @@ const GHOST_PHRASE = PHRASES.reduce((longest, phrase) =>
 const HOLD_MS = 2800;
 const FADE_MS = 420;
 
-function MinsPhrase({
-  before,
-  after,
-  showBelt,
-}: {
-  before: string;
-  after: string;
-  showBelt: boolean;
-}) {
+function MinsPhrase({ before, after }: { before: string; after: string }) {
   return (
     <>
       {before}
-      <span className="ym-hero-anchor ym-hero-anchor--belt">
-        {showBelt ? (
-          <Image
-            src="/images/ornaments/waist-belt.png"
-            alt=""
-            width={404}
-            height={91}
-            data-ornament-id="belt"
-            className="ym-hero-ornament ym-hero-ornament--belt"
-            priority
-            aria-hidden
-          />
-        ) : null}
-        10
-      </span>
+      <span className="ym-hero-anchor ym-hero-anchor--ten">10</span>
       {after}
     </>
   );
@@ -98,11 +75,7 @@ export function HeroMinsRotator({ active = true }: { active?: boolean }) {
       aria-live="polite"
     >
       <span className="ym-hero-mins-ghost" aria-hidden>
-        <MinsPhrase
-          before={GHOST_PHRASE.before}
-          after={GHOST_PHRASE.after}
-          showBelt={false}
-        />
+        <MinsPhrase before={GHOST_PHRASE.before} after={GHOST_PHRASE.after} />
       </span>
       <span
         className={`ym-hero-mins-live${visible ? " is-visible" : ""}${
@@ -110,11 +83,7 @@ export function HeroMinsRotator({ active = true }: { active?: boolean }) {
         }`}
         lang={phrase.lang}
       >
-        <MinsPhrase
-          before={phrase.before}
-          after={phrase.after}
-          showBelt
-        />
+        <MinsPhrase before={phrase.before} after={phrase.after} />
       </span>
       <span className="ym-sr-only">
         In 10 minutes — English, Kannada, and Telugu

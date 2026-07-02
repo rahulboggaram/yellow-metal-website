@@ -179,7 +179,6 @@ main {
   position: relative;
   width: 100%;
   text-align: center;
-  padding-bottom: 0.32em;
 }
 
 .ym-hero-mins-ghost {
@@ -221,6 +220,10 @@ main {
 }
 
 .ym-hero-anchor--belt {
+  letter-spacing: inherit;
+}
+
+.ym-hero-anchor--ten {
   letter-spacing: inherit;
 }
 
@@ -343,7 +346,7 @@ main {
     margin-top: -0.02em;
   }
 
-  .ym-hero-line--mins .ym-hero-anchor--belt {
+  .ym-hero-line--mins .ym-hero-anchor--ten {
     margin-inline: 0.14em;
   }
 
@@ -3396,7 +3399,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     letter-spacing: 0;
   }
 
-  .ym-hero-line--mins .ym-hero-anchor--belt {
+  .ym-hero-line--mins .ym-hero-anchor--ten {
     letter-spacing: 0;
   }
 
@@ -3412,6 +3415,27 @@ body.ym-jewels-flying .ym-hero-ornament {
   .ym-hero-mins-rotator {
     max-width: 100%;
     margin-inline: auto;
+    padding-bottom: 0;
+  }
+
+  .ym-hero-belt-row {
+    display: block;
+    font-size: calc(1em * 0.36);
+    margin-top: -0.1em;
+    padding-bottom: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .ym-hero-belt-row .ym-hero-ornament--belt {
+    position: relative;
+    left: auto;
+    top: auto;
+    display: inline-block;
+    vertical-align: top;
+    width: 7.8em;
+    transform: translate(0, calc(-0.38em + 10px)) scale(1.45);
+    transform-origin: center top;
   }
 
   .ym-hero-mins-live--regional {
@@ -3437,13 +3461,6 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-subtext-typewriter {
     overflow: visible;
-  }
-
-  .ym-hero-anchor--belt .ym-hero-ornament--belt {
-    left: 50%;
-    width: 4.2em;
-    transform: translate(-50%, calc(0.1em - 0.34em)) scale(1.45);
-    transform-origin: center top;
   }
 
   .ym-hero-ornament--ganesha {

@@ -3389,6 +3389,20 @@ body.ym-jewels-flying .ym-hero-ornament {
     margin-inline: auto;
     white-space: nowrap;
     font-size: min(1em, calc(((100vw - 2.5rem) / 11) * 1.2));
+    letter-spacing: 0;
+  }
+
+  .ym-hero-line--mins .ym-hero-anchor--belt {
+    letter-spacing: 0;
+  }
+
+  .ym-hero-mins-live[lang="en"] {
+    letter-spacing: -0.02em;
+  }
+
+  .ym-hero-mins-live[lang="kn"],
+  .ym-hero-mins-live[lang="te"] {
+    letter-spacing: 0;
   }
 
   .ym-hero-mins-rotator {

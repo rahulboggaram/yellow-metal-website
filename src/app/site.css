@@ -2669,31 +2669,12 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-footer-scene-fade {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      #000000 0%,
-      rgb(0 0 0 / 0.45) 10%,
-      transparent 28%
-    ),
-    linear-gradient(
-      0deg,
-      #000000 0%,
-      rgb(0 0 0 / 0.45) 10%,
-      transparent 28%
-    ),
-    linear-gradient(
-      90deg,
-      #000000 0%,
-      rgb(0 0 0 / 0.45) 10%,
-      transparent 22%
-    ),
-    linear-gradient(
-      270deg,
-      #000000 0%,
-      rgb(0 0 0 / 0.45) 10%,
-      transparent 22%
-    );
+  background: linear-gradient(
+    180deg,
+    #000000 0%,
+    rgb(0 0 0 / 0.45) 10%,
+    transparent 28%
+  );
 }
 
 .ym-footer-top {

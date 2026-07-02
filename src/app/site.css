@@ -2690,7 +2690,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-footer-scene-img {
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center 30%;
   filter: grayscale(100%) contrast(1.04) brightness(0.8);
 }
 

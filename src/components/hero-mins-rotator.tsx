@@ -65,7 +65,9 @@ export function HeroMinsRotator() {
         {GHOST_TEXT}
       </span>
       <span
-        className={`ym-hero-mins-live${visible ? " is-visible" : ""}`}
+        className={`ym-hero-mins-live${visible ? " is-visible" : ""}${
+          !reducedMotion && phrase.lang !== "en" ? " ym-hero-mins-live--regional" : ""
+        }`}
         lang={phrase.lang}
       >
         {reducedMotion ? PHRASES[0].text : phrase.text}

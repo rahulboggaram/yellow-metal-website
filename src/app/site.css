@@ -202,6 +202,10 @@ main {
   opacity: 1;
 }
 
+.ym-hero-mins-live--regional {
+  font-size: 0.88em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ym-hero-mins-live {
     position: static;

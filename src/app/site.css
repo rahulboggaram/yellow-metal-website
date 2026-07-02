@@ -3444,7 +3444,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     display: inline-block;
     vertical-align: top;
     width: 7.8em;
-    transform: translate(0, calc(-0.38em - 5px)) scale(0.928);
+    transform: translate(0, calc(-0.38em - 20px)) scale(0.928);
     transform-origin: center top;
   }
 

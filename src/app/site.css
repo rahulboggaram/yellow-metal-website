@@ -2670,18 +2670,19 @@ body.ym-jewels-flying .ym-hero-ornament {
   position: relative;
   width: 100%;
   background: #000000;
+  padding-top: clamp(1.5rem, 3.5vh, 2.5rem);
   padding-bottom: calc(clamp(1.25rem, 3vh, 2rem) + env(safe-area-inset-bottom, 0px));
 }
 
-.ym-footer-visual-inner {
+.ym-footer-visual-stage {
   position: relative;
-  padding-top: clamp(1.5rem, 3.5vh, 2.5rem);
+  width: 100%;
 }
 
 .ym-footer-scene {
   position: relative;
   width: 100%;
-  aspect-ratio: 1024 / 563.25;
+  aspect-ratio: 1024 / 420;
   overflow: hidden;
   background: #000000;
   pointer-events: none;
@@ -2730,8 +2731,9 @@ body.ym-jewels-flying .ym-hero-ornament {
   bottom: clamp(0.85rem, 2.5vh, 1.35rem);
   z-index: 1;
   margin: 0;
-  padding: 0;
+  padding: 0 clamp(1rem, 3vw, 1.5rem);
   width: 100%;
+  box-sizing: border-box;
   text-align: center;
   overflow-x: auto;
   scrollbar-width: none;
@@ -2853,11 +2855,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   text-shadow: 0 1px 14px rgb(0 0 0 / 0.45);
 }
 
-@media (min-width: 769px) {
-  .ym-footer-visual-inner {
-    padding-top: clamp(2rem, 4vh, 2.75rem);
-  }
-}
 
 /* Ancillary pages */
 .ym-page {

@@ -71,13 +71,13 @@ export function SiteFooter() {
       </div>
 
       <div className="ym-footer-visual">
-        <div className="ym-container ym-footer-visual-inner">
+        <div className="ym-footer-visual-stage">
           <div className="ym-footer-scene" aria-hidden>
             <Image
               src="/images/site/footer-scene.png"
               alt=""
               fill
-              sizes="(min-width: 72rem) 69rem, 100vw"
+              sizes="100vw"
               className="ym-footer-scene-img"
             />
             <div className="ym-footer-scene-fade" />

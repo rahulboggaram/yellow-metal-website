@@ -192,7 +192,7 @@ main {
   top: auto;
   display: inline-block;
   vertical-align: top;
-  transform: translate(-150px, calc(-0.42em + 20px)) scale(1.2);
+  transform: translate(-125px, calc(-0.42em + 10px)) scale(1.2);
   transform-origin: center top;
 }
 
@@ -282,7 +282,7 @@ main {
 
   .ym-hero-belt-row .ym-hero-ornament--belt {
     width: 3.1em;
-    transform: translate(-150px, calc(-0.48em + 20px)) scale(1.2);
+    transform: translate(-125px, calc(-0.48em + 10px)) scale(1.2);
   }
 
   .ym-hero-line--mins {
@@ -392,12 +392,8 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(
-    (100dvh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.15
-  );
-  min-height: calc(
-    (100svh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.15
-  );
+  min-height: calc(100dvh - var(--ym-header-total) - var(--ym-loan-estimate-peek));
+  min-height: calc(100svh - var(--ym-header-total) - var(--ym-loan-estimate-peek));
   padding-block: clamp(5.1rem, 15.2vh, 8.25rem);
   background: #000000;
   overflow: visible;
@@ -2268,8 +2264,22 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 @media (min-width: 769px) {
+  .ym-loan-estimate-fold {
+    min-height: calc(
+      (100dvh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.15
+    );
+    min-height: calc(
+      (100svh - var(--ym-header-total) - var(--ym-loan-estimate-peek)) * 1.15
+    );
+  }
+
   .ym-features-fold {
     --ym-features-card-width: min(24rem, 36vw);
+    min-height: 115dvh;
+    min-height: 115svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 
@@ -3285,7 +3295,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-belt-row .ym-hero-ornament--belt {
     width: 7.8em;
-    transform: translate(-150px, calc(-0.38em + 20px)) scale(1);
+    transform: translate(-125px, calc(-0.38em + 10px)) scale(1);
   }
 
   .ym-hero-ornament--ganesha {

@@ -330,7 +330,7 @@ main {
     display: inline-block;
     vertical-align: top;
     width: 3.1em;
-    transform: translate(-125px, calc(-0.48em + 20px)) scale(1.2);
+    transform: translate(-105px, calc(-0.48em + 20px)) scale(1.2);
     transform-origin: center top;
   }
 

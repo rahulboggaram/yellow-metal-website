@@ -2646,10 +2646,25 @@ body.ym-jewels-flying .ym-hero-ornament {
 /* Footer */
 .ym-footer {
   position: relative;
-  padding: 0 0 calc(3.15rem + env(safe-area-inset-bottom, 0px));
+  padding: 0 0 env(safe-area-inset-bottom, 0px);
   background: #000000;
   color: rgb(255 255 255 / 0.7);
   overflow: hidden;
+}
+
+.ym-footer-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 2.4rem;
+  padding-top: 4.35rem;
+  padding-bottom: 0;
+  background: #000000;
+}
+
+.ym-footer-visual {
+  position: relative;
+  width: 100%;
 }
 
 .ym-footer-scene {
@@ -2670,19 +2685,23 @@ body.ym-jewels-flying .ym-hero-ornament {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgb(0 0 0 / 0.08) 0%,
-    rgb(0 0 0 / 0.42) 42%,
-    rgb(0 0 0 / 0.82) 72%,
-    #000000 100%
+    #000000 0%,
+    rgb(0 0 0 / 0.78) 20%,
+    rgb(0 0 0 / 0.28) 52%,
+    rgb(0 0 0 / 0.5) 100%
   );
 }
 
-.ym-footer-inner {
-  position: relative;
+.ym-footer-quote-wrap {
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  display: grid;
-  gap: 2.4rem;
-  padding-top: clamp(2.5rem, 5vh, 3.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--ym-container-pad);
+  padding-bottom: clamp(1rem, 3vh, 1.5rem);
+  pointer-events: none;
 }
 
 .ym-footer-top {
@@ -2770,12 +2789,13 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-footer-quote {
-  margin: clamp(2rem, 5vh, 3rem) 0 0;
+  margin: 0;
   padding: 0;
   width: 100%;
   text-align: center;
   overflow-x: auto;
   scrollbar-width: none;
+  pointer-events: auto;
 }
 
 .ym-footer-quote::-webkit-scrollbar {
@@ -2793,7 +2813,8 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-style: italic;
   line-height: 1.45;
   letter-spacing: -0.01em;
-  color: rgb(255 255 255 / 0.88);
+  color: rgb(255 255 255 / 0.94);
+  text-shadow: 0 2px 24px rgb(0 0 0 / 0.55);
   white-space: nowrap;
 }
 
@@ -2804,7 +2825,8 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 0.38);
+  color: rgb(255 255 255 / 0.5);
+  text-shadow: 0 1px 14px rgb(0 0 0 / 0.45);
 }
 
 @media (min-width: 769px) {

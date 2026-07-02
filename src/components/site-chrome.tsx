@@ -15,17 +15,6 @@ const FOOTER_LINKS = [
 export function SiteFooter() {
   return (
     <footer className="ym-footer">
-      <div className="ym-footer-scene" aria-hidden>
-        <Image
-          src="/images/site/footer-scene.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="ym-footer-scene-img"
-        />
-        <div className="ym-footer-scene-fade" />
-      </div>
-
       <div className="ym-container ym-footer-inner">
         <div className="ym-footer-top">
           <div className="ym-footer-brand">
@@ -79,15 +68,30 @@ export function SiteFooter() {
         <p className="ym-footer-copy">
           © {new Date().getFullYear()} Yellow Metal. All rights reserved.
         </p>
+      </div>
 
-        <figure className="ym-footer-quote">
-          <blockquote className="ym-footer-quote-text">
-            &ldquo;Gold is money. Everything else is credit.&rdquo;
-          </blockquote>
-          <figcaption className="ym-footer-quote-attribution">
-            J.P. Morgan
-          </figcaption>
-        </figure>
+      <div className="ym-footer-visual">
+        <div className="ym-footer-scene" aria-hidden>
+          <Image
+            src="/images/site/footer-scene.png"
+            alt=""
+            fill
+            sizes="100vw"
+            className="ym-footer-scene-img"
+          />
+          <div className="ym-footer-scene-fade" />
+        </div>
+
+        <div className="ym-container ym-footer-quote-wrap">
+          <figure className="ym-footer-quote">
+            <blockquote className="ym-footer-quote-text">
+              &ldquo;Gold is money. Everything else is credit.&rdquo;
+            </blockquote>
+            <figcaption className="ym-footer-quote-attribution">
+              J.P. Morgan
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </footer>
   );

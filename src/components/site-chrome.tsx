@@ -74,7 +74,7 @@ export function SiteFooter() {
         <div className="ym-footer-visual-stage">
           <div className="ym-footer-scene" aria-hidden>
             <Image
-              src="/images/site/footer-scene.png"
+              src="/images/site/footer-scene.jpg"
               alt=""
               fill
               sizes="100vw"

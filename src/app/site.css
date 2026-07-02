@@ -153,9 +153,6 @@ main {
   letter-spacing: -0.025em;
   color: #000000;
   --ym-hero-subtext-size: 0.72rem;
-  --ym-hero-belt-anchor-size: calc(
-    clamp(3rem, 13.5vw, 8.75rem) * var(--ym-hero-scale) * 0.36
-  );
 }
 
 .ym-hero-line {
@@ -175,6 +172,27 @@ main {
 .ym-hero-line--mins {
   display: block;
   white-space: nowrap;
+}
+
+.ym-hero-belt-row {
+  display: block;
+  width: 100%;
+  margin-top: -0.12em;
+  padding-bottom: clamp(1.25rem, 2.4em, 2.85rem);
+  font-size: calc(1em * 0.36);
+  line-height: 0;
+  text-align: center;
+  overflow: visible;
+}
+
+.ym-hero-belt-row .ym-hero-ornament--belt {
+  position: relative;
+  left: auto;
+  top: auto;
+  display: inline-block;
+  vertical-align: top;
+  transform: translate(0, -0.42em) scale(1.2);
+  transform-origin: center top;
 }
 
 .ym-hero-subtext {
@@ -197,28 +215,6 @@ main {
   position: relative;
   width: 100%;
   overflow: visible;
-}
-
-.ym-hero-subtext .ym-hero-anchor--belt-jewel {
-  position: relative;
-  display: inline-block;
-  font-size: var(--ym-hero-belt-anchor-size);
-  line-height: 1;
-  vertical-align: baseline;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  color: inherit;
-}
-
-.ym-hero-subtext-letter {
-  font-size: calc(var(--ym-hero-subtext-size) / var(--ym-hero-belt-anchor-size) * 1em);
-  line-height: inherit;
-  letter-spacing: inherit;
-}
-
-.ym-hero-subtext-line--belt {
-  position: relative;
-  padding-bottom: clamp(1.1rem, 7vw, 1.85rem);
 }
 
 .ym-hero-subtext-ghost {
@@ -275,18 +271,17 @@ main {
 
   .ym-hero-headline {
     gap: 0.04em;
-    --ym-hero-belt-anchor-size: calc(
-      clamp(3rem, 13.5vw, 8.75rem) * var(--ym-hero-scale)
-    );
   }
 
-  .ym-hero-subtext-line--belt {
-    padding-bottom: clamp(2rem, 3.2vw, 3.5rem);
+  .ym-hero-belt-row {
+    font-size: 1em;
+    margin-top: -0.08em;
+    padding-bottom: clamp(1.75rem, 2.8em, 3.35rem);
   }
 
-  .ym-hero-subtext .ym-hero-ornament--belt {
+  .ym-hero-belt-row .ym-hero-ornament--belt {
     width: 3.1em;
-    transform: translate(calc(-0.16em), calc(0.04em - 0.52em)) scale(1.2);
+    transform: translate(0, -0.48em) scale(1.2);
   }
 
   .ym-hero-line--mins {
@@ -3242,16 +3237,6 @@ body.ym-jewels-flying .ym-hero-ornament {
       ),
       calc(5.5rem * var(--ym-hero-mobile-scale))
     );
-    --ym-hero-belt-anchor-size: calc(
-      clamp(
-        calc(3.1rem * var(--ym-hero-mobile-scale)),
-        min(
-          calc(26vw * var(--ym-hero-mobile-scale)),
-          calc(var(--ym-hero-area) * 0.7 / 3.85 * var(--ym-hero-mobile-scale))
-        ),
-        calc(5.5rem * var(--ym-hero-mobile-scale))
-      ) * 0.36
-    );
     gap: 0.02em;
     line-height: 1;
     letter-spacing: -0.05em;
@@ -3291,13 +3276,15 @@ body.ym-jewels-flying .ym-hero-ornament {
     overflow: visible;
   }
 
-  .ym-hero-subtext-line--belt {
-    padding-bottom: clamp(1.35rem, 9vw, 2.15rem);
+  .ym-hero-belt-row {
+    font-size: calc(1em * 0.36);
+    margin-top: -0.1em;
+    padding-bottom: clamp(1.15rem, 8vw, 2rem);
   }
 
-  .ym-hero-ornament--belt {
+  .ym-hero-belt-row .ym-hero-ornament--belt {
     width: 7.8em;
-    transform: translate(calc(-0.14em), calc(0.02em - 0.45em)) scale(1);
+    transform: translate(0, -0.38em) scale(1);
   }
 
   .ym-hero-ornament--ganesha {

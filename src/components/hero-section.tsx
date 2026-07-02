@@ -57,6 +57,17 @@ export function HeroSection() {
               </span>
             </span>
             <span className="ym-hero-line ym-hero-line--mins">In 10 Mins</span>
+            <span className="ym-hero-belt-row" aria-hidden>
+              <Image
+                src="/images/ornaments/waist-belt.png"
+                alt=""
+                width={404}
+                height={91}
+                data-ornament-id="belt"
+                className="ym-hero-ornament ym-hero-ornament--belt"
+                priority
+              />
+            </span>
             <HeroFeesTypewriter />
           </h1>
         </div>

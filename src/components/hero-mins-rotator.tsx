@@ -16,7 +16,7 @@ const GHOST_TEXT = PHRASES.map((phrase) => phrase.text).reduce(
 const HOLD_MS = 2800;
 const FADE_MS = 420;
 
-export function HeroMinsRotator() {
+export function HeroMinsRotator({ active = true }: { active?: boolean }) {
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -30,7 +30,7 @@ export function HeroMinsRotator() {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || !active) return;
 
     let holdTimer: number;
     let fadeTimer: number;
@@ -52,7 +52,7 @@ export function HeroMinsRotator() {
       window.clearTimeout(holdTimer);
       window.clearTimeout(fadeTimer);
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, active]);
 
   const phrase = PHRASES[index];
 

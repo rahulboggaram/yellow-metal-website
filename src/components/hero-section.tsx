@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { HeroFeesTypewriter } from "@/components/hero-fees-typewriter";
-import { HeroMinsRotator } from "@/components/hero-mins-rotator";
+import { HeroHeadlineAnimations } from "@/components/hero-headline-animations";
 
 /** Fold 1 — headline + jewels. Sizes with CSS clamp (no JS scaling). */
 export function HeroSection() {
@@ -57,19 +56,7 @@ export function HeroSection() {
                 </span>
               </span>
             </span>
-            <HeroMinsRotator />
-            <span className="ym-hero-belt-row" aria-hidden>
-              <Image
-                src="/images/ornaments/waist-belt.png"
-                alt=""
-                width={404}
-                height={91}
-                data-ornament-id="belt"
-                className="ym-hero-ornament ym-hero-ornament--belt"
-                priority
-              />
-            </span>
-            <HeroFeesTypewriter />
+            <HeroHeadlineAnimations />
           </h1>
         </div>
       </div>

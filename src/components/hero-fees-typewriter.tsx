@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const LINE_1 = "· No hidden fees · No processing fees · No valuation charges";
 const LINE_2 = "· No prepayment penalties · No fees to store your gold ·";
@@ -27,14 +27,31 @@ function TypewriterCursor() {
   );
 }
 
-export function HeroFeesTypewriter() {
+export function HeroFeesTypewriter({
+  onComplete,
+}: {
+  onComplete?: () => void;
+}) {
   const [charIndex, setCharIndex] = useState(0);
   const [started, setStarted] = useState(false);
+  const completedRef = useRef(false);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  const markComplete = () => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    onCompleteRef.current?.();
+  };
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reducedMotion.matches) {
       setCharIndex(FULL_TEXT.length);
+      markComplete();
       return;
     }
 
@@ -51,6 +68,12 @@ export function HeroFeesTypewriter() {
 
     return () => window.clearTimeout(timer);
   }, [started, charIndex]);
+
+  useEffect(() => {
+    if (charIndex >= FULL_TEXT.length) {
+      markComplete();
+    }
+  }, [charIndex]);
 
   const visibleText = FULL_TEXT.slice(0, charIndex);
   const { line1, line2 } = splitTypedText(visibleText);

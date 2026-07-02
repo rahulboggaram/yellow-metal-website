@@ -179,7 +179,7 @@ main {
 
 .ym-hero-subtext {
   margin: 0;
-  max-width: min(40rem, 94vw);
+  max-width: min(52rem, 96vw);
   line-height: 1.8;
   font-family: var(--font-display);
   font-size: 0.72rem;
@@ -218,6 +218,17 @@ main {
 
 .ym-hero-subtext-line--belt {
   position: relative;
+}
+
+.ym-hero-subtext-line--single {
+  display: block;
+  text-wrap: balance;
+}
+
+@media (min-width: 769px) {
+  .ym-hero-subtext-line--single {
+    white-space: nowrap;
+  }
 }
 
 .ym-hero-subtext-ghost {

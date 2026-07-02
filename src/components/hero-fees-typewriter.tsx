@@ -3,23 +3,10 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const LINE_1 = "· No hidden fees · No processing · No valuation charges";
-const LINE_2 =
-  "· No prepayment penalties · No fees to store your gold · No insurance";
-const FULL_TEXT = `${LINE_1}\n${LINE_2}`;
+const FEES_TEXT =
+  "· No hidden fees · No processing fees · No valuation charges · No prepayment penalties · No fees to store your gold ·";
 const TYPE_DELAY_MS = 28;
 const START_DELAY_MS = 700;
-
-function splitTypedText(text: string) {
-  const newlineIndex = text.indexOf("\n");
-  if (newlineIndex === -1) {
-    return { line1: text, line2: "" };
-  }
-  return {
-    line1: text.slice(0, newlineIndex),
-    line2: text.slice(newlineIndex + 1),
-  };
-}
 
 function TypewriterCursor() {
   return (
@@ -29,19 +16,19 @@ function TypewriterCursor() {
   );
 }
 
-function renderLine1(line1: string, showCursor: boolean) {
-  const noIndex = line1.indexOf("No");
+function renderFeesText(text: string, showCursor: boolean) {
+  const noIndex = text.indexOf("No");
   if (noIndex === -1) {
     return (
       <>
-        {line1}
+        {text}
         {showCursor ? <TypewriterCursor /> : null}
       </>
     );
   }
 
-  const before = line1.slice(0, noIndex);
-  const afterN = line1.slice(noIndex + 1);
+  const before = text.slice(0, noIndex);
+  const afterN = text.slice(noIndex + 1);
 
   return (
     <>
@@ -72,7 +59,7 @@ export function HeroFeesTypewriter() {
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reducedMotion.matches) {
-      setCharIndex(FULL_TEXT.length);
+      setCharIndex(FEES_TEXT.length);
       return;
     }
 
@@ -81,7 +68,7 @@ export function HeroFeesTypewriter() {
   }, []);
 
   useEffect(() => {
-    if (!started || charIndex >= FULL_TEXT.length) return;
+    if (!started || charIndex >= FEES_TEXT.length) return;
 
     const timer = window.setTimeout(() => {
       setCharIndex((index) => index + 1);
@@ -90,10 +77,8 @@ export function HeroFeesTypewriter() {
     return () => window.clearTimeout(timer);
   }, [started, charIndex]);
 
-  const visibleText = FULL_TEXT.slice(0, charIndex);
-  const { line1, line2 } = splitTypedText(visibleText);
-  const isComplete = charIndex >= FULL_TEXT.length;
-  const onLine2 = charIndex > LINE_1.length;
+  const visibleText = FEES_TEXT.slice(0, charIndex);
+  const isComplete = charIndex >= FEES_TEXT.length;
 
   return (
     <span
@@ -101,7 +86,7 @@ export function HeroFeesTypewriter() {
       aria-live="polite"
     >
       <span className="ym-hero-subtext-ghost" aria-hidden>
-        <span className="ym-hero-subtext-line ym-hero-subtext-line--belt">
+        <span className="ym-hero-subtext-line ym-hero-subtext-line--belt ym-hero-subtext-line--single">
           ·{" "}
           <span className="ym-hero-anchor ym-hero-anchor--belt-jewel">
             <Image
@@ -114,22 +99,16 @@ export function HeroFeesTypewriter() {
             />
             <span className="ym-hero-subtext-letter">N</span>
           </span>
-          o hidden fees · No processing · No valuation charges
+          o hidden fees · No processing fees · No valuation charges · No prepayment
+          penalties · No fees to store your gold ·
         </span>
-        <span className="ym-hero-subtext-line">{LINE_2}</span>
       </span>
       <span className="ym-hero-subtext-live">
-        <span className="ym-hero-subtext-line">
-          {renderLine1(line1, !onLine2 && !isComplete)}
+        <span className="ym-hero-subtext-line ym-hero-subtext-line--single">
+          {renderFeesText(visibleText, !isComplete)}
         </span>
-        {onLine2 ? (
-          <span className="ym-hero-subtext-line">
-            {line2}
-            {!isComplete ? <TypewriterCursor /> : null}
-          </span>
-        ) : null}
       </span>
-      <span className="ym-sr-only">{FULL_TEXT.replace("\n", " ")}</span>
+      <span className="ym-sr-only">{FEES_TEXT}</span>
     </span>
   );
 }

@@ -3449,14 +3449,15 @@ body.ym-jewels-flying .ym-hero-ornament {
     margin-top: -0.35rem;
     margin-inline: auto;
     white-space: normal;
-    line-height: 1.65;
-    font-size: clamp(0.58rem, 2.65vw, 0.68rem);
-    letter-spacing: 0.07em;
+    line-height: 1.5;
+    font-size: min(0.68rem, calc((100vw - 2.5rem) / 50));
+    letter-spacing: 0.04em;
     overflow: visible;
   }
 
   .ym-hero-line--fees .ym-hero-subtext-line {
-    white-space: normal;
+    display: block;
+    white-space: nowrap;
   }
 
   .ym-hero-subtext-typewriter {

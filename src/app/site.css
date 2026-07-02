@@ -191,7 +191,7 @@ main {
   top: auto;
   display: inline-block;
   vertical-align: top;
-  transform: translate(-100px, -0.42em) scale(1.2);
+  transform: translate(-125px, calc(-0.42em + 10px)) scale(1.2);
   transform-origin: center top;
 }
 
@@ -281,7 +281,7 @@ main {
 
   .ym-hero-belt-row .ym-hero-ornament--belt {
     width: 3.1em;
-    transform: translate(-100px, -0.48em) scale(1.2);
+    transform: translate(-125px, calc(-0.48em + 10px)) scale(1.2);
   }
 
   .ym-hero-line--mins {
@@ -3284,7 +3284,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-belt-row .ym-hero-ornament--belt {
     width: 7.8em;
-    transform: translate(-100px, -0.38em) scale(1);
+    transform: translate(-125px, calc(-0.38em + 10px)) scale(1);
   }
 
   .ym-hero-ornament--ganesha {

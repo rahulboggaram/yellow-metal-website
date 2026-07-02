@@ -167,7 +167,7 @@ main {
 
 .ym-hero-line--fees {
   display: block;
-  margin-top: -1.1rem;
+  margin-top: -0.35rem;
 }
 
 .ym-hero-line--mins {
@@ -179,6 +179,7 @@ main {
   position: relative;
   width: 100%;
   text-align: center;
+  padding-bottom: 0.32em;
 }
 
 .ym-hero-mins-ghost {
@@ -219,25 +220,8 @@ main {
   }
 }
 
-.ym-hero-belt-row {
-  display: block;
-  width: 100%;
-  margin-top: -0.12em;
-  padding-bottom: 0;
-  font-size: calc(1em * 0.36);
-  line-height: 0;
-  text-align: center;
-  overflow: visible;
-}
-
-.ym-hero-belt-row .ym-hero-ornament--belt {
-  position: relative;
-  left: auto;
-  top: auto;
-  display: inline-block;
-  vertical-align: top;
-  transform: translate(-125px, calc(-0.42em + 10px)) scale(1.2);
-  transform-origin: center top;
+.ym-hero-anchor--belt {
+  letter-spacing: inherit;
 }
 
 .ym-hero-subtext {
@@ -318,23 +302,12 @@ main {
     gap: 0.04em;
   }
 
-  .ym-hero-belt-row {
-    font-size: 1em;
-    margin-top: -0.08em;
-    padding-bottom: 0;
-  }
-
-  .ym-hero-belt-row .ym-hero-ornament--belt {
-    width: 3.1em;
-    transform: translate(-125px, calc(-0.48em + 10px)) scale(1.2);
-  }
-
   .ym-hero-line--mins {
     margin-top: -0.02em;
   }
 
   .ym-hero-line--fees {
-    margin-top: -1.5rem;
+    margin-top: -0.5rem;
     overflow: visible;
   }
 }
@@ -378,14 +351,13 @@ main {
 }
 
 .ym-hero-ornament--belt {
-  left: 0;
+  left: 50%;
   top: 100%;
-  width: 3.1em;
+  width: 3.6em;
   height: auto;
   max-width: none;
-  /* em-only offsets — scales with headline (0.29em ≈ prior 40px shift at max size) */
-  transform: translate(calc(-0.16em), calc(0.04em - 0.52em)) scale(1.2);
-  transform-origin: left top;
+  transform: translate(-50%, calc(0.08em - 0.38em)) scale(1.55);
+  transform-origin: center top;
 }
 
 .ym-hero-spacer {
@@ -3404,7 +3376,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-line--fees {
-    margin-top: -1.25rem;
+    margin-top: -0.55rem;
     max-width: min(22rem, 92vw);
     line-height: 1.8;
     overflow: visible;
@@ -3414,15 +3386,9 @@ body.ym-jewels-flying .ym-hero-ornament {
     overflow: visible;
   }
 
-  .ym-hero-belt-row {
-    font-size: calc(1em * 0.36);
-    margin-top: -0.1em;
-    padding-bottom: 0;
-  }
-
-  .ym-hero-belt-row .ym-hero-ornament--belt {
-    width: 7.8em;
-    transform: translate(-125px, calc(-0.38em + 10px)) scale(1);
+  .ym-hero-ornament--belt {
+    width: 4.2em;
+    transform: translate(-50%, calc(0.1em - 0.34em)) scale(1.45);
   }
 
   .ym-hero-ornament--ganesha {

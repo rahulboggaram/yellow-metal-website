@@ -1,20 +1,56 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const PHRASES = [
-  { lang: "en", text: "In 10 Mins" },
-  { lang: "kn", text: "10 ನಿಮಿಷಗಳಲ್ಲಿ" },
-  { lang: "te", text: "10 నిమిషాల్లో" },
+  { lang: "en", before: "In ", after: " Mins" },
+  { lang: "kn", before: "", after: " ನಿಮಿಷಗಳಲ್ಲಿ" },
+  { lang: "te", before: "", after: " నిమిషాల్లో" },
 ] as const;
 
-const GHOST_TEXT = PHRASES.map((phrase) => phrase.text).reduce(
-  (longest, text) => (text.length > longest.length ? text : longest),
-  PHRASES[0].text,
+function phraseText(phrase: (typeof PHRASES)[number]) {
+  return `${phrase.before}10${phrase.after}`;
+}
+
+const GHOST_PHRASE = PHRASES.reduce((longest, phrase) =>
+  phraseText(phrase).length > phraseText(longest).length ? phrase : longest,
 );
 
 const HOLD_MS = 2800;
 const FADE_MS = 420;
+
+function MinsPhrase({
+  before,
+  after,
+  showBelt,
+}: {
+  before: string;
+  after: string;
+  showBelt: boolean;
+}) {
+  return (
+    <>
+      {before}
+      <span className="ym-hero-anchor ym-hero-anchor--belt">
+        {showBelt ? (
+          <Image
+            src="/images/ornaments/waist-belt.png"
+            alt=""
+            width={404}
+            height={91}
+            data-ornament-id="belt"
+            className="ym-hero-ornament ym-hero-ornament--belt"
+            priority
+            aria-hidden
+          />
+        ) : null}
+        10
+      </span>
+      {after}
+    </>
+  );
+}
 
 export function HeroMinsRotator({ active = true }: { active?: boolean }) {
   const [index, setIndex] = useState(0);
@@ -54,7 +90,7 @@ export function HeroMinsRotator({ active = true }: { active?: boolean }) {
     };
   }, [reducedMotion, active]);
 
-  const phrase = PHRASES[index];
+  const phrase = reducedMotion ? PHRASES[0] : PHRASES[index];
 
   return (
     <span
@@ -62,7 +98,11 @@ export function HeroMinsRotator({ active = true }: { active?: boolean }) {
       aria-live="polite"
     >
       <span className="ym-hero-mins-ghost" aria-hidden>
-        {GHOST_TEXT}
+        <MinsPhrase
+          before={GHOST_PHRASE.before}
+          after={GHOST_PHRASE.after}
+          showBelt={false}
+        />
       </span>
       <span
         className={`ym-hero-mins-live${visible ? " is-visible" : ""}${
@@ -70,7 +110,11 @@ export function HeroMinsRotator({ active = true }: { active?: boolean }) {
         }`}
         lang={phrase.lang}
       >
-        {reducedMotion ? PHRASES[0].text : phrase.text}
+        <MinsPhrase
+          before={phrase.before}
+          after={phrase.after}
+          showBelt
+        />
       </span>
       <span className="ym-sr-only">
         In 10 minutes — English, Kannada, and Telugu

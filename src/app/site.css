@@ -167,7 +167,7 @@ main {
 
 .ym-hero-line--fees {
   display: block;
-  margin-top: -0.25rem;
+  margin-top: -0.55rem;
 }
 
 .ym-hero-line--mins {
@@ -179,7 +179,7 @@ main {
   display: block;
   width: 100%;
   margin-top: -0.12em;
-  padding-bottom: clamp(0.35rem, 0.85em, 1rem);
+  padding-bottom: clamp(0.1rem, 0.45em, 0.5rem);
   font-size: calc(1em * 0.36);
   line-height: 0;
   text-align: center;
@@ -277,7 +277,7 @@ main {
   .ym-hero-belt-row {
     font-size: 1em;
     margin-top: -0.08em;
-    padding-bottom: clamp(0.45rem, 0.95em, 1.15rem);
+    padding-bottom: clamp(0.15rem, 0.45em, 0.5rem);
   }
 
   .ym-hero-belt-row .ym-hero-ornament--belt {
@@ -290,7 +290,7 @@ main {
   }
 
   .ym-hero-line--fees {
-    margin-top: -0.5rem;
+    margin-top: -0.8rem;
     overflow: visible;
   }
 }
@@ -3277,7 +3277,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-line--fees {
-    margin-top: -0.45rem;
+    margin-top: -0.7rem;
     max-width: min(22rem, 92vw);
     line-height: 1.8;
     overflow: visible;
@@ -3290,7 +3290,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   .ym-hero-belt-row {
     font-size: calc(1em * 0.36);
     margin-top: -0.1em;
-    padding-bottom: clamp(0.25rem, 3.5vw, 0.65rem);
+    padding-bottom: clamp(0.05rem, 2vw, 0.25rem);
   }
 
   .ym-hero-belt-row .ym-hero-ornament--belt {

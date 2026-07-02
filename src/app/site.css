@@ -152,6 +152,10 @@ main {
   line-height: 1.05;
   letter-spacing: -0.025em;
   color: #000000;
+  --ym-hero-subtext-size: 0.72rem;
+  --ym-hero-belt-anchor-size: calc(
+    clamp(3rem, 13.5vw, 8.75rem) * var(--ym-hero-scale) * 0.36
+  );
 }
 
 .ym-hero-line {
@@ -192,6 +196,28 @@ main {
 .ym-hero-subtext-typewriter {
   position: relative;
   width: 100%;
+  overflow: visible;
+}
+
+.ym-hero-subtext .ym-hero-anchor--belt-jewel {
+  position: relative;
+  display: inline-block;
+  font-size: var(--ym-hero-belt-anchor-size);
+  line-height: 1;
+  vertical-align: baseline;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+}
+
+.ym-hero-subtext-letter {
+  font-size: calc(var(--ym-hero-subtext-size) / var(--ym-hero-belt-anchor-size) * 1em);
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+
+.ym-hero-subtext-line--belt {
+  position: relative;
 }
 
 .ym-hero-subtext-ghost {
@@ -256,6 +282,7 @@ main {
 
   .ym-hero-line--fees {
     margin-top: 0.35rem;
+    overflow: visible;
   }
 }
 
@@ -3202,6 +3229,16 @@ body.ym-jewels-flying .ym-hero-ornament {
       ),
       calc(5.5rem * var(--ym-hero-mobile-scale))
     );
+    --ym-hero-belt-anchor-size: calc(
+      clamp(
+        calc(3.1rem * var(--ym-hero-mobile-scale)),
+        min(
+          calc(26vw * var(--ym-hero-mobile-scale)),
+          calc(var(--ym-hero-area) * 0.7 / 3.85 * var(--ym-hero-mobile-scale))
+        ),
+        calc(5.5rem * var(--ym-hero-mobile-scale))
+      ) * 0.36
+    );
     gap: 0.02em;
     line-height: 1;
     letter-spacing: -0.05em;
@@ -3234,6 +3271,11 @@ body.ym-jewels-flying .ym-hero-ornament {
     margin-top: 0.5rem;
     max-width: min(22rem, 92vw);
     line-height: 1.8;
+    overflow: visible;
+  }
+
+  .ym-hero-subtext-typewriter {
+    overflow: visible;
   }
 
   .ym-hero-ornament--belt {

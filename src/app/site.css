@@ -218,6 +218,7 @@ main {
 
 .ym-hero-subtext-line--belt {
   position: relative;
+  padding-bottom: clamp(1.1rem, 7vw, 1.85rem);
 }
 
 .ym-hero-subtext-ghost {
@@ -274,6 +275,18 @@ main {
 
   .ym-hero-headline {
     gap: 0.04em;
+    --ym-hero-belt-anchor-size: calc(
+      clamp(3rem, 13.5vw, 8.75rem) * var(--ym-hero-scale)
+    );
+  }
+
+  .ym-hero-subtext-line--belt {
+    padding-bottom: clamp(2rem, 3.2vw, 3.5rem);
+  }
+
+  .ym-hero-subtext .ym-hero-ornament--belt {
+    width: 3.1em;
+    transform: translate(calc(-0.16em), calc(0.04em - 0.52em)) scale(1.2);
   }
 
   .ym-hero-line--mins {
@@ -3276,6 +3289,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-subtext-typewriter {
     overflow: visible;
+  }
+
+  .ym-hero-subtext-line--belt {
+    padding-bottom: clamp(1.35rem, 9vw, 2.15rem);
   }
 
   .ym-hero-ornament--belt {

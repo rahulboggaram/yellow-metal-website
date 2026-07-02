@@ -54,6 +54,9 @@ export function HeroSection() {
                   s
                 </span>
               </span>
+              <span className="ym-hero-chunk ym-hero-chunk--mins ym-hero-chunk--desktop-only">
+                In 10 Mins
+              </span>
             </span>
             <span className="ym-hero-line ym-hero-line--fees">
               <span className="ym-hero-chunk ym-hero-chunk--no-hidden">

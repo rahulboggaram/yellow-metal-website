@@ -177,7 +177,19 @@ main {
   content: " ";
 }
 
+.ym-hero-chunk--desktop-only {
+  display: none;
+}
+
 @media (min-width: 769px) {
+  .ym-hero-chunk--desktop-only {
+    display: inline;
+  }
+
+  .ym-hero-chunk--mins::before {
+    content: " ";
+  }
+
   .ym-hero-line--fees .ym-hero-chunk--fees-only::before {
     content: " ";
   }

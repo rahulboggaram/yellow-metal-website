@@ -343,6 +343,10 @@ main {
     margin-top: -0.02em;
   }
 
+  .ym-hero-line--mins .ym-hero-anchor--belt {
+    margin-inline: 0.14em;
+  }
+
   .ym-hero-line--fees {
     margin-top: -1.5rem;
     overflow: visible;

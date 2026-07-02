@@ -3352,7 +3352,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-headline {
     justify-content: center;
-    width: fit-content;
+    width: min(100%, fit-content);
     max-width: 100%;
     font-size: clamp(
       calc(3.1rem * var(--ym-hero-mobile-scale)),
@@ -3387,7 +3387,20 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-line--mins {
     display: block;
+    width: 100%;
+    max-width: calc(100vw - 2rem);
+    margin-inline: auto;
     white-space: nowrap;
+    font-size: min(1em, calc((100vw - 2.5rem) / 11));
+  }
+
+  .ym-hero-mins-rotator {
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .ym-hero-mins-live--regional {
+    font-size: 0.8em;
   }
 
   .ym-hero-line--fees {

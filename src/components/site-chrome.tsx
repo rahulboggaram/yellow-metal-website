@@ -69,9 +69,14 @@ export function SiteFooter() {
           © {new Date().getFullYear()} Yellow Metal. All rights reserved.
         </p>
 
-        <p className="ym-footer-wordmark" aria-hidden>
-          YELLOW METAL
-        </p>
+        <figure className="ym-footer-quote">
+          <blockquote className="ym-footer-quote-text">
+            &ldquo;Gold is money. Everything else is credit.&rdquo;
+          </blockquote>
+          <figcaption className="ym-footer-quote-attribution">
+            J.P. Morgan
+          </figcaption>
+        </figure>
       </div>
     </footer>
   );

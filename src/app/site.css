@@ -2606,17 +2606,14 @@ body.ym-jewels-flying .ym-hero-ornament {
 /* Footer */
 .ym-footer {
   padding-top: 4.35rem;
-  padding-bottom: 0;
+  padding-bottom: calc(3.15rem + env(safe-area-inset-bottom, 0px));
   background: #000000;
   color: rgb(255 255 255 / 0.7);
-  overflow: hidden;
 }
 
 .ym-footer-inner {
   display: grid;
   gap: 2.4rem;
-  container-type: inline-size;
-  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 .ym-footer-top {
@@ -2703,33 +2700,34 @@ body.ym-jewels-flying .ym-hero-ornament {
   border-top: 1px solid rgb(255 255 255 / 0.12);
 }
 
-.ym-footer-wordmark {
-  width: 100%;
-  margin: clamp(1.25rem, 3.5vh, 2rem) 0 0;
+.ym-footer-quote {
+  margin: clamp(2rem, 5vh, 3rem) 0 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-synthesis: none;
-  font-feature-settings: var(--ym-inter-features);
-  font-size: 14.2cqw;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
+  width: 100%;
   text-align: center;
-  color: rgb(255 255 255 / 0.1);
-  white-space: nowrap;
-  overflow: hidden;
-  transform: translateY(8%);
-  user-select: none;
-  pointer-events: none;
 }
 
-@media (min-width: 769px) {
-  .ym-footer-wordmark {
-    font-size: min(14.2cqw, 9.75rem);
-    color: rgb(255 255 255 / 0.12);
-  }
+.ym-footer-quote-text {
+  margin: 0;
+  max-width: min(28rem, 100%);
+  margin-inline: auto;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.4vw, 1.25rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ym-footer-quote-attribution {
+  margin: 0.85rem 0 0;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.38);
 }
 
 /* Ancillary pages */

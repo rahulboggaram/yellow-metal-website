@@ -2646,7 +2646,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 /* Footer */
 .ym-footer {
   position: relative;
-  padding: 0 0 env(safe-area-inset-bottom, 0px);
+  padding: 0;
   background: #000000;
   color: rgb(255 255 255 / 0.7);
   overflow: hidden;
@@ -2665,20 +2665,28 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-footer-visual {
   position: relative;
   width: 100%;
+  background: #000000;
+  padding-bottom: calc(clamp(1.25rem, 3vh, 2rem) + env(safe-area-inset-bottom, 0px));
+}
+
+.ym-footer-visual-inner {
+  position: relative;
+  padding-top: clamp(1.5rem, 3.5vh, 2.5rem);
 }
 
 .ym-footer-scene {
   position: relative;
   width: 100%;
-  height: clamp(18rem, 42vh, 30rem);
+  aspect-ratio: 1024 / 563.25;
+  overflow: hidden;
   background: #000000;
   pointer-events: none;
 }
 
 .ym-footer-scene-img {
-  object-fit: contain;
-  object-position: center bottom;
-  filter: grayscale(100%) contrast(1.04) brightness(0.78);
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(100%) contrast(1.04) brightness(0.8);
 }
 
 .ym-footer-scene-fade {
@@ -2687,23 +2695,26 @@ body.ym-jewels-flying .ym-hero-ornament {
   background: linear-gradient(
     180deg,
     #000000 0%,
-    rgb(0 0 0 / 0.62) 12%,
-    rgb(0 0 0 / 0.12) 34%,
-    transparent 52%,
-    rgb(0 0 0 / 0.18) 100%
+    rgb(0 0 0 / 0.45) 10%,
+    transparent 28%,
+    transparent 72%,
+    rgb(0 0 0 / 0.22) 100%
   );
 }
 
-.ym-footer-quote-wrap {
+.ym-footer-quote {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: clamp(0.85rem, 2.5vh, 1.35rem);
   z-index: 1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-inline: var(--ym-container-pad);
-  padding-bottom: clamp(1.25rem, 3.5vh, 2rem);
-  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  pointer-events: auto;
 }
 
 .ym-footer-top {
@@ -2790,16 +2801,6 @@ body.ym-jewels-flying .ym-hero-ornament {
   border-top: 1px solid rgb(255 255 255 / 0.12);
 }
 
-.ym-footer-quote {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  text-align: center;
-  overflow-x: auto;
-  scrollbar-width: none;
-  pointer-events: auto;
-}
-
 .ym-footer-quote::-webkit-scrollbar {
   display: none;
 }
@@ -2832,12 +2833,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 @media (min-width: 769px) {
-  .ym-footer-scene {
-    height: clamp(20rem, 46vh, 34rem);
-  }
-
-  .ym-footer-scene-img {
-    object-position: center center;
+  .ym-footer-visual-inner {
+    padding-top: clamp(2rem, 4vh, 2.75rem);
   }
 }
 

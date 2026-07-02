@@ -71,18 +71,18 @@ export function SiteFooter() {
       </div>
 
       <div className="ym-footer-visual">
-        <div className="ym-footer-scene" aria-hidden>
-          <Image
-            src="/images/site/footer-scene.png"
-            alt=""
-            fill
-            sizes="100vw"
-            className="ym-footer-scene-img"
-          />
-          <div className="ym-footer-scene-fade" />
-        </div>
+        <div className="ym-container ym-footer-visual-inner">
+          <div className="ym-footer-scene" aria-hidden>
+            <Image
+              src="/images/site/footer-scene.png"
+              alt=""
+              fill
+              sizes="(min-width: 72rem) 69rem, 100vw"
+              className="ym-footer-scene-img"
+            />
+            <div className="ym-footer-scene-fade" />
+          </div>
 
-        <div className="ym-container ym-footer-quote-wrap">
           <figure className="ym-footer-quote">
             <blockquote className="ym-footer-quote-text">
               &ldquo;Gold is money. Everything else is credit.&rdquo;

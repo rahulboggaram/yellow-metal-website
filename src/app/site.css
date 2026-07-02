@@ -2606,9 +2606,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 /* Footer */
 .ym-footer {
   padding-top: 4.35rem;
-  padding-bottom: calc(3.15rem + env(safe-area-inset-bottom, 0px));
+  padding-bottom: 0;
   background: #000000;
   color: rgb(255 255 255 / 0.7);
+  overflow: hidden;
 }
 
 .ym-footer-inner {
@@ -2698,6 +2699,35 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: rgb(255 255 255 / 0.35);
   padding-top: 1.8rem;
   border-top: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.ym-footer-wordmark {
+  margin: clamp(2.5rem, 7vh, 4rem) 0 0;
+  padding: 0 clamp(0.75rem, 3vw, 1.5rem)
+    calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: clamp(3.75rem, 17.5vw, 14rem);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgb(255 255 255 / 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  transform: translateY(8%);
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (min-width: 769px) {
+  .ym-footer-wordmark {
+    font-size: clamp(5rem, 14.5vw, 15.5rem);
+    letter-spacing: -0.04em;
+    color: rgb(255 255 255 / 0.12);
+  }
 }
 
 /* Ancillary pages */

@@ -69,6 +69,9 @@ export function SiteFooter() {
           © {new Date().getFullYear()} Yellow Metal. All rights reserved.
         </p>
       </div>
+      <p className="ym-footer-wordmark" aria-hidden>
+        YELLOW METAL
+      </p>
     </footer>
   );
 }

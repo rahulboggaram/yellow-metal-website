@@ -1,9 +1,11 @@
 export const ADMIN_SESSION_KEY = "ym-admin-secret";
 
-export type AdminTab = "loan-plans" | "analytics";
+export type AdminTab = "loan-plans" | "analytics" | "engagement";
 
 export function parseAdminTab(value: string | null): AdminTab {
-  return value === "loan-plans" ? "loan-plans" : "analytics";
+  if (value === "loan-plans") return "loan-plans";
+  if (value === "engagement") return "engagement";
+  return "analytics";
 }
 
 export function last30DaysRange(): { from: string; to: string } {

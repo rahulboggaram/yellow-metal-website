@@ -18,6 +18,7 @@ import { useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
 import { InterNumeric } from "@/components/inter-numeric";
 import { brandFont, interFontBindings } from "@/lib/fonts";
+import { useCalculatorEngagement } from "@/hooks/use-calculator-engagement";
 
 export function GoldLoanCalculator() {
   const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
@@ -84,6 +85,8 @@ export function GoldLoanCalculator() {
     loading || error || loanAmount === null ? "—" : formatInr(loanAmount);
 
   const weightInputBindings = interFontBindings("font-tabular-nums");
+
+  useCalculatorEngagement(weightGrams, karat, loanAmount);
 
   return (
     <section

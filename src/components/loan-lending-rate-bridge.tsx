@@ -11,6 +11,7 @@ import {
   isGoldPriceSnapshot,
   loanAmountFromWeightGrams,
 } from "@/lib/gold-price-format";
+import { useLendingRateEngagement } from "@/hooks/use-lending-rate-engagement";
 
 const BRIDGE_LENDING_KARAT: GoldKarat = "22K";
 const BRIDGE_LENDING_GRAMS = 1;
@@ -97,6 +98,8 @@ export function LoanLendingRateBridge() {
 
   const showBridgeFlip =
     flipRevealed && !loading && !error && bridgeLoanAmount !== null;
+
+  useLendingRateEngagement(showBridgeFlip, bridgeRef);
 
   return (
     <section

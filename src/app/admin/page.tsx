@@ -3,6 +3,7 @@
 import { FormEvent, Suspense, useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnalyticsAdminPanel } from "@/components/admin/analytics-panel";
+import { EngagementAdminPanel } from "@/components/admin/engagement-panel";
 import { LoanPlansAdminPanel } from "@/components/admin/loan-plans-panel";
 import {
   ADMIN_SESSION_KEY,
@@ -142,7 +143,7 @@ function AdminPageContent() {
 
   return (
     <div className="ym-page">
-      <div className={`ym-container ym-admin${tab === "analytics" ? " ym-analytics" : ""}`}>
+      <div className={`ym-container ym-admin${tab === "analytics" || tab === "engagement" ? " ym-analytics" : ""}`}>
         <div className="ym-admin-header">
           <div>
             <h1 className="ym-page-title">Yellow Metal admin</h1>
@@ -172,6 +173,15 @@ function AdminPageContent() {
           <button
             type="button"
             role="tab"
+            aria-selected={tab === "engagement"}
+            className={`ym-admin-tab${tab === "engagement" ? " is-active" : ""}`}
+            onClick={() => switchTab("engagement")}
+          >
+            Engagement
+          </button>
+          <button
+            type="button"
+            role="tab"
             aria-selected={tab === "loan-plans"}
             className={`ym-admin-tab${tab === "loan-plans" ? " is-active" : ""}`}
             onClick={() => switchTab("loan-plans")}
@@ -183,6 +193,8 @@ function AdminPageContent() {
         <div role="tabpanel">
           {tab === "analytics" ? (
             <AnalyticsAdminPanel secret={secret} />
+          ) : tab === "engagement" ? (
+            <EngagementAdminPanel secret={secret} />
           ) : (
             <LoanPlansAdminPanel secret={secret} />
           )}

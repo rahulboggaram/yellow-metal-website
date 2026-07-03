@@ -1760,7 +1760,13 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-admin-tab-toolbar {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
   margin-top: 1rem;
+}
+
+.ym-admin-tab-toolbar--split {
+  justify-content: space-between;
 }
 
 .ym-admin-tab-hint {
@@ -1791,6 +1797,39 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-analytics-filters {
   margin-top: 1rem;
+}
+
+.ym-engagement-section {
+  margin-top: 1rem;
+}
+
+.ym-engagement-section-lead {
+  margin-top: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.ym-engagement-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.ym-admin-subheading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.ym-engagement-detail-lead {
+  margin-bottom: 1rem;
+}
+
+.ym-engagement-entries-table td:nth-child(2),
+.ym-engagement-entries-table td:nth-child(4) {
+  font-variant-numeric: tabular-nums;
 }
 
 .ym-analytics-filter-grid {

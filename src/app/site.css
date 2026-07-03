@@ -3450,7 +3450,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   .ym-loan-lending-rate-fold .ym-loan-ltv-caption {
     margin-top: 0.1rem;
     margin-bottom: clamp(0.5rem, 2vh, 1rem);
-    line-height: 1.35;
+    line-height: 1.65;
   }
 
   .ym-loan-estimate-fold {
@@ -3617,7 +3617,7 @@ body.ym-jewels-flying .ym-hero-ornament {
     margin-top: -0.35rem;
     margin-inline: auto;
     white-space: normal;
-    line-height: 1.35;
+    line-height: 1.65;
     font-size: 0.72rem;
     letter-spacing: 0.12em;
     overflow: visible;

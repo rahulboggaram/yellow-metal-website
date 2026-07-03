@@ -147,9 +147,6 @@ function AdminPageContent() {
         <div className="ym-admin-header">
           <div>
             <h1 className="ym-page-title">Yellow Metal admin</h1>
-            <p className="ym-admin-lead">
-              Manage loan plans and view website analytics.
-            </p>
           </div>
           <button
             type="button"

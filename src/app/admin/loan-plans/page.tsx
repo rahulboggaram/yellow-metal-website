@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import type { LoanPlan, LoanPlanInput, LoanPlanInterestTier } from "@/lib/loan-plans-shared";
 
 const ADMIN_KEY = "ym-admin-secret";
@@ -172,6 +173,11 @@ export default function LoanPlansAdminPage() {
         <p className="ym-admin-lead">
           Add and edit loan plans shown under the calculator on the home page.
         </p>
+        <div className="ym-analytics-nav">
+          <Link href="/admin/analytics" className="ym-admin-btn ym-admin-btn--ghost">
+            Analytics
+          </Link>
+        </div>
 
         <section className="ym-admin-panel">
           <label className="ym-admin-field" htmlFor="admin-secret">

@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { brandFont, displayFont } from "@/lib/fonts";
+import { AnalyticsBeacon } from "@/components/analytics-beacon";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import "./globals.css";
 import "./site.css";
@@ -53,6 +55,9 @@ export default function RootLayout({
           <SiteHeader />
           <main>{children}</main>
           <SiteFooter />
+          <Suspense fallback={null}>
+            <AnalyticsBeacon />
+          </Suspense>
         </div>
       </body>
     </html>

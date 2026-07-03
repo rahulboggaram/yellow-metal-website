@@ -129,10 +129,7 @@ export function LoanLendingRateBridge() {
           </div>
 
           <p className="ym-loan-ltv-caption">
-            <span className="ym-loan-ltv-caption-line">Today&apos;s lending rate</span>{" "}
-            <span className="ym-loan-ltv-caption-line">
-              for 1 gram of {BRIDGE_LENDING_KARAT} gold at 75% LTV
-            </span>
+            Today&apos;s lending rate for 1 gram of {BRIDGE_LENDING_KARAT} gold at 75% LTV
           </p>
         </div>
       </div>

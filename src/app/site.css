@@ -676,12 +676,15 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-ltv-caption {
-  margin: 0;
+  margin: 0 auto;
+  width: max-content;
+  max-width: none;
+  white-space: nowrap;
   line-height: 1.15;
   font-family: var(--font-display);
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgb(0 0 0 / 0.45);
   text-align: center;

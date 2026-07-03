@@ -2,7 +2,7 @@ import "server-only";
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
-import { list, put } from "@vercel/blob";
+import { get, put } from "@vercel/blob";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "analytics.json");
@@ -13,16 +13,20 @@ type AnalyticsFile = {
   events: AnalyticsEvent[];
 };
 
-function readLocalFile(): AnalyticsFile {
-  if (!existsSync(LOCAL_PATH)) {
-    return { events: [] };
-  }
-  const raw = readFileSync(LOCAL_PATH, "utf8");
+function parseAnalyticsFile(raw: string): AnalyticsFile {
   const parsed: unknown = JSON.parse(raw);
   if (!parsed || typeof parsed !== "object" || !Array.isArray((parsed as AnalyticsFile).events)) {
     return { events: [] };
   }
   return parsed as AnalyticsFile;
+}
+
+function readLocalFile(): AnalyticsFile {
+  if (!existsSync(LOCAL_PATH)) {
+    return { events: [] };
+  }
+  const raw = readFileSync(LOCAL_PATH, "utf8");
+  return parseAnalyticsFile(raw);
 }
 
 function writeLocalFile(data: AnalyticsFile): void {
@@ -31,18 +35,22 @@ function writeLocalFile(data: AnalyticsFile): void {
   writeFileSync(LOCAL_PATH, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
-async function readBlobFile(): Promise<AnalyticsFile> {
-  const { blobs } = await list({ prefix: "analytics/", limit: 20 });
-  const blob = blobs.find((item) => item.pathname === BLOB_PATHNAME);
-  if (!blob) return { events: [] };
+function hasBlobStorage(): boolean {
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
+}
 
-  const response = await fetch(blob.url);
-  if (!response.ok) return { events: [] };
-  const parsed: unknown = await response.json();
-  if (!parsed || typeof parsed !== "object" || !Array.isArray((parsed as AnalyticsFile).events)) {
+async function readBlobFile(): Promise<AnalyticsFile> {
+  try {
+    const result = await get(BLOB_PATHNAME, { access: "private" });
+    if (!result || result.statusCode !== 200 || !result.stream) {
+      return { events: [] };
+    }
+
+    const raw = await new Response(result.stream).text();
+    return parseAnalyticsFile(raw);
+  } catch {
     return { events: [] };
   }
-  return parsed as AnalyticsFile;
 }
 
 async function writeBlobFile(data: AnalyticsFile): Promise<void> {
@@ -52,10 +60,6 @@ async function writeBlobFile(data: AnalyticsFile): Promise<void> {
     allowOverwrite: true,
     contentType: "application/json",
   });
-}
-
-function hasBlobStorage(): boolean {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 }
 
 async function readStore(): Promise<AnalyticsFile> {

@@ -20,7 +20,8 @@ function isValidInput(body: unknown): body is AnalyticsCollectInput {
 
 export async function POST(request: Request) {
   try {
-    const body: unknown = await request.json();
+    const raw = await request.text();
+    const body: unknown = raw ? JSON.parse(raw) : null;
     if (!isValidInput(body)) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }

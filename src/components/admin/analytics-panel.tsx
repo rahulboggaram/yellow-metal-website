@@ -177,7 +177,14 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
 
       {message && <p className="ym-admin-message">{message}</p>}
 
-      {summary && (
+        {summary && summary.totalViews === 0 && !message && (
+          <p className="ym-admin-empty ym-admin-tab-hint">
+            No visits recorded yet. Open the home page on your phone or laptop, then
+            click Refresh analytics.
+          </p>
+        )}
+
+        {summary && (
         <>
           <div className="ym-analytics-stats">
             <StatCard label="Total page views" value={summary.totalViews} />

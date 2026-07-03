@@ -28,12 +28,6 @@ export function AnalyticsBeacon() {
       referrer: document.referrer || null,
     });
 
-    if (navigator.sendBeacon) {
-      const blob = new Blob([payload], { type: "application/json" });
-      navigator.sendBeacon("/api/analytics/collect", blob);
-      return;
-    }
-
     void fetch("/api/analytics/collect", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

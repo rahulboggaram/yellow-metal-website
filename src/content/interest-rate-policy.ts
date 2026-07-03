@@ -1,7 +1,7 @@
 import type { LegalBlock } from "@/components/legal-document";
 
 export const INTEREST_RATE_POLICY_BLOCKS: LegalBlock[] = [
-  { type: "title", text: "Interest Rate Policy" },
+  { type: "title", text: "Interest Rate & Penal Charges Policy" },
   { type: "meta", text: "Yellow Metal Loans Private Limited · Version 1/2026-27 · Effective 08 June 2026 · Reviewed annually" },
   { type: "h2", text: "Background" },
   { type: "p", text: "Yellow Metal Loans Private Limited (hereinafter referred to as \"Yellow Metal Loans\" or \"the Company\") is registered with the Reserve Bank of India as a Non-Banking Financial Company, Not Deposit-Taking, Credit and Investment Company (\"NBFC-ND-ICC\") and incorporated under the provisions of the Companies Act, 2013." },

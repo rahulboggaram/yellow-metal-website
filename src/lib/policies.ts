@@ -18,6 +18,6 @@ export const SITE_POLICIES: SitePolicy[] = [
   },
   {
     href: "/policies/interest-rate",
-    label: "Interest Rate Policy",
+    label: "Interest Rate & Penal Charges Policy",
   },
 ];

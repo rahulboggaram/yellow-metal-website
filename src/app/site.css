@@ -3474,6 +3474,10 @@ body.ym-jewels-flying .ym-hero-ornament {
     white-space: normal;
   }
 
+  .ym-hero-line--fees .ym-hero-subtext-line--secondary {
+    display: none;
+  }
+
   .ym-hero-subtext-typewriter {
     overflow: visible;
   }

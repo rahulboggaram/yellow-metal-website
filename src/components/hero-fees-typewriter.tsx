@@ -5,8 +5,13 @@ import { useEffect, useRef, useState } from "react";
 const LINE_1 = "· No hidden fees · No processing fees · No valuation charges";
 const LINE_2 = "· No prepayment penalties · No fees to store your gold ·";
 const FULL_TEXT = `${LINE_1}\n${LINE_2}`;
+const MOBILE_FEES_QUERY = "(max-width: 768px)";
 const TYPE_DELAY_MS = 28;
 const START_DELAY_MS = 700;
+
+function feesTextForViewport(isMobile: boolean) {
+  return isMobile ? LINE_1 : FULL_TEXT;
+}
 
 function splitTypedText(text: string) {
   const newlineIndex = text.indexOf("\n");
@@ -34,8 +39,11 @@ export function HeroFeesTypewriter({
 }) {
   const [charIndex, setCharIndex] = useState(0);
   const [started, setStarted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [viewportReady, setViewportReady] = useState(false);
   const completedRef = useRef(false);
   const onCompleteRef = useRef(onComplete);
+  const fullText = feesTextForViewport(isMobile);
 
   useEffect(() => {
     onCompleteRef.current = onComplete;
@@ -48,37 +56,52 @@ export function HeroFeesTypewriter({
   };
 
   useEffect(() => {
+    const mobileMedia = window.matchMedia(MOBILE_FEES_QUERY);
+    const updateViewport = () => setIsMobile(mobileMedia.matches);
+    updateViewport();
+    setViewportReady(true);
+    mobileMedia.addEventListener("change", updateViewport);
+    return () => mobileMedia.removeEventListener("change", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    if (!viewportReady) return;
+
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reducedMotion.matches) {
-      setCharIndex(FULL_TEXT.length);
+      setCharIndex(fullText.length);
       markComplete();
       return;
     }
 
+    setCharIndex(0);
+    setStarted(false);
+    completedRef.current = false;
+
     const startTimer = window.setTimeout(() => setStarted(true), START_DELAY_MS);
     return () => window.clearTimeout(startTimer);
-  }, []);
+  }, [viewportReady, fullText]);
 
   useEffect(() => {
-    if (!started || charIndex >= FULL_TEXT.length) return;
+    if (!started || charIndex >= fullText.length) return;
 
     const timer = window.setTimeout(() => {
       setCharIndex((index) => index + 1);
     }, TYPE_DELAY_MS);
 
     return () => window.clearTimeout(timer);
-  }, [started, charIndex]);
+  }, [started, charIndex, fullText]);
 
   useEffect(() => {
-    if (charIndex >= FULL_TEXT.length) {
+    if (charIndex >= fullText.length) {
       markComplete();
     }
-  }, [charIndex]);
+  }, [charIndex, fullText]);
 
-  const visibleText = FULL_TEXT.slice(0, charIndex);
+  const visibleText = fullText.slice(0, charIndex);
   const { line1, line2 } = splitTypedText(visibleText);
-  const isComplete = charIndex >= FULL_TEXT.length;
-  const onLine2 = charIndex > LINE_1.length;
+  const isComplete = charIndex >= fullText.length;
+  const onLine2 = !isMobile && charIndex > LINE_1.length;
 
   return (
     <span
@@ -87,7 +110,9 @@ export function HeroFeesTypewriter({
     >
       <span className="ym-hero-subtext-ghost" aria-hidden>
         <span className="ym-hero-subtext-line">{LINE_1}</span>
-        <span className="ym-hero-subtext-line">{LINE_2}</span>
+        <span className="ym-hero-subtext-line ym-hero-subtext-line--secondary">
+          {LINE_2}
+        </span>
       </span>
       <span className="ym-hero-subtext-live">
         <span className="ym-hero-subtext-line">
@@ -109,7 +134,7 @@ export function HeroFeesTypewriter({
           </span>
         ) : null}
       </span>
-      <span className="ym-sr-only">{FULL_TEXT.replace("\n", " ")}</span>
+      <span className="ym-sr-only">{fullText.replace("\n", " ")}</span>
     </span>
   );
 }

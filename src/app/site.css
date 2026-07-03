@@ -3471,11 +3471,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-line--fees .ym-hero-subtext-line {
     display: block;
-    white-space: normal;
-  }
-
-  .ym-hero-line--fees .ym-hero-subtext-line--secondary {
-    display: none;
+    white-space: nowrap;
   }
 
   .ym-hero-subtext-typewriter {

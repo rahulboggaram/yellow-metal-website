@@ -4,13 +4,20 @@ import { useEffect, useRef, useState } from "react";
 
 const LINE_1 = "· No hidden fees · No processing fees · No valuation charges";
 const LINE_2 = "· No prepayment penalties · No fees to store your gold ·";
+const MOBILE_LINE_1 = "· No hidden fees · No processing fees ·";
+const MOBILE_LINE_2 = "· No valuation charges ·";
 const FULL_TEXT = `${LINE_1}\n${LINE_2}`;
+const MOBILE_FULL_TEXT = `${MOBILE_LINE_1}\n${MOBILE_LINE_2}`;
 const MOBILE_FEES_QUERY = "(max-width: 768px)";
 const TYPE_DELAY_MS = 28;
 const START_DELAY_MS = 700;
 
 function feesTextForViewport(isMobile: boolean) {
-  return isMobile ? LINE_1 : FULL_TEXT;
+  return isMobile ? MOBILE_FULL_TEXT : FULL_TEXT;
+}
+
+function firstLineLength(isMobile: boolean) {
+  return isMobile ? MOBILE_LINE_1.length : LINE_1.length;
 }
 
 function splitTypedText(text: string) {
@@ -101,7 +108,7 @@ export function HeroFeesTypewriter({
   const visibleText = fullText.slice(0, charIndex);
   const { line1, line2 } = splitTypedText(visibleText);
   const isComplete = charIndex >= fullText.length;
-  const onLine2 = !isMobile && charIndex > LINE_1.length;
+  const onLine2 = charIndex > firstLineLength(isMobile);
 
   return (
     <span
@@ -109,10 +116,19 @@ export function HeroFeesTypewriter({
       aria-live="polite"
     >
       <span className="ym-hero-subtext-ghost" aria-hidden>
-        <span className="ym-hero-subtext-line">{LINE_1}</span>
-        <span className="ym-hero-subtext-line ym-hero-subtext-line--secondary">
-          {LINE_2}
-        </span>
+        {isMobile ? (
+          <>
+            <span className="ym-hero-subtext-line">{MOBILE_LINE_1}</span>
+            <span className="ym-hero-subtext-line">{MOBILE_LINE_2}</span>
+          </>
+        ) : (
+          <>
+            <span className="ym-hero-subtext-line">{LINE_1}</span>
+            <span className="ym-hero-subtext-line ym-hero-subtext-line--secondary">
+              {LINE_2}
+            </span>
+          </>
+        )}
       </span>
       <span className="ym-hero-subtext-live">
         <span className="ym-hero-subtext-line">

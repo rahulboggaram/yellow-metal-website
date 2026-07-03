@@ -1767,6 +1767,22 @@ body.ym-jewels-flying .ym-hero-ornament {
   margin-top: 1rem;
 }
 
+.ym-admin-gate {
+  max-width: 28rem;
+}
+
+.ym-admin-gate-form {
+  margin-top: 1.5rem;
+}
+
+.ym-admin-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 .ym-admin-loading {
   padding: 3rem 1.5rem;
   text-align: center;

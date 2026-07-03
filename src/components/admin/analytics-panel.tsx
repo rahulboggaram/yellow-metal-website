@@ -1,11 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { last30DaysRange } from "@/lib/admin-session";
 import type { AnalyticsSummary } from "@/lib/analytics-types";
 
 function monthOptions(): { value: string; label: string }[] {
   const options: { value: string; label: string }[] = [
-    { value: "", label: "All time" },
+    { value: "last30", label: "Last 30 days" },
+    { value: "all", label: "All time" },
+    { value: "custom", label: "Custom range" },
   ];
   const now = new Date();
   for (let i = 0; i < 12; i += 1) {
@@ -67,9 +70,10 @@ function DataTable({
 }
 
 export function AnalyticsAdminPanel({ secret }: { secret: string }) {
-  const [month, setMonth] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const initialRange = useMemo(() => last30DaysRange(), []);
+  const [month, setMonth] = useState("last30");
+  const [from, setFrom] = useState(initialRange.from);
+  const [to, setTo] = useState(initialRange.to);
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -88,9 +92,16 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
     setMessage(null);
     try {
       const params = new URLSearchParams();
-      if (month) params.set("month", month);
-      if (from) params.set("from", from);
-      if (to) params.set("to", to);
+      if (month === "last30") {
+        const range = last30DaysRange();
+        params.set("from", range.from);
+        params.set("to", range.to);
+      } else if (month && month !== "all" && month !== "custom") {
+        params.set("month", month);
+      } else if (from) {
+        params.set("from", from);
+        if (to) params.set("to", to);
+      }
       const query = params.toString();
       const res = await fetch(`/api/analytics${query ? `?${query}` : ""}`, {
         headers,
@@ -111,11 +122,26 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
   }, [secret, loadAnalytics]);
 
   function handleMonthChange(value: string) {
-    setMonth(value);
-    if (value) {
+    if (value === "last30") {
+      const range = last30DaysRange();
+      setMonth("last30");
+      setFrom(range.from);
+      setTo(range.to);
+      return;
+    }
+    if (value === "all") {
+      setMonth("all");
       setFrom("");
       setTo("");
+      return;
     }
+    if (value === "custom") {
+      setMonth("custom");
+      return;
+    }
+    setMonth(value);
+    setFrom("");
+    setTo("");
   }
 
   return (
@@ -156,7 +182,7 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
               value={from}
               onChange={(event) => {
                 setFrom(event.target.value);
-                setMonth("");
+                setMonth("custom");
               }}
             />
           </label>
@@ -168,7 +194,7 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
               value={to}
               onChange={(event) => {
                 setTo(event.target.value);
-                setMonth("");
+                setMonth("custom");
               }}
             />
           </label>

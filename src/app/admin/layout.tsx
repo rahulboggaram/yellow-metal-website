@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Analytics admin — Yellow Metal",
+  title: "Admin — Yellow Metal",
   robots: {
     index: false,
     follow: false,
   },
 };
 
-export default function AnalyticsAdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;

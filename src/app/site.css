@@ -1728,6 +1728,51 @@ body.ym-jewels-flying .ym-hero-ornament {
   margin-top: 0.35rem;
 }
 
+.ym-admin-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 1.25rem;
+  padding: 0.25rem;
+  border: 1px solid rgb(0 0 0 / 0.1);
+  border-radius: 0.75rem;
+  background: rgb(0 0 0 / 0.03);
+}
+
+.ym-admin-tab {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border: 0;
+  border-radius: 0.55rem;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgb(0 0 0 / 0.55);
+  cursor: pointer;
+}
+
+.ym-admin-tab.is-active {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+
+.ym-admin-tab-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.ym-admin-tab-hint {
+  margin-top: 1rem;
+}
+
+.ym-admin-loading {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: rgb(0 0 0 / 0.5);
+}
+
 .ym-analytics-filters {
   margin-top: 1rem;
 }

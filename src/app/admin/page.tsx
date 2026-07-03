@@ -143,7 +143,7 @@ function AdminPageContent() {
 
   return (
     <div className="ym-page">
-      <div className={`ym-container ym-admin${tab === "analytics" || tab === "engagement" ? " ym-analytics" : ""}`}>
+      <div className="ym-container ym-admin">
         <div className="ym-admin-header">
           <div>
             <h1 className="ym-page-title">Yellow Metal admin</h1>

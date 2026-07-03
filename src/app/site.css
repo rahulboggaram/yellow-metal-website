@@ -1527,9 +1527,9 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: rgb(0 0 0 / 0.78);
 }
 
-/* ── Admin: loan plans ── */
+/* ── Admin ── */
 .ym-admin {
-  max-width: 56rem;
+  max-width: 72rem;
   padding-block: clamp(2rem, 5vh, 3rem);
 }
 
@@ -1709,11 +1709,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: rgb(0 0 0 / 0.5);
 }
 
-/* ── Admin: analytics ── */
-.ym-analytics {
-  max-width: 72rem;
-}
-
+/* ── Admin: analytics panels ── */
 .ym-analytics-header {
   display: flex;
   flex-wrap: wrap;

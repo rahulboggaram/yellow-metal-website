@@ -164,6 +164,15 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
           visitors: stats.sessions.size,
         }))
         .sort((a, b) => a.date.localeCompare(b.date)),
+      recentEntries: [...calculatorEntries]
+        .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+        .slice(0, 20)
+        .map((event) => ({
+          ...event,
+          weightEntered:
+            event.weightEntered ??
+            String(event.weightGrams),
+        })),
     },
   };
 }
@@ -175,5 +184,9 @@ export async function getCalculatorEntries(
   return store.events
     .filter(isCalculatorEntry)
     .filter((event) => engagementInRange(event.timestamp, query))
+    .map((event) => ({
+      ...event,
+      weightEntered: event.weightEntered ?? String(event.weightGrams),
+    }))
     .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 }

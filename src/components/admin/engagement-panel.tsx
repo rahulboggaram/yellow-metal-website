@@ -65,6 +65,12 @@ function formatDuration(seconds: number): string {
   return remainder > 0 ? `${minutes}m ${remainder}s` : `${minutes}m`;
 }
 
+function formatWeightEntered(entry: CalculatorEntryEvent): string {
+  const raw = entry.weightEntered?.trim();
+  if (raw) return `${raw} g`;
+  return `${entry.weightGrams.toLocaleString("en-IN")} g`;
+}
+
 export function EngagementAdminPanel({ secret }: { secret: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -249,7 +255,8 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
         <section className="ym-admin-panel ym-analytics-table-panel">
           <h2 className="ym-admin-heading">Loan calculator entries</h2>
           <p className="ym-admin-list-meta ym-engagement-detail-lead">
-            Every saved estimate from the home page calculator, newest first.
+            Exact gold weights entered in the loan estimate field on the home page,
+            newest first.
           </p>
           {entries.length === 0 && !loading && !message ? (
             <p className="ym-admin-empty">
@@ -261,7 +268,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
               <thead>
                 <tr>
                   <th>When</th>
-                  <th>Weight (g)</th>
+                  <th>Gold weight entered</th>
                   <th>Purity</th>
                   <th>Estimated loan</th>
                 </tr>
@@ -270,7 +277,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
                 {entries.map((entry) => (
                   <tr key={entry.id}>
                     <td>{formatTimestamp(entry.timestamp)}</td>
-                    <td>{entry.weightGrams.toLocaleString("en-IN")}</td>
+                    <td>{formatWeightEntered(entry)}</td>
                     <td>{entry.karat}</td>
                     <td>
                       {entry.loanAmountInr === null
@@ -341,15 +348,14 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
                 <div>
                   <h2 className="ym-admin-heading">Loan estimate calculator</h2>
                   <p className="ym-admin-list-meta ym-engagement-section-lead">
-                    People who entered gold weight in the loan estimate calculator on the
-                    home page.
+                    Exact gold weights people typed in the loan estimate field on the home
+                    page.
                   </p>
                 </div>
                 <button
                   type="button"
                   className="ym-admin-btn ym-admin-btn--primary"
                   onClick={openCalculatorEntries}
-                  disabled={summary.calculator.totalEntries === 0}
                 >
                   View all entries
                 </button>
@@ -364,6 +370,55 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
                   value={summary.calculator.totalEntries}
                 />
               </div>
+              <section className="ym-analytics-table-panel">
+                <h3 className="ym-admin-subheading">Recent entries</h3>
+                {summary.calculator.recentEntries.length === 0 ? (
+                  <p className="ym-admin-empty">
+                    No entries yet. On the home page, type a weight like 23 or 45 in the
+                    loan estimate field, then tap away from the field.
+                  </p>
+                ) : (
+                  <>
+                    <table className="ym-analytics-table ym-engagement-entries-table">
+                      <thead>
+                        <tr>
+                          <th>When</th>
+                          <th>Gold weight entered</th>
+                          <th>Purity</th>
+                          <th>Estimated loan</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {summary.calculator.recentEntries.map((entry) => (
+                          <tr key={entry.id}>
+                            <td>{formatTimestamp(entry.timestamp)}</td>
+                            <td>{formatWeightEntered(entry)}</td>
+                            <td>{entry.karat}</td>
+                            <td>
+                              {entry.loanAmountInr === null
+                                ? "—"
+                                : formatInr(entry.loanAmountInr)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {summary.calculator.totalEntries >
+                      summary.calculator.recentEntries.length && (
+                      <div className="ym-admin-actions ym-engagement-more-actions">
+                        <button
+                          type="button"
+                          className="ym-admin-btn ym-admin-btn--ghost"
+                          onClick={openCalculatorEntries}
+                        >
+                          View all {summary.calculator.totalEntries.toLocaleString("en-IN")}{" "}
+                          entries
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </section>
               <section className="ym-analytics-table-panel">
                 <h3 className="ym-admin-subheading">Entries by day</h3>
                 {summary.calculator.byDay.length === 0 ? (

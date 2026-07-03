@@ -86,7 +86,12 @@ export function GoldLoanCalculator() {
 
   const weightInputBindings = interFontBindings("font-tabular-nums");
 
-  useCalculatorEngagement(weightGrams, karat, loanAmount);
+  const { recordWeightEntry } = useCalculatorEngagement({
+    weightInput,
+    weightGrams,
+    karat,
+    loanAmountInr: loanAmount,
+  });
 
   return (
     <section
@@ -125,7 +130,10 @@ export function GoldLoanCalculator() {
                       value={weightInput}
                       onChange={(event) => setWeightInput(event.target.value)}
                       onFocus={() => setWeightFocused(true)}
-                      onBlur={() => setWeightFocused(false)}
+                      onBlur={() => {
+                        setWeightFocused(false);
+                        recordWeightEntry(true);
+                      }}
                       className={weightInputBindings.className}
                       style={weightInputBindings.style}
                     />
@@ -154,7 +162,12 @@ export function GoldLoanCalculator() {
                             ]
                               .filter(Boolean)
                               .join(" ")}
-                            onClick={() => setKarat(option)}
+                            onClick={() => {
+                              setKarat(option);
+                              if (weightGrams > 0) {
+                                window.setTimeout(() => recordWeightEntry(true), 0);
+                              }
+                            }}
                           >
                             {option}
                           </button>

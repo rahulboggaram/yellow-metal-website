@@ -21,6 +21,8 @@ export type CalculatorEntryEvent = {
   timestamp: string;
   sessionId: string;
   path: string;
+  /** Exact text typed in the weight field (e.g. "23", "45"). */
+  weightEntered?: string;
   weightGrams: number;
   karat: GoldKarat;
   loanAmountInr: number | null;
@@ -39,6 +41,7 @@ export type CalculatorEntryInput = {
   type: "calculator_entry";
   sessionId: string;
   path: string;
+  weightEntered: string;
   weightGrams: number;
   karat: GoldKarat;
   loanAmountInr: number | null;
@@ -63,5 +66,6 @@ export type EngagementSummary = {
     uniqueVisitors: number;
     totalEntries: number;
     byDay: { date: string; entries: number; visitors: number }[];
+    recentEntries: CalculatorEntryEvent[];
   };
 };

@@ -1828,6 +1828,10 @@ body.ym-jewels-flying .ym-hero-ornament {
   font-variant-numeric: tabular-nums;
 }
 
+.ym-engagement-more-actions {
+  margin-top: 1rem;
+}
+
 .ym-analytics-filter-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

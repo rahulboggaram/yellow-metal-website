@@ -32,6 +32,9 @@ function isValidInput(body: unknown): body is EngagementCollectInput {
 
   if (value.type === "calculator_entry") {
     return (
+      typeof value.weightEntered === "string" &&
+      value.weightEntered.trim().length > 0 &&
+      value.weightEntered.length <= 32 &&
       typeof value.weightGrams === "number" &&
       Number.isFinite(value.weightGrams) &&
       value.weightGrams > 0 &&
@@ -84,6 +87,7 @@ export async function POST(request: Request) {
         timestamp,
         sessionId: body.sessionId,
         path: body.path,
+        weightEntered: body.weightEntered.trim(),
         weightGrams: body.weightGrams,
         karat: body.karat,
         loanAmountInr: body.loanAmountInr,

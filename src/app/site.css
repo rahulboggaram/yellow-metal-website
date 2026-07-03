@@ -3356,7 +3356,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-hero-headline {
     justify-content: center;
-    width: min(100%, fit-content);
+    width: 100%;
     max-width: 100%;
     font-size: clamp(
       calc(3.1rem * var(--ym-hero-mobile-scale)),
@@ -3429,22 +3429,26 @@ body.ym-jewels-flying .ym-hero-ornament {
   }
 
   .ym-hero-belt-row {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    align-self: stretch;
     font-size: calc(1em * 0.36);
     margin-top: -0.1em;
     padding-bottom: 0;
     width: 100%;
-    text-align: center;
   }
 
   .ym-hero-belt-row .ym-hero-ornament--belt {
     position: relative;
     left: auto;
     top: auto;
-    display: inline-block;
+    display: block;
+    flex-shrink: 0;
     vertical-align: top;
     width: 7.8em;
-    transform: translate(0, calc(-0.38em - 20px)) scale(0.928);
+    margin-inline: auto;
+    transform: translateY(calc(-0.38em - 20px)) scale(0.928);
     transform-origin: center top;
   }
 

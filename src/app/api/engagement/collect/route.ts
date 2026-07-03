@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
+import { geoFromHeaders } from "@/lib/analytics-geo";
 import { appendEngagementEvent } from "@/lib/engagement-store";
 import type { EngagementCollectInput } from "@/lib/engagement-types";
 import { GOLD_KARAT_OPTIONS } from "@/lib/gold-price-format";
@@ -81,6 +82,7 @@ export async function POST(request: Request) {
         durationMs: Math.round(body.durationMs),
       });
     } else {
+      const geo = geoFromHeaders(request.headers);
       await appendEngagementEvent({
         id,
         type: "calculator_entry",
@@ -91,6 +93,9 @@ export async function POST(request: Request) {
         weightGrams: body.weightGrams,
         karat: body.karat,
         loanAmountInr: body.loanAmountInr,
+        country: geo.country,
+        region: geo.region,
+        city: geo.city,
       });
     }
 

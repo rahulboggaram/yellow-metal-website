@@ -70,6 +70,18 @@ function formatWeightEntered(entry: CalculatorEntryEvent): string {
   return `${entry.weightGrams.toLocaleString("en-IN")} g`;
 }
 
+function formatEntryRegion(entry: CalculatorEntryEvent): string {
+  const city = entry.city?.trim();
+  const region = entry.region?.trim();
+  const country = entry.country?.trim() || "Unknown";
+
+  if (city && region) return `${city}, ${region}`;
+  if (city) return `${city}, ${country}`;
+  if (region) return `${region}, ${country}`;
+  if (country !== "Unknown") return country;
+  return "—";
+}
+
 export function EngagementAdminPanel({ secret }: { secret: string }) {
   const initialRange = useMemo(() => last30DaysRange(), []);
   const [month, setMonth] = useState("last30");
@@ -274,6 +286,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
                       <th>Gold weight entered</th>
                       <th>Purity</th>
                       <th>Estimated loan</th>
+                      <th>Region</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -287,6 +300,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
                             ? "—"
                             : formatInr(entry.loanAmountInr)}
                         </td>
+                        <td>{formatEntryRegion(entry)}</td>
                       </tr>
                     ))}
                   </tbody>

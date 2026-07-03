@@ -26,6 +26,9 @@ export type CalculatorEntryEvent = {
   weightGrams: number;
   karat: GoldKarat;
   loanAmountInr: number | null;
+  country?: string;
+  region?: string | null;
+  city?: string | null;
 };
 
 export type EngagementEvent = LendingRateStopEvent | CalculatorEntryEvent;

@@ -172,6 +172,9 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
           weightEntered:
             event.weightEntered ??
             String(event.weightGrams),
+          country: event.country ?? "Unknown",
+          region: event.region ?? null,
+          city: event.city ?? null,
         })),
     },
   };
@@ -187,6 +190,9 @@ export async function getCalculatorEntries(
     .map((event) => ({
       ...event,
       weightEntered: event.weightEntered ?? String(event.weightGrams),
+      country: event.country ?? "Unknown",
+      region: event.region ?? null,
+      city: event.city ?? null,
     }))
     .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 }

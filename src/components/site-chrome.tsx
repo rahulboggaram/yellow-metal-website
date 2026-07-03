@@ -76,7 +76,8 @@ export function SiteFooter() {
             <Image
               src="/images/site/footer-scene.jpg"
               alt=""
-              fill
+              width={1024}
+              height={509}
               sizes="100vw"
               className="ym-footer-scene-img"
             />

@@ -1,0 +1,25 @@
+import type { LegalBlock } from "@/components/legal-document";
+
+export const REFUND_AND_CANCELLATION_BLOCKS: LegalBlock[] = [
+  { type: "title", text: "REFUND AND CANCELLATION POLICY" },
+  { type: "meta", text: "Yellow Metal Loans Private Limited · Effective 03 July 2026" },
+  { type: "h2", text: "1. Nature of Business" },
+  { type: "p", text: "Yellow Metal Loans Private Limited is engaged in the business of secured lending against gold ornaments and jewellery pledged as collateral. As the primary business is lending, no refund of disbursed loan principal arises in the ordinary course of business. All repayment terms are governed by the Loan Agreement and the Key Fact Statement (KFS) issued at the time of sanction." },
+  { type: "h2", text: "2. Cancellation Before Disbursement" },
+  { type: "p", text: "A borrower may cancel a sanctioned loan at any time before disbursement by submitting a written request at the originating branch. In such cases:" },
+  { type: "p", text: "No interest shall be charged." },
+  { type: "p", text: "If loan documents have not been executed, any processing fee collected shall be refunded in full." },
+  { type: "p", text: "If loan documents have been executed but disbursement has not occurred, the processing fee as specified in the KFS shall be deducted and the balance, if any, refunded." },
+  { type: "p", text: "The pledged gold collateral shall be returned immediately upon cancellation." },
+  { type: "h2", text: "3. Closure After Disbursement" },
+  { type: "p", text: "Once the Loan have been disbursed, cancellation is not available as a distinct option. Any full repayment of outstanding dues after this period shall be treated as foreclosure. Foreclosure charges as specified in the KFS shall apply." },
+  { type: "h2", text: "4. Part-Payment" },
+  { type: "p", text: "A borrower may make part-payments toward the outstanding principal at any time, without any charge. Part-payment does not constitute cancellation of the loan and does not entitle the borrower to return of the collateral until all dues are fully settled." },
+  { type: "h2", text: "5. Refund of Excess Collections" },
+  { type: "p", text: "If, on account of any reason, the Company has collected an amount in excess of what is contractually due, the excess shall be refunded to the borrower upon:" },
+  { type: "p", text: "Receipt of a written refund request from the borrower, along with supporting documents; and" },
+  { type: "p", text: "Verification and approval by the relevant officer of the Company." },
+  { type: "p", text: "The refund shall be processed within 7 working days of confirmation of the excess." },
+  { type: "h2", text: "6. Return of Gold Collateral" },
+  { type: "p", text: "Upon full settlement of all outstanding dues (principal, accrued interest, and applicable foreclosure charges, if any), the pledged gold collateral shall be returned to the borrower or the borrower's authorised representative on the same day, or within 7 working days at the latest, in accordance with the RBI (Non-Banking Financial Companies – Responsible Business Conduct) Directions, 2025. Delay in return attributable to the Company shall attract compensation as required under applicable RBI directions." },
+];

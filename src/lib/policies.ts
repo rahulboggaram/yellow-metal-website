@@ -12,4 +12,12 @@ export const SITE_POLICIES: SitePolicy[] = [
     href: "/policies/grievance-redressal",
     label: "Grievance Redressal",
   },
+  {
+    href: "/policies/refund-and-cancellation",
+    label: "Refund and Cancellation Policy",
+  },
+  {
+    href: "/policies/interest-rate",
+    label: "Interest Rate Policy",
+  },
 ];

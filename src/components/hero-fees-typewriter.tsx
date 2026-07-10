@@ -3,17 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 
 const LINE_1 = "· No hidden fees · No processing fees · No valuation charges";
-const LINE_2 = "· No prepayment penalties · No fees to store your gold ·";
 const MOBILE_LINE_1 = "· No hidden fees · No processing fees ·";
 const MOBILE_LINE_2 = "· No valuation charges ·";
-const FULL_TEXT = `${LINE_1}\n${LINE_2}`;
 const MOBILE_FULL_TEXT = `${MOBILE_LINE_1}\n${MOBILE_LINE_2}`;
 const MOBILE_FEES_QUERY = "(max-width: 768px)";
 const TYPE_DELAY_MS = 28;
 const START_DELAY_MS = 700;
 
 function feesTextForViewport(isMobile: boolean) {
-  return isMobile ? MOBILE_FULL_TEXT : FULL_TEXT;
+  return isMobile ? MOBILE_FULL_TEXT : LINE_1;
 }
 
 function firstLineLength(isMobile: boolean) {
@@ -122,12 +120,7 @@ export function HeroFeesTypewriter({
             <span className="ym-hero-subtext-line">{MOBILE_LINE_2}</span>
           </>
         ) : (
-          <>
-            <span className="ym-hero-subtext-line">{LINE_1}</span>
-            <span className="ym-hero-subtext-line ym-hero-subtext-line--secondary">
-              {LINE_2}
-            </span>
-          </>
+          <span className="ym-hero-subtext-line">{LINE_1}</span>
         )}
       </span>
       <span className="ym-hero-subtext-live">

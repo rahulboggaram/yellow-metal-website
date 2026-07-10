@@ -14,7 +14,7 @@ type RouteContext = { params: Promise<{ id: string }> };
 export async function GET(_request: Request, context: RouteContext) {
   try {
     const { id } = await context.params;
-    const plan = getLoanPlanById(id);
+    const plan = await getLoanPlanById(id);
     if (!plan) {
       return NextResponse.json({ error: "Loan plan not found." }, { status: 404 });
     }
@@ -40,7 +40,7 @@ export async function PUT(request: Request, context: RouteContext) {
       return NextResponse.json({ error: "Invalid loan plan payload." }, { status: 400 });
     }
 
-    const plan = updateLoanPlan(id, body);
+    const plan = await updateLoanPlan(id, body);
     return NextResponse.json({ plan });
   } catch (error) {
     console.error("loan-plans/[id] PUT", error);
@@ -58,7 +58,7 @@ export async function DELETE(request: Request, context: RouteContext) {
 
   try {
     const { id } = await context.params;
-    deleteLoanPlan(id);
+    await deleteLoanPlan(id);
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("loan-plans/[id] DELETE", error);

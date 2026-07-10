@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     const showAll =
       searchParams.get("all") === "1" &&
       verifyAdminSecret(request.headers.get("x-admin-secret"));
-    const plans = getLoanPlans(!showAll);
+    const plans = await getLoanPlans(!showAll);
     return NextResponse.json({ plans });
   } catch (error) {
     console.error("loan-plans GET", error);
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid loan plan payload." }, { status: 400 });
     }
 
-    const plan = createLoanPlan(body);
+    const plan = await createLoanPlan(body);
     return NextResponse.json({ plan }, { status: 201 });
   } catch (error) {
     console.error("loan-plans POST", error);

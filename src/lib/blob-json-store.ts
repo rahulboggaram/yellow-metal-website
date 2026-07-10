@@ -34,9 +34,10 @@ export async function readBlobJson<T>(
 
   try {
     const result = await get(pathname, { access: "private" });
-    if (!result || result.statusCode === 404) return notFoundValue;
-    if (result.statusCode !== 200 || !result.stream) {
-      throw new Error(`Blob ${pathname} returned status ${result.statusCode}`);
+    if (!result) return notFoundValue;
+    const statusCode: number = result.statusCode;
+    if (statusCode !== 200 || !result.stream) {
+      throw new Error(`Blob ${pathname} returned status ${statusCode}`);
     }
     raw = await new Response(result.stream).text();
   } catch (error) {

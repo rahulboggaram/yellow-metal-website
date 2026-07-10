@@ -2,21 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const LINE_1 = "· No hidden fees · No processing fees · No valuation charges";
-const MOBILE_LINE_1 = "· No hidden fees · No processing fees ·";
-const MOBILE_LINE_2 = "· No valuation charges ·";
-const MOBILE_FULL_TEXT = `${MOBILE_LINE_1}\n${MOBILE_LINE_2}`;
-const MOBILE_FEES_QUERY = "(max-width: 768px)";
+const FEES_LINE_1 = "· No hidden fees · No processing fees ·";
+const FEES_LINE_2 = "· No valuation charges ·";
+const FEES_FULL_TEXT = `${FEES_LINE_1}\n${FEES_LINE_2}`;
 const TYPE_DELAY_MS = 28;
 const START_DELAY_MS = 700;
-
-function feesTextForViewport(isMobile: boolean) {
-  return isMobile ? MOBILE_FULL_TEXT : LINE_1;
-}
-
-function firstLineLength(isMobile: boolean) {
-  return isMobile ? MOBILE_LINE_1.length : LINE_1.length;
-}
 
 function splitTypedText(text: string) {
   const newlineIndex = text.indexOf("\n");
@@ -29,14 +19,6 @@ function splitTypedText(text: string) {
   };
 }
 
-function TypewriterCursor() {
-  return (
-    <span className="ym-hero-subtext-cursor" aria-hidden>
-      |
-    </span>
-  );
-}
-
 export function HeroFeesTypewriter({
   onComplete,
 }: {
@@ -44,11 +26,8 @@ export function HeroFeesTypewriter({
 }) {
   const [charIndex, setCharIndex] = useState(0);
   const [started, setStarted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [viewportReady, setViewportReady] = useState(false);
   const completedRef = useRef(false);
   const onCompleteRef = useRef(onComplete);
-  const fullText = feesTextForViewport(isMobile);
 
   useEffect(() => {
     onCompleteRef.current = onComplete;
@@ -61,20 +40,9 @@ export function HeroFeesTypewriter({
   };
 
   useEffect(() => {
-    const mobileMedia = window.matchMedia(MOBILE_FEES_QUERY);
-    const updateViewport = () => setIsMobile(mobileMedia.matches);
-    updateViewport();
-    setViewportReady(true);
-    mobileMedia.addEventListener("change", updateViewport);
-    return () => mobileMedia.removeEventListener("change", updateViewport);
-  }, []);
-
-  useEffect(() => {
-    if (!viewportReady) return;
-
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reducedMotion.matches) {
-      setCharIndex(fullText.length);
+      setCharIndex(FEES_FULL_TEXT.length);
       markComplete();
       return;
     }
@@ -85,28 +53,28 @@ export function HeroFeesTypewriter({
 
     const startTimer = window.setTimeout(() => setStarted(true), START_DELAY_MS);
     return () => window.clearTimeout(startTimer);
-  }, [viewportReady, fullText]);
+  }, []);
 
   useEffect(() => {
-    if (!started || charIndex >= fullText.length) return;
+    if (!started || charIndex >= FEES_FULL_TEXT.length) return;
 
     const timer = window.setTimeout(() => {
       setCharIndex((index) => index + 1);
     }, TYPE_DELAY_MS);
 
     return () => window.clearTimeout(timer);
-  }, [started, charIndex, fullText]);
+  }, [started, charIndex]);
 
   useEffect(() => {
-    if (charIndex >= fullText.length) {
+    if (charIndex >= FEES_FULL_TEXT.length) {
       markComplete();
     }
-  }, [charIndex, fullText]);
+  }, [charIndex]);
 
-  const visibleText = fullText.slice(0, charIndex);
+  const visibleText = FEES_FULL_TEXT.slice(0, charIndex);
   const { line1, line2 } = splitTypedText(visibleText);
-  const isComplete = charIndex >= fullText.length;
-  const onLine2 = charIndex > firstLineLength(isMobile);
+  const isComplete = charIndex >= FEES_FULL_TEXT.length;
+  const onLine2 = charIndex > FEES_LINE_1.length;
 
   return (
     <span
@@ -114,14 +82,8 @@ export function HeroFeesTypewriter({
       aria-live="polite"
     >
       <span className="ym-hero-subtext-ghost" aria-hidden>
-        {isMobile ? (
-          <>
-            <span className="ym-hero-subtext-line">{MOBILE_LINE_1}</span>
-            <span className="ym-hero-subtext-line">{MOBILE_LINE_2}</span>
-          </>
-        ) : (
-          <span className="ym-hero-subtext-line">{LINE_1}</span>
-        )}
+        <span className="ym-hero-subtext-line">{FEES_LINE_1}</span>
+        <span className="ym-hero-subtext-line">{FEES_LINE_2}</span>
       </span>
       <span className="ym-hero-subtext-live">
         <span className="ym-hero-subtext-line">
@@ -143,7 +105,7 @@ export function HeroFeesTypewriter({
           </span>
         ) : null}
       </span>
-      <span className="ym-sr-only">{fullText.replace("\n", " ")}</span>
+      <span className="ym-sr-only">{FEES_FULL_TEXT.replace("\n", " ")}</span>
     </span>
   );
 }

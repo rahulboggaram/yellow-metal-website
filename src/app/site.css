@@ -168,6 +168,8 @@ main {
 .ym-hero-line--fees {
   display: block;
   margin-top: -0.35rem;
+  white-space: normal;
+  text-align: center;
 }
 
 .ym-hero-line--mins {
@@ -252,6 +254,11 @@ main {
 
 .ym-hero-subtext-line {
   display: block;
+}
+
+.ym-hero-line--fees .ym-hero-subtext-line {
+  white-space: nowrap;
+  text-align: center;
 }
 
 .ym-hero-subtext-typewriter {
@@ -353,6 +360,7 @@ main {
   .ym-hero-line--fees {
     margin-top: -1.5rem;
     overflow: visible;
+    text-align: center;
   }
 }
 
@@ -3682,6 +3690,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   .ym-hero-line--fees .ym-hero-subtext-line {
     display: block;
     white-space: nowrap;
+    text-align: center;
   }
 
   .ym-hero-subtext-typewriter {

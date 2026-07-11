@@ -277,6 +277,13 @@ function AdminPageContent() {
                   size={36}
                 />
               ) : null}
+              {tab === "loan-plans" ? (
+                <AdminLottiePreview
+                  animation="loan"
+                  className="ym-admin-title-lottie"
+                  size={40}
+                />
+              ) : null}
             </div>
             <button
               type="button"

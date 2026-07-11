@@ -175,6 +175,7 @@ function AdminPageContent() {
               className="ym-admin-gate-logo"
               priority
             />
+            <p className="ym-admin-gate-label">Admin</p>
           </div>
 
           <div className="ym-admin-gate">

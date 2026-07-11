@@ -2099,8 +2099,10 @@ body:has(.ym-admin-root),
 
 .ym-admin-gate-brand {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+  gap: 0.65rem;
 }
 
 .ym-admin-gate-logo {
@@ -2109,6 +2111,15 @@ body:has(.ym-admin-root),
   height: auto;
   object-fit: contain;
   background: transparent;
+}
+
+.ym-admin-gate-label {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(0 0 0 / 0.55);
 }
 
 .ym-admin-lottie-preview {

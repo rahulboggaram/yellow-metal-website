@@ -2009,8 +2009,47 @@ body:has(.ym-admin-root),
 
 .ym-admin-list-actions {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.25rem;
   flex-shrink: 0;
+}
+
+.ym-admin-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: rgb(0 0 0 / 0.55);
+  cursor: pointer;
+}
+
+.ym-admin-icon-btn:hover {
+  background: rgb(0 0 0 / 0.06);
+  color: #000000;
+}
+
+.ym-admin-icon-btn--danger {
+  color: #b42318;
+}
+
+.ym-admin-icon-btn--danger:hover {
+  background: rgb(180 35 24 / 0.08);
+  color: #8f1f14;
+}
+
+.ym-admin-icon-btn svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.ym-admin-plans-column {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
 }
 
 .ym-admin-empty {

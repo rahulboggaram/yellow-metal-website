@@ -157,6 +157,15 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
     }
   }
 
+  const livePlans = useMemo(
+    () => plans.filter((plan) => plan.active),
+    [plans],
+  );
+  const disabledPlans = useMemo(
+    () => plans.filter((plan) => !plan.active),
+    [plans],
+  );
+
   return (
     <div className="ym-admin-stack">
       <div className="ym-admin-toolbar ym-admin-toolbar--end">
@@ -394,50 +403,107 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
           </form>
         </section>
 
-        <section className="ym-admin-panel">
-          <h2 className="ym-admin-heading">Existing plans</h2>
-          {plans.length === 0 ? (
-            <p className="ym-admin-empty">No plans loaded yet.</p>
-          ) : (
-            <ul className="ym-admin-list">
-              {plans.map((plan) => (
-                <li key={plan.id} className="ym-admin-list-item">
-                  <div>
-                    <div className="ym-admin-list-title-row">
-                      <p className="ym-admin-list-title">{plan.amountLabel}</p>
-                      <span
-                        className={`ym-admin-pill${plan.active ? " is-active" : ""}`}
-                      >
-                        {plan.active ? "Live" : "Hidden"}
-                      </span>
-                    </div>
-                    <p className="ym-admin-list-meta">
-                      {plan.repaymentType === "bullet" ? "Bullet" : "Monthly"} ·{" "}
-                      {plan.annualRatePercent}% p.a. · {plan.tenureMonths}M
-                    </p>
-                  </div>
-                  <div className="ym-admin-list-actions">
-                    <button
-                      type="button"
-                      className="ym-admin-btn ym-admin-btn--ghost"
-                      onClick={() => startEdit(plan)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="ym-admin-btn ym-admin-btn--danger"
-                      onClick={() => void handleDelete(plan.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+        <div className="ym-admin-plans-column">
+          <section className="ym-admin-panel">
+            <h2 className="ym-admin-heading">Live loan plans</h2>
+            {livePlans.length === 0 ? (
+              <p className="ym-admin-empty">No live plans yet.</p>
+            ) : (
+              <ul className="ym-admin-list">
+                {livePlans.map((plan) => (
+                  <PlanListItem
+                    key={plan.id}
+                    plan={plan}
+                    onEdit={() => startEdit(plan)}
+                    onDelete={() => void handleDelete(plan.id)}
+                  />
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section className="ym-admin-panel">
+            <h2 className="ym-admin-heading">Disabled loan plans</h2>
+            {disabledPlans.length === 0 ? (
+              <p className="ym-admin-empty">No disabled plans.</p>
+            ) : (
+              <ul className="ym-admin-list">
+                {disabledPlans.map((plan) => (
+                  <PlanListItem
+                    key={plan.id}
+                    plan={plan}
+                    onEdit={() => startEdit(plan)}
+                    onDelete={() => void handleDelete(plan.id)}
+                  />
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
       </div>
     </div>
+  );
+}
+
+function PlanListItem({
+  plan,
+  onEdit,
+  onDelete,
+}: {
+  plan: LoanPlan;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
+  return (
+    <li className="ym-admin-list-item">
+      <div>
+        <p className="ym-admin-list-title">{plan.amountLabel}</p>
+        <p className="ym-admin-list-meta">
+          {plan.repaymentType === "bullet" ? "Bullet" : "Monthly"} ·{" "}
+          {plan.annualRatePercent}% p.a. · {plan.tenureMonths}M
+        </p>
+      </div>
+      <div className="ym-admin-list-actions">
+        <button
+          type="button"
+          className="ym-admin-icon-btn"
+          onClick={onEdit}
+          aria-label={`Edit ${plan.amountLabel}`}
+          title="Edit"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M4 20h4l10.5-10.5a2.12 2.12 0 0 0-3-3L5 17v3Z"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M13.5 6.5l3 3"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          className="ym-admin-icon-btn ym-admin-icon-btn--danger"
+          onClick={onDelete}
+          aria-label={`Delete ${plan.amountLabel}`}
+          title="Delete"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M5 7h14M10 7V5h4v2M8 7l1 12h6l1-12"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </li>
   );
 }

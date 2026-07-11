@@ -120,11 +120,31 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
       {summary && (
         <>
           <div className="ym-admin-stats">
-            <StatCard label="Total page views" value={summary.totalViews} />
-            <StatCard label="Unique visitors" value={summary.uniqueVisitors} />
-            <StatCard label="Mobile views" value={summary.mobileViews} />
-            <StatCard label="Desktop views" value={summary.desktopViews} />
-            <StatCard label="Tablet views" value={summary.tabletViews} />
+            <StatCard
+              label="Total page views"
+              value={summary.totalViews}
+              info="Every time someone opens a page on the website, we count it as one view. Opening the home page and then the FAQ page counts as two views."
+            />
+            <StatCard
+              label="Unique visitors"
+              value={summary.uniqueVisitors}
+              info="How many different people visited. We recognise a visitor by a temporary ID saved in their browser, so the same person opening the site again still counts as one visitor."
+            />
+            <StatCard
+              label="Mobile views"
+              value={summary.mobileViews}
+              info="Page views from phones. We detect this from the device details the browser sends when the page loads."
+            />
+            <StatCard
+              label="Desktop views"
+              value={summary.desktopViews}
+              info="Page views from computers and laptops. We detect this from the device details the browser sends when the page loads."
+            />
+            <StatCard
+              label="Tablet views"
+              value={summary.tabletViews}
+              info="Page views from tablets. We detect this from the device details the browser sends when the page loads."
+            />
           </div>
 
           <div className="ym-admin-grid">

@@ -1596,9 +1596,9 @@ body:has(.ym-admin-root),
 
 .ym-admin-sidebar-logo {
   width: auto;
-  max-width: 10.5rem;
+  max-width: 12.6rem;
   height: auto;
-  max-height: 1.85rem;
+  max-height: 2.22rem;
   object-fit: contain;
   object-position: left center;
   background: transparent;

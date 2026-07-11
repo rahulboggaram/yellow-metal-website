@@ -1707,17 +1707,14 @@ body.ym-jewels-flying .ym-hero-ornament {
   align-items: end;
   justify-content: space-between;
   gap: 0.85rem;
-  padding: 1rem;
-  border: 1px solid rgb(0 0 0 / 0.06);
-  border-radius: 0.85rem;
-  background: #f7f7f5;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .ym-admin-toolbar--end {
   justify-content: flex-end;
-  background: transparent;
-  border: 0;
-  padding: 0;
 }
 
 .ym-admin-filters-grid {
@@ -1732,10 +1729,10 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-admin-panel {
-  padding: 1.25rem;
-  border: 1px solid rgb(0 0 0 / 0.06);
-  border-radius: 0.85rem;
-  background: #f7f7f5;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .ym-admin-split {
@@ -2027,7 +2024,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-admin-stat {
   padding: 1rem;
-  border: 1px solid rgb(0 0 0 / 0.05);
+  border: 1px solid rgb(0 0 0 / 0.08);
   border-radius: 0.85rem;
   background: #ffffff;
 }

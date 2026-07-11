@@ -1547,11 +1547,31 @@ body:has(.ym-admin-root),
 
 .ym-admin-root {
   --ym-admin-grey: #ececec;
-  /* Neutral focus — no blue floating-label accent in admin */
-  --color-accent: #52525b;
   height: 100dvh;
   overflow: hidden;
   background: var(--ym-admin-grey);
+}
+
+/* Soften text-selection fill inside admin fields (was sky blue) */
+.ym-admin-root input::selection,
+.ym-admin-root textarea::selection {
+  background: rgb(0 0 0 / 0.12);
+  color: inherit;
+}
+
+.ym-admin-root input::-moz-selection,
+.ym-admin-root textarea::-moz-selection {
+  background: rgb(0 0 0 / 0.12);
+  color: inherit;
+}
+
+.ym-admin-root input:-webkit-autofill,
+.ym-admin-root input:-webkit-autofill:hover,
+.ym-admin-root input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #18181b;
+  caret-color: #18181b;
+  box-shadow: 0 0 0 1000px #ffffff inset;
+  transition: background-color 99999s ease-out;
 }
 
 .ym-admin-shell {

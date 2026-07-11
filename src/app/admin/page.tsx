@@ -263,8 +263,16 @@ function AdminPageContent() {
           <header className="ym-admin-main-header">
             <div className="ym-admin-main-title-row">
               <h1 className="ym-admin-main-title">{activeTab.label}</h1>
+              {tab === "analytics" ? (
+                <AdminLottiePreview
+                  animation="financial-graph"
+                  className="ym-admin-title-lottie"
+                  size={40}
+                />
+              ) : null}
               {tab === "engagement" ? (
                 <AdminLottiePreview
+                  animation="favorites"
                   className="ym-admin-title-lottie"
                   size={36}
                 />

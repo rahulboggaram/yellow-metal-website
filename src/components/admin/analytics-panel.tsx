@@ -102,7 +102,7 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
           onClick={() => void loadAnalytics()}
           disabled={!secret || loading}
         >
-          {loading ? "Loading…" : "Refresh"}
+          {loading ? "Updating…" : "Update"}
         </button>
       </div>
 
@@ -113,7 +113,7 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
       {summary && summary.totalViews === 0 && !message && (
         <p className="ym-admin-empty-banner">
           No visits recorded yet. Open the home page on your phone or laptop,
-          then click Refresh.
+          then click Update.
         </p>
       )}
 

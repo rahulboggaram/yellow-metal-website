@@ -95,7 +95,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
           onClick={() => void loadSummary()}
           disabled={!secret || loading}
         >
-          {loading ? "Loading…" : "Refresh"}
+          {loading ? "Updating…" : "Update"}
         </button>
       </div>
 

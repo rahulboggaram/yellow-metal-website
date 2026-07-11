@@ -1558,7 +1558,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-admin-shell--app {
   display: grid;
-  grid-template-columns: 15rem minmax(0, 1fr);
+  grid-template-columns: 15.5rem minmax(0, 1fr);
   min-height: 100dvh;
   background: #ececec;
 }
@@ -1566,30 +1566,84 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-admin-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1.5rem 1rem 1.25rem;
+  gap: 0;
+  padding: 1.35rem 0.85rem 1.1rem;
   background: transparent;
 }
 
 .ym-admin-sidebar-brand {
   display: grid;
-  gap: 0.25rem;
-  padding: 0.25rem 0.75rem 0.5rem;
+  padding: 0.15rem 0.65rem 1.75rem;
 }
 
 .ym-admin-sidebar-logo {
   width: 100%;
-  max-width: 11.5rem;
+  max-width: 10.5rem;
   height: auto;
   object-fit: contain;
   background: transparent;
 }
 
-.ym-admin-sidebar-title {
-  margin: 0;
-  font-size: 0.95rem;
+.ym-admin-nav {
+  display: grid;
+  gap: 0.2rem;
+  flex: 1;
+  align-content: start;
+}
+
+.ym-admin-nav-section {
+  margin: 0 0 0.35rem;
+  padding: 0 0.75rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  color: rgb(0 0 0 / 0.55);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(0 0 0 / 0.38);
+}
+
+.ym-admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.62rem 0.75rem;
+  border: 0;
+  border-radius: 0.65rem;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: rgb(0 0 0 / 0.62);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ym-admin-nav-icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex-shrink: 0;
+}
+
+.ym-admin-nav-item:hover {
+  background: rgb(0 0 0 / 0.04);
+  color: #000000;
+}
+
+.ym-admin-nav-item.is-active {
+  background: rgb(0 0 0 / 0.07);
+  color: #000000;
+  font-weight: 600;
+}
+
+.ym-admin-nav-item--quiet {
+  color: rgb(0 0 0 / 0.45);
+  font-weight: 500;
+}
+
+.ym-admin-sidebar-footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
 }
 
 .ym-admin-pill {
@@ -1609,43 +1663,6 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-admin-pill.is-active {
   background: rgb(0 0 0 / 0.9);
   color: #ffffff;
-}
-
-.ym-admin-nav {
-  display: grid;
-  gap: 0.1rem;
-  flex: 1;
-  padding-inline: 0.75rem;
-}
-
-.ym-admin-nav-item {
-  width: 100%;
-  padding: 0.45rem 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: rgb(0 0 0 / 0.55);
-  transition: color 0.15s ease;
-}
-
-.ym-admin-nav-item:hover {
-  background: transparent;
-  color: #000000;
-}
-
-.ym-admin-nav-item.is-active {
-  background: transparent;
-  color: #000000;
-  font-weight: 650;
-}
-
-.ym-admin-sidebar-footer {
-  padding-top: 0.5rem;
 }
 
 .ym-admin-main {
@@ -2120,14 +2137,22 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-admin-nav {
     display: flex;
-    gap: 0.4rem;
+    gap: 0.35rem;
     overflow-x: auto;
     padding-bottom: 0.15rem;
+  }
+
+  .ym-admin-nav-section {
+    display: none;
   }
 
   .ym-admin-nav-item {
     min-width: auto;
     flex: 0 0 auto;
+  }
+
+  .ym-admin-nav-icon {
+    display: none;
   }
 
   .ym-admin-sidebar-footer {

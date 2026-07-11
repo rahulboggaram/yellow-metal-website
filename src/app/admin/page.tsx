@@ -13,11 +13,67 @@ import {
   verifyAdminSecret,
 } from "@/lib/admin-session";
 
-const TABS: { id: AdminTab; label: string }[] = [
-  { id: "analytics", label: "Analytics" },
-  { id: "engagement", label: "Engagement" },
-  { id: "loan-plans", label: "Loan plans" },
+const TABS: {
+  id: AdminTab;
+  label: string;
+  icon: "analytics" | "engagement" | "plans";
+}[] = [
+  { id: "analytics", label: "Analytics", icon: "analytics" },
+  { id: "engagement", label: "Engagement", icon: "engagement" },
+  { id: "loan-plans", label: "Loan plans", icon: "plans" },
 ];
+
+function NavIcon({ name }: { name: (typeof TABS)[number]["icon"] }) {
+  if (name === "analytics") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden className="ym-admin-nav-icon">
+        <path
+          d="M4 19V5M4 19h16"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M8 15v-3M12 15V9M16 15v-5"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+  if (name === "engagement") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden className="ym-admin-nav-icon">
+        <path
+          d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden className="ym-admin-nav-icon">
+      <rect
+        x="4"
+        y="6"
+        width="16"
+        height="12"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+      <path
+        d="M8 10h8M8 14h5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
 function AdminPageContent() {
   const router = useRouter();
@@ -179,6 +235,7 @@ function AdminPageContent() {
         </div>
 
         <nav className="ym-admin-nav" role="tablist" aria-label="Admin sections">
+          <p className="ym-admin-nav-section">Manage</p>
           {TABS.map((item) => (
             <button
               key={item.id}
@@ -188,7 +245,8 @@ function AdminPageContent() {
               className={`ym-admin-nav-item${tab === item.id ? " is-active" : ""}`}
               onClick={() => switchTab(item.id)}
             >
-              {item.label}
+              <NavIcon name={item.icon} />
+              <span>{item.label}</span>
             </button>
           ))}
         </nav>
@@ -196,7 +254,7 @@ function AdminPageContent() {
         <div className="ym-admin-sidebar-footer">
           <button
             type="button"
-            className="ym-admin-btn ym-admin-btn--ghost ym-admin-btn--block"
+            className="ym-admin-nav-item ym-admin-nav-item--quiet"
             onClick={signOut}
           >
             Sign out

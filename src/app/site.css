@@ -1613,33 +1613,33 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-admin-nav {
   display: grid;
-  gap: 0.15rem;
+  gap: 0.1rem;
   flex: 1;
-  padding-inline: 0.35rem;
+  padding-inline: 0.75rem;
 }
 
 .ym-admin-nav-item {
   width: 100%;
-  padding: 0.65rem 0.75rem;
+  padding: 0.45rem 0;
   border: 0;
-  border-radius: 0.55rem;
+  border-radius: 0;
   background: transparent;
   text-align: left;
   cursor: pointer;
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 500;
-  color: rgb(0 0 0 / 0.6);
-  transition: background 0.15s ease, color 0.15s ease;
+  color: rgb(0 0 0 / 0.55);
+  transition: color 0.15s ease;
 }
 
 .ym-admin-nav-item:hover {
-  background: rgb(0 0 0 / 0.05);
+  background: transparent;
   color: #000000;
 }
 
 .ym-admin-nav-item.is-active {
-  background: rgb(0 0 0 / 0.08);
+  background: transparent;
   color: #000000;
   font-weight: 650;
 }

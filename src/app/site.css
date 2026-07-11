@@ -1539,8 +1539,15 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 /* ── Admin ── */
+body:has(.ym-admin-root),
+.ym-site:has(.ym-admin-root) {
+  height: 100dvh;
+  overflow: hidden;
+}
+
 .ym-admin-root {
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
   background: #ececec;
 }
 
@@ -1552,14 +1559,17 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-admin-shell--gate {
   display: grid;
   place-items: center;
+  height: 100dvh;
   padding: 2rem 1.25rem;
   background: #ececec;
+  overflow: auto;
 }
 
 .ym-admin-shell--app {
   display: grid;
   grid-template-columns: 15.5rem minmax(0, 1fr);
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
   background: #ececec;
 }
 
@@ -1567,8 +1577,10 @@ body.ym-jewels-flying .ym-hero-ornament {
   display: flex;
   flex-direction: column;
   gap: 0;
+  height: 100dvh;
   padding: 1.35rem 0.85rem 1.1rem;
   background: transparent;
+  overflow: hidden;
 }
 
 .ym-admin-sidebar-brand {
@@ -1669,9 +1681,10 @@ body.ym-jewels-flying .ym-hero-ornament {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: 100dvh;
+  height: 100dvh;
   padding: 1.25rem 1.25rem 1.25rem 0.5rem;
   background: transparent;
+  overflow: hidden;
 }
 
 .ym-admin-content-card {
@@ -1692,6 +1705,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   padding: 1.5rem 1.5rem 1rem;
   border-bottom: 1px solid rgb(0 0 0 / 0.06);
   background: transparent;
+  flex-shrink: 0;
 }
 
 .ym-admin-main-signout {
@@ -1710,7 +1724,11 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-admin-main-content {
   flex: 1;
+  min-height: 0;
   padding: 1.25rem 1.5rem 1.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .ym-admin-stack {
@@ -2208,17 +2226,30 @@ body.ym-jewels-flying .ym-hero-ornament {
 @media (max-width: 900px) {
   .ym-admin-shell--app {
     grid-template-columns: 1fr;
+    height: 100dvh;
+    overflow: hidden;
   }
 
   .ym-admin-sidebar {
+    height: auto;
     border-right: 0;
     border-bottom: 0;
     padding-bottom: 0.5rem;
+    flex-shrink: 0;
+    overflow: visible;
   }
 
   .ym-admin-main {
     padding: 0.75rem 1rem 1rem;
+    height: auto;
     min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .ym-admin-shell--app {
+    display: flex;
+    flex-direction: column;
   }
 
   .ym-admin-nav {

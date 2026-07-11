@@ -1547,6 +1547,8 @@ body:has(.ym-admin-root),
 
 .ym-admin-root {
   --ym-admin-grey: #ececec;
+  /* Neutral focus — no blue floating-label accent in admin */
+  --color-accent: #52525b;
   height: 100dvh;
   overflow: hidden;
   background: var(--ym-admin-grey);

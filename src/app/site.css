@@ -1578,9 +1578,11 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-admin-sidebar-logo {
-  width: 7.5rem;
+  width: 100%;
+  max-width: 11.5rem;
   height: auto;
   object-fit: contain;
+  border-radius: 0.4rem;
 }
 
 .ym-admin-sidebar-title {
@@ -1974,9 +1976,11 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-admin-gate-logo {
-  width: 8.5rem;
+  width: 100%;
+  max-width: 14rem;
   height: auto;
   object-fit: contain;
+  border-radius: 0.45rem;
 }
 
 .ym-admin-gate-eyebrow {

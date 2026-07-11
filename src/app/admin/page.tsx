@@ -110,14 +110,14 @@ function AdminPageContent() {
         <div className="ym-admin-gate">
           <div className="ym-admin-gate-brand">
             <Image
-              src="/images/ym-logo.png"
+              src="/images/ym-admin-logo.jpg"
               alt="Yellow Metal"
-              width={200}
-              height={100}
+              width={1024}
+              height={195}
               className="ym-admin-gate-logo"
               priority
             />
-            <p className="ym-admin-gate-eyebrow">Internal tools</p>
+            <p className="ym-admin-gate-eyebrow">Admin</p>
           </div>
 
           <h1 className="ym-admin-gate-title">Sign in</h1>
@@ -170,10 +170,10 @@ function AdminPageContent() {
       <aside className="ym-admin-sidebar" aria-label="Admin navigation">
         <div className="ym-admin-sidebar-brand">
           <Image
-            src="/images/ym-logo.png"
+            src="/images/ym-admin-logo.jpg"
             alt="Yellow Metal"
-            width={160}
-            height={80}
+            width={1024}
+            height={195}
             className="ym-admin-sidebar-logo"
             priority
           />

@@ -275,6 +275,8 @@ function AdminPageContent() {
                   animation="favorites"
                   className="ym-admin-title-lottie"
                   size={36}
+                  loop={false}
+                  freezeFrame={50}
                 />
               ) : null}
               {tab === "loan-plans" ? (

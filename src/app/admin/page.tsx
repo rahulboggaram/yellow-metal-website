@@ -273,8 +273,8 @@ function AdminPageContent() {
               {tab === "engagement" ? (
                 <AdminLottiePreview
                   animation="favorites"
-                  className="ym-admin-title-lottie"
-                  size={36}
+                  className="ym-admin-title-lottie ym-admin-title-lottie--engagement"
+                  size={108}
                   loop={false}
                   freezeFrame={50}
                 />

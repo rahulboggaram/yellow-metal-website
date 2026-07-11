@@ -2141,12 +2141,14 @@ body:has(.ym-admin-root),
   font-size: 1.75rem;
   font-weight: 800;
   letter-spacing: -0.03em;
+  text-align: center;
 }
 
 .ym-admin-gate-lead {
   margin: 0.4rem 0 0;
   font-size: 0.95rem;
   color: rgb(0 0 0 / 0.55);
+  text-align: center;
 }
 
 .ym-admin-gate-form {

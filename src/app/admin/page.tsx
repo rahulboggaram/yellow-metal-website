@@ -228,7 +228,6 @@ function AdminPageContent() {
         </div>
 
         <nav className="ym-admin-nav" role="tablist" aria-label="Admin sections">
-          <p className="ym-admin-nav-section">Manage</p>
           {TABS.map((item) => (
             <button
               key={item.id}

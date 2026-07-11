@@ -207,25 +207,27 @@ function AdminPageContent() {
       </aside>
 
       <div className="ym-admin-main">
-        <header className="ym-admin-main-header">
-          <h1 className="ym-admin-main-title">{activeTab.label}</h1>
-          <button
-            type="button"
-            className="ym-admin-btn ym-admin-btn--ghost ym-admin-main-signout"
-            onClick={signOut}
-          >
-            Sign out
-          </button>
-        </header>
+        <div className="ym-admin-content-card">
+          <header className="ym-admin-main-header">
+            <h1 className="ym-admin-main-title">{activeTab.label}</h1>
+            <button
+              type="button"
+              className="ym-admin-btn ym-admin-btn--ghost ym-admin-main-signout"
+              onClick={signOut}
+            >
+              Sign out
+            </button>
+          </header>
 
-        <div role="tabpanel" className="ym-admin-main-content">
-          {tab === "analytics" ? (
-            <AnalyticsAdminPanel secret={secret} />
-          ) : tab === "engagement" ? (
-            <EngagementAdminPanel secret={secret} />
-          ) : (
-            <LoanPlansAdminPanel secret={secret} />
-          )}
+          <div role="tabpanel" className="ym-admin-main-content">
+            {tab === "analytics" ? (
+              <AnalyticsAdminPanel secret={secret} />
+            ) : tab === "engagement" ? (
+              <EngagementAdminPanel secret={secret} />
+            ) : (
+              <LoanPlansAdminPanel secret={secret} />
+            )}
+          </div>
         </div>
       </div>
     </div>

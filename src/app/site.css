@@ -1567,7 +1567,7 @@ body:has(.ym-admin-root),
 }
 
 .ym-admin-shell--app {
-  --ym-admin-chrome-top: calc(1.25rem + 50px);
+  --ym-admin-chrome-top: calc(1.25rem + 25px);
   --ym-admin-title-row: 3.25rem;
   display: grid;
   grid-template-columns: 15.5rem minmax(0, 1fr);

@@ -117,7 +117,6 @@ function AdminPageContent() {
               className="ym-admin-gate-logo"
               priority
             />
-            <p className="ym-admin-gate-eyebrow">Admin</p>
           </div>
 
           <h1 className="ym-admin-gate-title">Sign in</h1>
@@ -177,7 +176,6 @@ function AdminPageContent() {
             className="ym-admin-sidebar-logo"
             priority
           />
-          <p className="ym-admin-sidebar-title">Admin</p>
         </div>
 
         <nav className="ym-admin-nav" role="tablist" aria-label="Admin sections">

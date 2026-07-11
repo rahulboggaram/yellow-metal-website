@@ -3,17 +3,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { DateRangeFilter } from "@/components/admin/date-range-filter";
 import { StatCard } from "@/components/admin/stat-card";
-import { buildAdminDateQuery, last30DaysRange } from "@/lib/admin-session";
+import {
+  buildAdminDateQuery,
+  formatAdminDate,
+  formatAdminDateTime,
+  last30DaysRange,
+} from "@/lib/admin-session";
 import type { CalculatorEntryEvent, EngagementSummary } from "@/lib/engagement-types";
 import { formatInr } from "@/lib/gold-price-format";
-
-function formatTimestamp(iso: string): string {
-  const date = new Date(iso);
-  return date.toLocaleString("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
-}
 
 function formatDuration(seconds: number): string {
   if (seconds < 60) return `${seconds}s`;
@@ -149,7 +146,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
                     <tbody>
                       {summary.lendingRate.byDay.map((row) => (
                         <tr key={row.date}>
-                          <td>{row.date}</td>
+                          <td>{formatAdminDate(row.date)}</td>
                           <td>{row.stops.toLocaleString("en-IN")}</td>
                           <td>{row.visitors.toLocaleString("en-IN")}</td>
                           <td>{formatDuration(row.avgDurationSeconds)}</td>
@@ -202,7 +199,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
                     <tbody>
                       {summary.calculator.recentEntries.map((entry) => (
                         <tr key={entry.id}>
-                          <td>{formatTimestamp(entry.timestamp)}</td>
+                          <td>{formatAdminDateTime(entry.timestamp)}</td>
                           <td>{formatWeightEntered(entry)}</td>
                           <td>{entry.karat}</td>
                           <td>
@@ -235,7 +232,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
                     <tbody>
                       {summary.calculator.byDay.map((row) => (
                         <tr key={row.date}>
-                          <td>{row.date}</td>
+                          <td>{formatAdminDate(row.date)}</td>
                           <td>{row.entries.toLocaleString("en-IN")}</td>
                           <td>{row.visitors.toLocaleString("en-IN")}</td>
                         </tr>

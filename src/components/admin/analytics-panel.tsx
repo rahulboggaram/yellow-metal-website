@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { DateRangeFilter } from "@/components/admin/date-range-filter";
 import { StatCard } from "@/components/admin/stat-card";
-import { buildAdminDateQuery, last30DaysRange } from "@/lib/admin-session";
+import { buildAdminDateQuery, formatAdminDate, last30DaysRange } from "@/lib/admin-session";
 import type { AnalyticsSummary } from "@/lib/analytics-types";
 
 function DataTable({
@@ -170,7 +170,7 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
                     <tbody>
                       {summary.byDay.map((row) => (
                         <tr key={row.date}>
-                          <td>{row.date}</td>
+                          <td>{formatAdminDate(row.date)}</td>
                           <td>{row.views.toLocaleString("en-IN")}</td>
                           <td>{row.visitors.toLocaleString("en-IN")}</td>
                         </tr>

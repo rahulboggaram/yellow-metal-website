@@ -57,6 +57,76 @@ export function buildAdminDateQuery(
   return params;
 }
 
+const ADMIN_MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+/** Display dates as `03 July 2026` across the admin panel. */
+export function formatAdminDate(value: string | Date): string {
+  const parts = parseAdminDateParts(value);
+  if (!parts) return typeof value === "string" ? value : "";
+  const day = String(parts.day).padStart(2, "0");
+  return `${day} ${ADMIN_MONTHS[parts.month]} ${parts.year}`;
+}
+
+/** Date + time for timestamps, e.g. `03 July 2026, 3:45 pm`. */
+export function formatAdminDateTime(value: string | Date): string {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return typeof value === "string" ? value : "";
+  }
+  const datePart = formatAdminDate(date);
+  const timePart = date
+    .toLocaleTimeString("en-IN", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    })
+    .toLowerCase();
+  return `${datePart}, ${timePart}`;
+}
+
+function parseAdminDateParts(
+  value: string | Date,
+): { year: number; month: number; day: number } | null {
+  if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) return null;
+    return {
+      year: value.getFullYear(),
+      month: value.getMonth(),
+      day: value.getDate(),
+    };
+  }
+
+  const ymd = value.trim().match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (ymd) {
+    return {
+      year: Number(ymd[1]),
+      month: Number(ymd[2]) - 1,
+      day: Number(ymd[3]),
+    };
+  }
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return {
+    year: parsed.getFullYear(),
+    month: parsed.getMonth(),
+    day: parsed.getDate(),
+  };
+}
+
 export async function verifyAdminSecret(secret: string): Promise<boolean> {
   const { from, to } = last30DaysRange();
   const params = new URLSearchParams({ from, to });

@@ -1546,14 +1546,15 @@ body:has(.ym-admin-root),
 }
 
 .ym-admin-root {
+  --ym-admin-grey: #ececec;
   height: 100dvh;
   overflow: hidden;
-  background: #ececec;
+  background: var(--ym-admin-grey);
 }
 
 .ym-admin-shell {
   min-height: 100dvh;
-  background: #ececec;
+  background: var(--ym-admin-grey, #ececec);
 }
 
 .ym-admin-shell--gate {
@@ -1561,7 +1562,7 @@ body:has(.ym-admin-root),
   place-items: center;
   height: 100dvh;
   padding: 2rem 1.25rem;
-  background: #ececec;
+  background: var(--ym-admin-grey, #ececec);
   overflow: auto;
 }
 
@@ -1570,7 +1571,7 @@ body:has(.ym-admin-root),
   grid-template-columns: 15.5rem minmax(0, 1fr);
   height: 100dvh;
   overflow: hidden;
-  background: #ececec;
+  background: var(--ym-admin-grey, #ececec);
 }
 
 .ym-admin-sidebar {
@@ -1693,7 +1694,7 @@ body:has(.ym-admin-root),
   flex: 1;
   min-height: 0;
   border-radius: 1rem;
-  background: #ffffff;
+  background: var(--ym-admin-grey, #ececec);
   overflow: hidden;
 }
 
@@ -1703,7 +1704,7 @@ body:has(.ym-admin-root),
   justify-content: space-between;
   gap: 1rem;
   padding: 1.5rem 1.5rem 1rem;
-  border-bottom: 1px solid rgb(0 0 0 / 0.06);
+  border-bottom: 0;
   background: transparent;
   flex-shrink: 0;
 }
@@ -1745,7 +1746,7 @@ body:has(.ym-admin-root),
   padding: 1rem;
   border: 1px solid rgb(0 0 0 / 0.06);
   border-radius: 0.85rem;
-  background: #f7f7f5;
+  background: #ffffff;
 }
 
 .ym-admin-toolbar--end {
@@ -1766,7 +1767,7 @@ body:has(.ym-admin-root),
   padding: 1.25rem;
   border: 1px solid rgb(0 0 0 / 0.06);
   border-radius: 0.85rem;
-  background: #f7f7f5;
+  background: #ffffff;
 }
 
 .ym-admin-split {
@@ -2023,7 +2024,7 @@ body:has(.ym-admin-root),
   padding: 1.75rem;
   border: 1px solid rgb(0 0 0 / 0.08);
   border-radius: 1.25rem;
-  background: #ffffff;
+  background: var(--ym-admin-grey, #ececec);
 }
 
 .ym-admin-gate-brand {
@@ -2086,7 +2087,7 @@ body:has(.ym-admin-root),
 
 .ym-admin-stat {
   padding: 1rem;
-  border: 1px solid rgb(0 0 0 / 0.05);
+  border: 1px solid rgb(0 0 0 / 0.06);
   border-radius: 0.85rem;
   background: #ffffff;
 }

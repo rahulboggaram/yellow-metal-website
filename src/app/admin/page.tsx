@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnalyticsAdminPanel } from "@/components/admin/analytics-panel";
 import { EngagementAdminPanel } from "@/components/admin/engagement-panel";
+import { AdminLottiePreview } from "@/components/admin/lottie-preview";
 import { LoanPlansAdminPanel } from "@/components/admin/loan-plans-panel";
 import { FloatingInput } from "@/components/ui/floating-field";
 import {
@@ -259,7 +260,15 @@ function AdminPageContent() {
       <div className="ym-admin-main">
         <div className="ym-admin-content-card">
           <header className="ym-admin-main-header">
-            <h1 className="ym-admin-main-title">{activeTab.label}</h1>
+            <div className="ym-admin-main-title-row">
+              <h1 className="ym-admin-main-title">{activeTab.label}</h1>
+              {tab === "engagement" ? (
+                <AdminLottiePreview
+                  className="ym-admin-title-lottie"
+                  size={36}
+                />
+              ) : null}
+            </div>
             <button
               type="button"
               className="ym-admin-btn ym-admin-btn--ghost ym-admin-main-signout"

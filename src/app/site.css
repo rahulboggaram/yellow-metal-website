@@ -1733,6 +1733,18 @@ body:has(.ym-admin-root),
   line-height: 1.1;
 }
 
+.ym-admin-main-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.ym-admin-title-lottie {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
 .ym-admin-main-content {
   flex: 1;
   min-height: 0;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { FloatingInput, FloatingSelect } from "@/components/ui/floating-field";
 import type { LoanPlan, LoanPlanInput, LoanPlanInterestTier } from "@/lib/loan-plans-shared";
 
 const EMPTY_TIER: LoanPlanInterestTier = {
@@ -177,172 +178,142 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
             {editingId ? "Edit plan" : "Add plan"}
           </h2>
           <form className="ym-admin-form" onSubmit={handleSubmit}>
-            <label className="ym-admin-field">
-              <span className="ym-admin-label">Amount label</span>
-              <input
-                className="ym-admin-input"
-                value={form.amountLabel}
+            <FloatingInput
+              label="Amount label"
+              value={form.amountLabel}
+              onChange={(e) =>
+                setForm((c) => ({ ...c, amountLabel: e.target.value }))
+              }
+              placeholder="₹20,000 – ₹49,999"
+              required
+            />
+
+            <div className="ym-admin-row">
+              <FloatingInput
+                label="Min amount (₹)"
+                type="number"
+                min="0"
+                value={form.minAmountInr || ""}
                 onChange={(e) =>
-                  setForm((c) => ({ ...c, amountLabel: e.target.value }))
+                  setForm((c) => ({
+                    ...c,
+                    minAmountInr: Number(e.target.value) || 0,
+                  }))
                 }
-                placeholder="₹20,000 – ₹49,999"
                 required
               />
-            </label>
+              <FloatingInput
+                label="Max amount (₹)"
+                type="number"
+                min="0"
+                value={form.maxAmountInr ?? ""}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    maxAmountInr: parseOptionalNumber(e.target.value),
+                  }))
+                }
+                placeholder="Leave empty for no max"
+              />
+            </div>
 
-            <div className="ym-admin-row">
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">Min amount (₹)</span>
-                <input
-                  className="ym-admin-input"
-                  type="number"
-                  min="0"
-                  value={form.minAmountInr || ""}
-                  onChange={(e) =>
-                    setForm((c) => ({
-                      ...c,
-                      minAmountInr: Number(e.target.value) || 0,
-                    }))
-                  }
-                  required
-                />
-              </label>
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">Max amount (₹)</span>
-                <input
-                  className="ym-admin-input"
-                  type="number"
-                  min="0"
-                  value={form.maxAmountInr ?? ""}
-                  onChange={(e) =>
-                    setForm((c) => ({
-                      ...c,
-                      maxAmountInr: parseOptionalNumber(e.target.value),
-                    }))
-                  }
-                  placeholder="Leave empty for no max"
-                />
-              </label>
+            <div className="ym-admin-row ym-admin-row--3">
+              <FloatingSelect
+                label="Repayment type"
+                value={form.repaymentType}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    repaymentType:
+                      e.target.value === "bullet" ? "bullet" : "monthly",
+                  }))
+                }
+              >
+                <option value="monthly">Monthly</option>
+                <option value="bullet">Bullet</option>
+              </FloatingSelect>
+              <FloatingInput
+                label="Category"
+                value={form.category ?? ""}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    category: e.target.value.trim() || null,
+                  }))
+                }
+                placeholder="Non-Agri (optional)"
+              />
+              <FloatingInput
+                label="Sort order"
+                type="number"
+                min="1"
+                value={form.sortOrder}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    sortOrder: Number(e.target.value) || 1,
+                  }))
+                }
+              />
             </div>
 
             <div className="ym-admin-row">
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">Repayment type</span>
-                <select
-                  className="ym-admin-input"
-                  value={form.repaymentType}
-                  onChange={(e) =>
-                    setForm((c) => ({
-                      ...c,
-                      repaymentType:
-                        e.target.value === "bullet" ? "bullet" : "monthly",
-                    }))
-                  }
-                >
-                  <option value="monthly">Monthly</option>
-                  <option value="bullet">Bullet</option>
-                </select>
-              </label>
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">Category</span>
-                <input
-                  className="ym-admin-input"
-                  value={form.category ?? ""}
-                  onChange={(e) =>
-                    setForm((c) => ({
-                      ...c,
-                      category: e.target.value.trim() || null,
-                    }))
-                  }
-                  placeholder="Non-Agri (optional)"
-                />
-              </label>
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">Sort order</span>
-                <input
-                  className="ym-admin-input"
-                  type="number"
-                  min="1"
-                  value={form.sortOrder}
-                  onChange={(e) =>
-                    setForm((c) => ({
-                      ...c,
-                      sortOrder: Number(e.target.value) || 1,
-                    }))
-                  }
-                />
-              </label>
+              <FloatingInput
+                label="LTV label"
+                value={form.ltvLabel}
+                onChange={(e) =>
+                  setForm((c) => ({ ...c, ltvLabel: e.target.value }))
+                }
+              />
+              <FloatingInput
+                label="Tenure (months)"
+                type="number"
+                min="1"
+                value={form.tenureMonths}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    tenureMonths: Number(e.target.value) || 12,
+                  }))
+                }
+              />
             </div>
 
             <div className="ym-admin-row">
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">LTV label</span>
-                <input
-                  className="ym-admin-input"
-                  value={form.ltvLabel}
-                  onChange={(e) =>
-                    setForm((c) => ({ ...c, ltvLabel: e.target.value }))
-                  }
-                />
-              </label>
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">Tenure (months)</span>
-                <input
-                  className="ym-admin-input"
-                  type="number"
-                  min="1"
-                  value={form.tenureMonths}
-                  onChange={(e) =>
-                    setForm((c) => ({
-                      ...c,
-                      tenureMonths: Number(e.target.value) || 12,
-                    }))
-                  }
-                />
-              </label>
-            </div>
-
-            <div className="ym-admin-row">
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">Annual rate (%)</span>
-                <input
-                  className="ym-admin-input"
-                  type="number"
-                  step="0.001"
-                  value={form.annualRatePercent || ""}
-                  onChange={(e) =>
-                    setForm((c) => ({
-                      ...c,
-                      annualRatePercent: Number(e.target.value) || 0,
-                    }))
-                  }
-                  required
-                />
-              </label>
-              <label className="ym-admin-field">
-                <span className="ym-admin-label">Monthly rate (%)</span>
-                <input
-                  className="ym-admin-input"
-                  type="number"
-                  step="0.001"
-                  value={form.monthlyRatePercent || ""}
-                  onChange={(e) =>
-                    setForm((c) => ({
-                      ...c,
-                      monthlyRatePercent: Number(e.target.value) || 0,
-                    }))
-                  }
-                  required
-                />
-              </label>
+              <FloatingInput
+                label="Annual rate (%)"
+                type="number"
+                step="0.001"
+                value={form.annualRatePercent || ""}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    annualRatePercent: Number(e.target.value) || 0,
+                  }))
+                }
+                required
+              />
+              <FloatingInput
+                label="Monthly rate (%)"
+                type="number"
+                step="0.001"
+                value={form.monthlyRatePercent || ""}
+                onChange={(e) =>
+                  setForm((c) => ({
+                    ...c,
+                    monthlyRatePercent: Number(e.target.value) || 0,
+                  }))
+                }
+                required
+              />
             </div>
 
             <fieldset className="ym-admin-fieldset">
               <legend className="ym-admin-label">Interest tiers</legend>
               {form.interestTiers.map((tier, index) => (
-                <div key={index} className="ym-admin-tier-row">
-                  <input
-                    className="ym-admin-input"
+                <div key={index} className="ym-admin-tier-row ym-admin-tier-row--fields">
+                  <FloatingInput
+                    label="From day"
                     type="number"
                     min="0"
                     value={tier.daysFrom}
@@ -351,22 +322,18 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
                         daysFrom: Number(e.target.value) || 0,
                       })
                     }
-                    aria-label={`Tier ${index + 1} from days`}
                   />
-                  <span>to</span>
-                  <input
-                    className="ym-admin-input"
+                  <FloatingInput
+                    label="To day"
                     type="number"
                     min="0"
                     value={tier.daysTo}
                     onChange={(e) =>
                       updateTier(index, { daysTo: Number(e.target.value) || 0 })
                     }
-                    aria-label={`Tier ${index + 1} to days`}
                   />
-                  <span>days @</span>
-                  <input
-                    className="ym-admin-input"
+                  <FloatingInput
+                    label="% / month"
                     type="number"
                     step="0.001"
                     value={tier.monthlyRatePercent}
@@ -375,9 +342,7 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
                         monthlyRatePercent: Number(e.target.value) || 0,
                       })
                     }
-                    aria-label={`Tier ${index + 1} monthly rate`}
                   />
-                  <span>%/mo</span>
                 </div>
               ))}
               <button

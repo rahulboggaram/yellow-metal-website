@@ -1739,13 +1739,9 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-admin-filters-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(8rem, 12rem));
+  grid-template-columns: repeat(3, minmax(8rem, 1fr));
   gap: 0.75rem;
   flex: 1;
-}
-
-.ym-admin-filters-grid .ym-admin-field {
-  margin-bottom: 0;
 }
 
 .ym-admin-panel {
@@ -1820,16 +1816,35 @@ body.ym-jewels-flying .ym-hero-ornament {
   outline-offset: 1px;
 }
 
+.ym-admin-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.ym-admin-form > div,
+.ym-admin-row > div,
+.ym-admin-tier-row--fields > div,
+.ym-admin-filters-grid > div,
+.ym-admin-gate-form > div {
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+
 .ym-admin-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
+.ym-admin-row--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .ym-admin-fieldset {
-  margin: 0 0 0.85rem;
+  margin: 0.25rem 0 0;
   padding: 0;
   border: 0;
+  display: grid;
+  gap: 0.75rem;
 }
 
 .ym-admin-tier-row {
@@ -1840,6 +1855,13 @@ body.ym-jewels-flying .ym-hero-ornament {
   margin-bottom: 0.5rem;
   font-size: 0.82rem;
   color: rgb(0 0 0 / 0.55);
+}
+
+.ym-admin-tier-row--fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0;
 }
 
 .ym-admin-tier-row .ym-admin-input {
@@ -2025,6 +2047,8 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-admin-gate-form {
   margin-top: 1.35rem;
+  display: grid;
+  gap: 0.85rem;
 }
 
 .ym-admin-loading {
@@ -2170,7 +2194,9 @@ body.ym-jewels-flying .ym-hero-ornament {
 
   .ym-admin-filters-grid,
   .ym-admin-grid,
-  .ym-admin-row {
+  .ym-admin-row,
+  .ym-admin-row--3,
+  .ym-admin-tier-row--fields {
     grid-template-columns: 1fr;
   }
 

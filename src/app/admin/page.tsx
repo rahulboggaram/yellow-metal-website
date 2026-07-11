@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AnalyticsAdminPanel } from "@/components/admin/analytics-panel";
 import { EngagementAdminPanel } from "@/components/admin/engagement-panel";
 import { LoanPlansAdminPanel } from "@/components/admin/loan-plans-panel";
+import { FloatingInput } from "@/components/ui/floating-field";
 import {
   ADMIN_SESSION_KEY,
   type AdminTab,
@@ -184,28 +185,20 @@ function AdminPageContent() {
             className="ym-admin-gate-form"
             onSubmit={(event) => void handlePasswordSubmit(event)}
           >
-            <label className="ym-admin-field" htmlFor="admin-secret">
-              <span className="ym-admin-label">Password</span>
-              <input
-                id="admin-secret"
-                className="ym-admin-input"
-                type="password"
-                value={passwordInput}
-                onChange={(event) => {
-                  setPasswordInput(event.target.value);
-                  setAuthError(null);
-                }}
-                placeholder="Enter admin password"
-                autoComplete="current-password"
-                autoFocus
-              />
-            </label>
-
-            {authError && (
-              <p className="ym-admin-message ym-admin-message--error" role="alert">
-                {authError}
-              </p>
-            )}
+            <FloatingInput
+              id="admin-secret"
+              label="Password"
+              type="password"
+              value={passwordInput}
+              onChange={(event) => {
+                setPasswordInput(event.target.value);
+                setAuthError(null);
+              }}
+              autoComplete="current-password"
+              autoFocus
+              error={Boolean(authError)}
+              fieldError={authError ?? undefined}
+            />
 
             <button
               type="submit"

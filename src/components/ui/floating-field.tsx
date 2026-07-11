@@ -15,6 +15,8 @@ function getFieldState(focused: boolean, hasValue: boolean): FieldVisualState {
   return "idle";
 }
 
+/* Classic (cream + blue): use border-[1.5px], border-zinc-300 idle, border-accent focused. */
+
 function normalShellClass(_state: FieldVisualState) {
   return "relative rounded-xl border-0 bg-white transition-colors duration-200";
 }
@@ -132,13 +134,22 @@ function FieldWrap(props: {
   );
 }
 
+export function FieldError(props: { message?: string }) {
+  if (!props.message) return null;
+  return (
+    <p className={cn("text-sm", errorAccentText)} role="alert">
+      {props.message}
+    </p>
+  );
+}
+
 function useFloatingFieldState(value: unknown) {
   const [focused, setFocused] = useState(false);
   const hasValue =
     value !== undefined && value !== null && String(value).length > 0;
   const floated = focused || hasValue;
   const state = getFieldState(focused, hasValue);
-  return { setFocused, floated, state };
+  return { focused, setFocused, hasValue, floated, state };
 }
 
 export function FloatingInput(
@@ -153,7 +164,6 @@ export function FloatingInput(
     error,
     fieldError,
     className,
-    style,
     id: idProp,
     value,
     required,
@@ -182,7 +192,6 @@ export function FloatingInput(
           id={id}
           required={required}
           value={value}
-          style={style}
           onFocus={(e) => {
             setFocused(true);
             onFocus?.(e);
@@ -190,12 +199,6 @@ export function FloatingInput(
           onBlur={(e) => {
             setFocused(false);
             onBlur?.(e);
-          }}
-          onWheel={(e) => {
-            if (inputProps.type === "number") {
-              e.currentTarget.blur();
-            }
-            inputProps.onWheel?.(e);
           }}
           className={cn(
             controlClass,

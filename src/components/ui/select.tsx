@@ -14,6 +14,7 @@ export function chevronBackground(stroke: string) {
 
 export function Select(
   props: React.ComponentProps<"select"> & {
+    /** Chevron stroke — defaults to idle outline grey */
     outlineColor?: string;
     fieldSize?: "default" | "sm";
   },

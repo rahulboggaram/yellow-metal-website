@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnalyticsAdminPanel } from "@/components/admin/analytics-panel";
 import { EngagementAdminPanel } from "@/components/admin/engagement-panel";
+import { AdminLottiePreview } from "@/components/admin/lottie-preview";
 import { LoanPlansAdminPanel } from "@/components/admin/loan-plans-panel";
 import { FloatingInput } from "@/components/ui/floating-field";
 import {
@@ -175,6 +176,8 @@ function AdminPageContent() {
               priority
             />
           </div>
+
+          <AdminLottiePreview className="ym-admin-lottie-preview" size={120} />
 
           <h1 className="ym-admin-gate-title">Sign in</h1>
           <p className="ym-admin-gate-lead">

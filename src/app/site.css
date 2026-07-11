@@ -2089,6 +2089,10 @@ body:has(.ym-admin-root),
   background: transparent;
 }
 
+.ym-admin-lottie-preview {
+  margin: 0.5rem auto 0.25rem;
+}
+
 .ym-admin-gate-eyebrow {
   margin: 0;
   font-size: 0.72rem;

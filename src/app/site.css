@@ -1562,7 +1562,7 @@ body:has(.ym-admin-root),
   place-items: center;
   height: 100dvh;
   padding: 2rem 1.25rem;
-  background: var(--ym-admin-grey, #ececec);
+  background: #ffffff;
   overflow: auto;
 }
 
@@ -2067,23 +2067,31 @@ body:has(.ym-admin-root),
   color: rgb(0 0 0 / 0.5);
 }
 
-.ym-admin-gate {
+.ym-admin-gate-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: min(24rem, 100%);
+  gap: 1.75rem;
+}
+
+.ym-admin-gate {
+  width: 100%;
   padding: 1.75rem;
-  border: 1px solid rgb(0 0 0 / 0.08);
+  border: 1px solid rgb(0 0 0 / 0.06);
   border-radius: 1.25rem;
   background: var(--ym-admin-grey, #ececec);
 }
 
 .ym-admin-gate-brand {
-  display: grid;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .ym-admin-gate-logo {
-  width: 100%;
-  max-width: 14rem;
+  width: auto;
+  max-width: 11rem;
   height: auto;
   object-fit: contain;
   background: transparent;

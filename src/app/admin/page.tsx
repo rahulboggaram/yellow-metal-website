@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnalyticsAdminPanel } from "@/components/admin/analytics-panel";
 import { EngagementAdminPanel } from "@/components/admin/engagement-panel";
-import { AdminLottiePreview } from "@/components/admin/lottie-preview";
 import { LoanPlansAdminPanel } from "@/components/admin/loan-plans-panel";
 import { FloatingInput } from "@/components/ui/floating-field";
 import {
@@ -165,52 +164,52 @@ function AdminPageContent() {
   if (!isUnlocked) {
     return (
       <div className="ym-admin-shell ym-admin-shell--gate">
-        <div className="ym-admin-gate">
+        <div className="ym-admin-gate-layout">
           <div className="ym-admin-gate-brand">
             <Image
-              src="/images/ym-admin-logo.png"
+              src="/images/ym-admin-vertical-logo.png"
               alt="Yellow Metal"
               width={1024}
-              height={195}
+              height={477}
               className="ym-admin-gate-logo"
               priority
             />
           </div>
 
-          <AdminLottiePreview className="ym-admin-lottie-preview" size={120} />
+          <div className="ym-admin-gate">
+            <h1 className="ym-admin-gate-title">Sign in</h1>
+            <p className="ym-admin-gate-lead">
+              Manage loan plans and review website analytics.
+            </p>
 
-          <h1 className="ym-admin-gate-title">Sign in</h1>
-          <p className="ym-admin-gate-lead">
-            Manage loan plans and review website analytics.
-          </p>
-
-          <form
-            className="ym-admin-gate-form"
-            onSubmit={(event) => void handlePasswordSubmit(event)}
-          >
-            <FloatingInput
-              id="admin-secret"
-              label="Password"
-              type="password"
-              value={passwordInput}
-              onChange={(event) => {
-                setPasswordInput(event.target.value);
-                setAuthError(null);
-              }}
-              autoComplete="current-password"
-              autoFocus
-              error={Boolean(authError)}
-              fieldError={authError ?? undefined}
-            />
-
-            <button
-              type="submit"
-              className="ym-admin-btn ym-admin-btn--primary ym-admin-btn--block"
-              disabled={authLoading}
+            <form
+              className="ym-admin-gate-form"
+              onSubmit={(event) => void handlePasswordSubmit(event)}
             >
-              {authLoading ? "Checking…" : "Continue"}
-            </button>
-          </form>
+              <FloatingInput
+                id="admin-secret"
+                label="Password"
+                type="password"
+                value={passwordInput}
+                onChange={(event) => {
+                  setPasswordInput(event.target.value);
+                  setAuthError(null);
+                }}
+                autoComplete="current-password"
+                autoFocus
+                error={Boolean(authError)}
+                fieldError={authError ?? undefined}
+              />
+
+              <button
+                type="submit"
+                className="ym-admin-btn ym-admin-btn--primary ym-admin-btn--block"
+                disabled={authLoading}
+              >
+                {authLoading ? "Checking…" : "Continue"}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     );

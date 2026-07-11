@@ -1848,8 +1848,8 @@ body:has(.ym-admin-root),
   gap: 0.75rem;
 }
 
-/* Single field outline — matches Reimburse floating fields on grey */
-.ym-admin-form > div,
+/* Field outline only — not row/action wrappers */
+.ym-admin-form > div:not(.ym-admin-row):not(.ym-admin-actions),
 .ym-admin-row > div,
 .ym-admin-tier-row--fields > div,
 .ym-admin-filters-grid > div,

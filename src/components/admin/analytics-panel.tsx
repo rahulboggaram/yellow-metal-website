@@ -1,37 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { last30DaysRange } from "@/lib/admin-session";
+import { DateRangeFilter } from "@/components/admin/date-range-filter";
+import { StatCard } from "@/components/admin/stat-card";
+import { buildAdminDateQuery, last30DaysRange } from "@/lib/admin-session";
 import type { AnalyticsSummary } from "@/lib/analytics-types";
-
-function monthOptions(): { value: string; label: string }[] {
-  const options: { value: string; label: string }[] = [
-    { value: "last30", label: "Last 30 days" },
-    { value: "all", label: "All time" },
-    { value: "custom", label: "Custom range" },
-  ];
-  const now = new Date();
-  for (let i = 0; i < 12; i += 1) {
-    const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
-    const value = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
-    const label = date.toLocaleDateString("en-IN", {
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    });
-    options.push({ value, label });
-  }
-  return options;
-}
-
-function StatCard({ label, value }: { label: string; value: number | string }) {
-  return (
-    <div className="ym-analytics-stat">
-      <p className="ym-analytics-stat-label">{label}</p>
-      <p className="ym-analytics-stat-value">{value}</p>
-    </div>
-  );
-}
 
 function DataTable({
   title,
@@ -43,27 +16,29 @@ function DataTable({
   emptyLabel: string;
 }) {
   return (
-    <section className="ym-admin-panel ym-analytics-table-panel">
+    <section className="ym-admin-panel">
       <h2 className="ym-admin-heading">{title}</h2>
       {rows.length === 0 ? (
         <p className="ym-admin-empty">{emptyLabel}</p>
       ) : (
-        <table className="ym-analytics-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Visits</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.label}>
-                <td>{row.label}</td>
-                <td>{row.count.toLocaleString("en-IN")}</td>
+        <div className="ym-admin-table-wrap">
+          <table className="ym-admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Visits</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row.label}>
+                  <td>{row.label}</td>
+                  <td>{row.count.toLocaleString("en-IN")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   );
@@ -77,7 +52,6 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const months = useMemo(() => monthOptions(), []);
 
   const headers = useMemo(
     () => ({
@@ -91,17 +65,7 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
     setLoading(true);
     setMessage(null);
     try {
-      const params = new URLSearchParams();
-      if (month === "last30") {
-        const range = last30DaysRange();
-        params.set("from", range.from);
-        params.set("to", range.to);
-      } else if (month && month !== "all" && month !== "custom") {
-        params.set("month", month);
-      } else if (from) {
-        params.set("from", from);
-        if (to) params.set("to", to);
-      }
+      const params = buildAdminDateQuery(month, from, to);
       const query = params.toString();
       const res = await fetch(`/api/analytics${query ? `?${query}` : ""}`, {
         headers,
@@ -121,98 +85,41 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
     if (secret) void loadAnalytics();
   }, [secret, loadAnalytics]);
 
-  function handleMonthChange(value: string) {
-    if (value === "last30") {
-      const range = last30DaysRange();
-      setMonth("last30");
-      setFrom(range.from);
-      setTo(range.to);
-      return;
-    }
-    if (value === "all") {
-      setMonth("all");
-      setFrom("");
-      setTo("");
-      return;
-    }
-    if (value === "custom") {
-      setMonth("custom");
-      return;
-    }
-    setMonth(value);
-    setFrom("");
-    setTo("");
-  }
-
   return (
-    <>
-      <div className="ym-admin-tab-toolbar">
+    <div className="ym-admin-stack">
+      <div className="ym-admin-toolbar">
+        <DateRangeFilter
+          month={month}
+          from={from}
+          to={to}
+          onMonthChange={setMonth}
+          onFromChange={setFrom}
+          onToChange={setTo}
+        />
         <button
           type="button"
           className="ym-admin-btn ym-admin-btn--primary"
           onClick={() => void loadAnalytics()}
           disabled={!secret || loading}
         >
-          {loading ? "Loading…" : "Refresh analytics"}
+          {loading ? "Loading…" : "Refresh"}
         </button>
       </div>
 
-      <section className="ym-admin-panel ym-analytics-filters">
-        <h2 className="ym-admin-heading">Filter by date</h2>
-        <div className="ym-analytics-filter-grid">
-          <label className="ym-admin-field">
-            <span className="ym-admin-label">Month</span>
-            <select
-              className="ym-admin-input"
-              value={month}
-              onChange={(event) => handleMonthChange(event.target.value)}
-            >
-              {months.map((option) => (
-                <option key={option.value || "all"} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="ym-admin-field">
-            <span className="ym-admin-label">From date</span>
-            <input
-              className="ym-admin-input"
-              type="date"
-              value={from}
-              onChange={(event) => {
-                setFrom(event.target.value);
-                setMonth("custom");
-              }}
-            />
-          </label>
-          <label className="ym-admin-field">
-            <span className="ym-admin-label">To date</span>
-            <input
-              className="ym-admin-input"
-              type="date"
-              value={to}
-              onChange={(event) => {
-                setTo(event.target.value);
-                setMonth("custom");
-              }}
-            />
-          </label>
-        </div>
-      </section>
+      {message && (
+        <p className="ym-admin-message ym-admin-message--error">{message}</p>
+      )}
 
-      {message && <p className="ym-admin-message">{message}</p>}
+      {summary && summary.totalViews === 0 && !message && (
+        <p className="ym-admin-empty-banner">
+          No visits recorded yet. Open the home page on your phone or laptop,
+          then click Refresh.
+        </p>
+      )}
 
-        {summary && summary.totalViews === 0 && !message && (
-          <p className="ym-admin-empty ym-admin-tab-hint">
-            No visits recorded yet. Open the home page on your phone or laptop, then
-            click Refresh analytics.
-          </p>
-        )}
-
-        {summary && (
+      {summary && (
         <>
-          <div className="ym-analytics-stats">
+          <div className="ym-admin-stats">
             <StatCard label="Total page views" value={summary.totalViews} />
             <StatCard label="Unique visitors" value={summary.uniqueVisitors} />
             <StatCard label="Mobile views" value={summary.mobileViews} />
@@ -220,7 +127,7 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
             <StatCard label="Tablet views" value={summary.tabletViews} />
           </div>
 
-          <div className="ym-analytics-grid">
+          <div className="ym-admin-grid">
             <DataTable
               title="Top locations (country)"
               rows={summary.byCountry}
@@ -246,34 +153,36 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
               rows={summary.byPath}
               emptyLabel="No page data yet."
             />
-            <section className="ym-admin-panel ym-analytics-table-panel">
+            <section className="ym-admin-panel">
               <h2 className="ym-admin-heading">Views by day</h2>
               {summary.byDay.length === 0 ? (
                 <p className="ym-admin-empty">No daily data yet.</p>
               ) : (
-                <table className="ym-analytics-table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Views</th>
-                      <th>Visitors</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {summary.byDay.map((row) => (
-                      <tr key={row.date}>
-                        <td>{row.date}</td>
-                        <td>{row.views.toLocaleString("en-IN")}</td>
-                        <td>{row.visitors.toLocaleString("en-IN")}</td>
+                <div className="ym-admin-table-wrap">
+                  <table className="ym-admin-table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Views</th>
+                        <th>Visitors</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {summary.byDay.map((row) => (
+                        <tr key={row.date}>
+                          <td>{row.date}</td>
+                          <td>{row.views.toLocaleString("en-IN")}</td>
+                          <td>{row.visitors.toLocaleString("en-IN")}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </section>
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }

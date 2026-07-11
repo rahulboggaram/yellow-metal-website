@@ -157,8 +157,8 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
   }
 
   return (
-    <>
-      <div className="ym-admin-tab-toolbar">
+    <div className="ym-admin-stack">
+      <div className="ym-admin-toolbar ym-admin-toolbar--end">
         <button
           type="button"
           className="ym-admin-btn"
@@ -171,7 +171,7 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
 
       {message && <p className="ym-admin-message">{message}</p>}
 
-      <div className="ym-admin-layout">
+      <div className="ym-admin-split">
         <section className="ym-admin-panel">
           <h2 className="ym-admin-heading">
             {editingId ? "Edit plan" : "Add plan"}
@@ -438,10 +438,17 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
               {plans.map((plan) => (
                 <li key={plan.id} className="ym-admin-list-item">
                   <div>
-                    <p className="ym-admin-list-title">{plan.amountLabel}</p>
+                    <div className="ym-admin-list-title-row">
+                      <p className="ym-admin-list-title">{plan.amountLabel}</p>
+                      <span
+                        className={`ym-admin-pill${plan.active ? " is-active" : ""}`}
+                      >
+                        {plan.active ? "Live" : "Hidden"}
+                      </span>
+                    </div>
                     <p className="ym-admin-list-meta">
+                      {plan.repaymentType === "bullet" ? "Bullet" : "Monthly"} ·{" "}
                       {plan.annualRatePercent}% p.a. · {plan.tenureMonths}M
-                      {!plan.active && " · Hidden"}
                     </p>
                   </div>
                   <div className="ym-admin-list-actions">
@@ -466,6 +473,6 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
           )}
         </section>
       </div>
-    </>
+    </div>
   );
 }

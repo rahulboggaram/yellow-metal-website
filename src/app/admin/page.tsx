@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, Suspense, useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnalyticsAdminPanel } from "@/components/admin/analytics-panel";
 import { EngagementAdminPanel } from "@/components/admin/engagement-panel";
@@ -12,6 +13,24 @@ import {
   verifyAdminSecret,
 } from "@/lib/admin-session";
 
+const TABS: { id: AdminTab; label: string; description: string }[] = [
+  {
+    id: "analytics",
+    label: "Analytics",
+    description: "Page views and visitors",
+  },
+  {
+    id: "engagement",
+    label: "Engagement",
+    description: "Calculator and rate clock",
+  },
+  {
+    id: "loan-plans",
+    label: "Loan plans",
+    description: "Rates and plan setup",
+  },
+];
+
 function AdminPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -22,6 +41,8 @@ function AdminPageContent() {
   const [authError, setAuthError] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [restoringSession, setRestoringSession] = useState(true);
+
+  const activeTab = TABS.find((item) => item.id === tab) ?? TABS[0];
 
   const unlock = useCallback(
     async (value: string) => {
@@ -89,26 +110,39 @@ function AdminPageContent() {
 
   if (restoringSession) {
     return (
-      <div className="ym-page">
-        <div className="ym-container ym-admin">
-          <p className="ym-admin-loading">Checking admin access…</p>
-        </div>
+      <div className="ym-admin-shell">
+        <div className="ym-admin-loading">Checking access…</div>
       </div>
     );
   }
 
   if (!isUnlocked) {
     return (
-      <div className="ym-page">
-        <div className="ym-container ym-admin ym-admin-gate">
-          <h1 className="ym-page-title">Yellow Metal admin</h1>
-          <p className="ym-admin-lead">
-            Enter your admin password to manage loan plans and view website analytics.
+      <div className="ym-admin-shell ym-admin-shell--gate">
+        <div className="ym-admin-gate">
+          <div className="ym-admin-gate-brand">
+            <Image
+              src="/images/ym-logo.png"
+              alt="Yellow Metal"
+              width={200}
+              height={100}
+              className="ym-admin-gate-logo"
+              priority
+            />
+            <p className="ym-admin-gate-eyebrow">Internal tools</p>
+          </div>
+
+          <h1 className="ym-admin-gate-title">Sign in</h1>
+          <p className="ym-admin-gate-lead">
+            Manage loan plans and review website analytics.
           </p>
 
-          <form className="ym-admin-panel ym-admin-gate-form" onSubmit={(event) => void handlePasswordSubmit(event)}>
+          <form
+            className="ym-admin-gate-form"
+            onSubmit={(event) => void handlePasswordSubmit(event)}
+          >
             <label className="ym-admin-field" htmlFor="admin-secret">
-              <span className="ym-admin-label">Admin password</span>
+              <span className="ym-admin-label">Password</span>
               <input
                 id="admin-secret"
                 className="ym-admin-input"
@@ -118,23 +152,25 @@ function AdminPageContent() {
                   setPasswordInput(event.target.value);
                   setAuthError(null);
                 }}
-                placeholder="Enter your admin password"
+                placeholder="Enter admin password"
                 autoComplete="current-password"
                 autoFocus
               />
             </label>
 
-            {authError && <p className="ym-admin-message">{authError}</p>}
+            {authError && (
+              <p className="ym-admin-message ym-admin-message--error" role="alert">
+                {authError}
+              </p>
+            )}
 
-            <div className="ym-admin-actions">
-              <button
-                type="submit"
-                className="ym-admin-btn ym-admin-btn--primary"
-                disabled={authLoading}
-              >
-                {authLoading ? "Checking…" : "Continue"}
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="ym-admin-btn ym-admin-btn--primary ym-admin-btn--block"
+              disabled={authLoading}
+            >
+              {authLoading ? "Checking…" : "Continue"}
+            </button>
           </form>
         </div>
       </div>
@@ -142,52 +178,64 @@ function AdminPageContent() {
   }
 
   return (
-    <div className="ym-page">
-      <div className="ym-container ym-admin">
-        <div className="ym-admin-header">
-          <div>
-            <h1 className="ym-page-title">Yellow Metal admin</h1>
-          </div>
+    <div className="ym-admin-shell ym-admin-shell--app">
+      <aside className="ym-admin-sidebar" aria-label="Admin navigation">
+        <div className="ym-admin-sidebar-brand">
+          <Image
+            src="/images/ym-logo.png"
+            alt="Yellow Metal"
+            width={160}
+            height={80}
+            className="ym-admin-sidebar-logo"
+            priority
+          />
+          <span className="ym-admin-sidebar-badge">Admin</span>
+        </div>
+
+        <nav className="ym-admin-nav" role="tablist" aria-label="Admin sections">
+          {TABS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={tab === item.id}
+              className={`ym-admin-nav-item${tab === item.id ? " is-active" : ""}`}
+              onClick={() => switchTab(item.id)}
+            >
+              <span className="ym-admin-nav-label">{item.label}</span>
+              <span className="ym-admin-nav-desc">{item.description}</span>
+            </button>
+          ))}
+        </nav>
+
+        <div className="ym-admin-sidebar-footer">
           <button
             type="button"
-            className="ym-admin-btn ym-admin-btn--ghost"
+            className="ym-admin-btn ym-admin-btn--ghost ym-admin-btn--block"
             onClick={signOut}
           >
             Sign out
           </button>
         </div>
+      </aside>
 
-        <div className="ym-admin-tabs" role="tablist" aria-label="Admin sections">
+      <div className="ym-admin-main">
+        <header className="ym-admin-main-header">
+          <div>
+            <p className="ym-admin-main-eyebrow">Yellow Metal</p>
+            <h1 className="ym-admin-main-title">{activeTab.label}</h1>
+            <p className="ym-admin-main-lead">{activeTab.description}</p>
+          </div>
           <button
             type="button"
-            role="tab"
-            aria-selected={tab === "analytics"}
-            className={`ym-admin-tab${tab === "analytics" ? " is-active" : ""}`}
-            onClick={() => switchTab("analytics")}
+            className="ym-admin-btn ym-admin-btn--ghost ym-admin-main-signout"
+            onClick={signOut}
           >
-            Analytics
+            Sign out
           </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={tab === "engagement"}
-            className={`ym-admin-tab${tab === "engagement" ? " is-active" : ""}`}
-            onClick={() => switchTab("engagement")}
-          >
-            Engagement
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={tab === "loan-plans"}
-            className={`ym-admin-tab${tab === "loan-plans" ? " is-active" : ""}`}
-            onClick={() => switchTab("loan-plans")}
-          >
-            Loan plans
-          </button>
-        </div>
+        </header>
 
-        <div role="tabpanel">
+        <div role="tabpanel" className="ym-admin-main-content">
           {tab === "analytics" ? (
             <AnalyticsAdminPanel secret={secret} />
           ) : tab === "engagement" ? (
@@ -203,7 +251,13 @@ function AdminPageContent() {
 
 export default function AdminPage() {
   return (
-    <Suspense fallback={<div className="ym-page ym-admin-loading">Loading admin…</div>}>
+    <Suspense
+      fallback={
+        <div className="ym-admin-shell">
+          <div className="ym-admin-loading">Loading admin…</div>
+        </div>
+      }
+    >
       <AdminPageContent />
     </Suspense>
   );

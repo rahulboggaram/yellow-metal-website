@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { brandFont, displayFont } from "@/lib/fonts";
 import { AnalyticsBeacon } from "@/components/analytics-beacon";
-import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { SiteFrame } from "@/components/site-frame";
 import "./globals.css";
 import "./site.css";
 
@@ -52,9 +52,7 @@ export default function RootLayout({
       </head>
       <body className={`min-h-dvh ${displayFont.className}`}>
         <div className="ym-site">
-          <SiteHeader />
-          <main>{children}</main>
-          <SiteFooter />
+          <SiteFrame>{children}</SiteFrame>
           <Suspense fallback={null}>
             <AnalyticsBeacon />
           </Suspense>

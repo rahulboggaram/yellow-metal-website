@@ -13,22 +13,10 @@ import {
   verifyAdminSecret,
 } from "@/lib/admin-session";
 
-const TABS: { id: AdminTab; label: string; description: string }[] = [
-  {
-    id: "analytics",
-    label: "Analytics",
-    description: "Page views and visitors",
-  },
-  {
-    id: "engagement",
-    label: "Engagement",
-    description: "Calculator and rate clock",
-  },
-  {
-    id: "loan-plans",
-    label: "Loan plans",
-    description: "Rates and plan setup",
-  },
+const TABS: { id: AdminTab; label: string }[] = [
+  { id: "analytics", label: "Analytics" },
+  { id: "engagement", label: "Engagement" },
+  { id: "loan-plans", label: "Loan plans" },
 ];
 
 function AdminPageContent() {
@@ -189,7 +177,7 @@ function AdminPageContent() {
             className="ym-admin-sidebar-logo"
             priority
           />
-          <span className="ym-admin-sidebar-badge">Admin</span>
+          <p className="ym-admin-sidebar-title">Admin</p>
         </div>
 
         <nav className="ym-admin-nav" role="tablist" aria-label="Admin sections">
@@ -202,8 +190,7 @@ function AdminPageContent() {
               className={`ym-admin-nav-item${tab === item.id ? " is-active" : ""}`}
               onClick={() => switchTab(item.id)}
             >
-              <span className="ym-admin-nav-label">{item.label}</span>
-              <span className="ym-admin-nav-desc">{item.description}</span>
+              {item.label}
             </button>
           ))}
         </nav>
@@ -221,11 +208,7 @@ function AdminPageContent() {
 
       <div className="ym-admin-main">
         <header className="ym-admin-main-header">
-          <div>
-            <p className="ym-admin-main-eyebrow">Yellow Metal</p>
-            <h1 className="ym-admin-main-title">{activeTab.label}</h1>
-            <p className="ym-admin-main-lead">{activeTab.description}</p>
-          </div>
+          <h1 className="ym-admin-main-title">{activeTab.label}</h1>
           <button
             type="button"
             className="ym-admin-btn ym-admin-btn--ghost ym-admin-main-signout"

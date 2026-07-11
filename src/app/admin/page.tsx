@@ -110,7 +110,7 @@ function AdminPageContent() {
         <div className="ym-admin-gate">
           <div className="ym-admin-gate-brand">
             <Image
-              src="/images/ym-admin-logo.jpg"
+              src="/images/ym-admin-logo.png"
               alt="Yellow Metal"
               width={1024}
               height={195}
@@ -169,7 +169,7 @@ function AdminPageContent() {
       <aside className="ym-admin-sidebar" aria-label="Admin navigation">
         <div className="ym-admin-sidebar-brand">
           <Image
-            src="/images/ym-admin-logo.jpg"
+            src="/images/ym-admin-logo.png"
             alt="Yellow Metal"
             width={1024}
             height={195}

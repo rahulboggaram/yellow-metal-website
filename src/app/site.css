@@ -1582,7 +1582,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   max-width: 11.5rem;
   height: auto;
   object-fit: contain;
-  border-radius: 0.4rem;
+  background: transparent;
 }
 
 .ym-admin-sidebar-title {
@@ -1977,7 +1977,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   max-width: 14rem;
   height: auto;
   object-fit: contain;
-  border-radius: 0.45rem;
+  background: transparent;
 }
 
 .ym-admin-gate-eyebrow {

@@ -34,7 +34,6 @@ function parseOptionalNumber(value: string): number | null {
 
 export function LoanPlansAdminPanel({ secret }: { secret: string }) {
   const [plans, setPlans] = useState<LoanPlan[]>([]);
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -50,7 +49,6 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
 
   const loadPlans = useCallback(async () => {
     if (!secret) return;
-    setLoading(true);
     setMessage(null);
     try {
       const res = await fetch("/api/loan-plans?all=1", { headers });
@@ -59,8 +57,6 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
       setPlans(data.plans ?? []);
     } catch {
       setMessage("Could not load plans. Check your admin secret.");
-    } finally {
-      setLoading(false);
     }
   }, [headers, secret]);
 
@@ -168,17 +164,6 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
 
   return (
     <div className="ym-admin-stack">
-      <div className="ym-admin-toolbar ym-admin-toolbar--end">
-        <button
-          type="button"
-          className="ym-admin-btn"
-          onClick={() => void loadPlans()}
-          disabled={!secret || loading}
-        >
-          {loading ? "Loading…" : "Reload plans"}
-        </button>
-      </div>
-
       {message && <p className="ym-admin-message">{message}</p>}
 
       <div className="ym-admin-split">

@@ -1567,6 +1567,8 @@ body:has(.ym-admin-root),
 }
 
 .ym-admin-shell--app {
+  --ym-admin-chrome-top: 1.25rem;
+  --ym-admin-title-row: 3.25rem;
   display: grid;
   grid-template-columns: 15.5rem minmax(0, 1fr);
   height: 100dvh;
@@ -1579,21 +1581,26 @@ body:has(.ym-admin-root),
   flex-direction: column;
   gap: 0;
   height: 100dvh;
-  padding: 1.35rem 0.85rem 1.1rem;
+  padding: var(--ym-admin-chrome-top) 0.85rem 1.1rem;
   background: transparent;
   overflow: hidden;
 }
 
 .ym-admin-sidebar-brand {
-  display: grid;
-  padding: 0.15rem 0.65rem 1.75rem;
+  display: flex;
+  align-items: center;
+  height: var(--ym-admin-title-row);
+  padding: 0 0.65rem;
+  margin-bottom: 1.25rem;
 }
 
 .ym-admin-sidebar-logo {
-  width: 100%;
+  width: auto;
   max-width: 10.5rem;
   height: auto;
+  max-height: 1.85rem;
   object-fit: contain;
+  object-position: left center;
   background: transparent;
 }
 

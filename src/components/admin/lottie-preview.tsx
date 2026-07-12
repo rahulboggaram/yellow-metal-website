@@ -21,10 +21,12 @@ export function AdminLottiePreview({
   animation = "favorites",
   className,
   size = 96,
+  speed = 1,
 }: {
   animation?: AdminLottieName;
   className?: string;
   size?: number;
+  speed?: number;
 }) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const alreadyPlayed = playedThisPageLoad.has(animation);
@@ -33,6 +35,10 @@ export function AdminLottiePreview({
     if (!alreadyPlayed) return;
     lottieRef.current?.goToAndStop(0, true);
   }, [alreadyPlayed, animation]);
+
+  useEffect(() => {
+    lottieRef.current?.setSpeed(speed);
+  }, [speed]);
 
   return (
     <div
@@ -46,6 +52,9 @@ export function AdminLottiePreview({
         /* loop={1} = play twice total, then stop */
         loop={alreadyPlayed ? false : 1}
         autoplay={!alreadyPlayed}
+        onDOMLoaded={() => {
+          lottieRef.current?.setSpeed(speed);
+        }}
         onComplete={() => {
           playedThisPageLoad.add(animation);
           lottieRef.current?.goToAndStop(0, true);

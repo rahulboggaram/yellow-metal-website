@@ -268,6 +268,7 @@ function AdminPageContent() {
                   animation="financial-graph"
                   className="ym-admin-title-lottie"
                   size={80}
+                  speed={0.5}
                 />
               ) : null}
               {tab === "engagement" ? (

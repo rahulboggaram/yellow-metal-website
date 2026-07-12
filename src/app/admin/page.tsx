@@ -267,14 +267,14 @@ function AdminPageContent() {
                 <AdminLottiePreview
                   animation="financial-graph"
                   className="ym-admin-title-lottie"
-                  size={40}
+                  size={80}
                 />
               ) : null}
               {tab === "engagement" ? (
                 <AdminLottiePreview
                   animation="favorites"
-                  className="ym-admin-title-lottie ym-admin-title-lottie--engagement"
-                  size={108}
+                  className="ym-admin-title-lottie"
+                  size={27}
                   loop={false}
                   freezeFrame={50}
                 />
@@ -283,7 +283,7 @@ function AdminPageContent() {
                 <AdminLottiePreview
                   animation="loan"
                   className="ym-admin-title-lottie"
-                  size={40}
+                  size={80}
                 />
               ) : null}
             </div>

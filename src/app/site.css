@@ -1768,13 +1768,6 @@ body:has(.ym-admin-root),
   margin-top: 0.1rem;
 }
 
-/* 3× heart; ~20% tucked under the first white card (toolbar) */
-.ym-admin-title-lottie--engagement {
-  transform: translateY(0.85rem);
-  z-index: 0;
-  pointer-events: none;
-}
-
 .ym-admin-main-content {
   flex: 1;
   min-height: 0;

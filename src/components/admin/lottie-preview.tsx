@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Lottie, { type LottieRefCurrentProps } from "lottie-react";
 import addToFavorites from "../../../public/lottie/add-to-favorites.json";
 import financialGraphLoader from "../../../public/lottie/financial-graph-loader.json";
@@ -12,23 +12,27 @@ const ANIMATIONS = {
   loan,
 } as const;
 
+/** Resets on full page refresh; survives in-app tab switches. */
+const playedThisPageLoad = new Set<string>();
+
 export type AdminLottieName = keyof typeof ANIMATIONS;
 
 export function AdminLottiePreview({
   animation = "favorites",
   className,
   size = 96,
-  loop = true,
-  freezeFrame,
 }: {
   animation?: AdminLottieName;
   className?: string;
   size?: number;
-  loop?: boolean;
-  /** Play through this frame, then hold (0-based). */
-  freezeFrame?: number;
 }) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const alreadyPlayed = playedThisPageLoad.has(animation);
+
+  useEffect(() => {
+    if (!alreadyPlayed) return;
+    lottieRef.current?.goToAndStop(0, true);
+  }, [alreadyPlayed, animation]);
 
   return (
     <div
@@ -39,14 +43,12 @@ export function AdminLottiePreview({
       <Lottie
         lottieRef={lottieRef}
         animationData={ANIMATIONS[animation]}
-        loop={loop}
-        autoplay
-        initialSegment={
-          freezeFrame != null && !loop ? [0, freezeFrame] : undefined
-        }
+        /* loop={1} = play twice total, then stop */
+        loop={alreadyPlayed ? false : 1}
+        autoplay={!alreadyPlayed}
         onComplete={() => {
-          if (freezeFrame == null) return;
-          lottieRef.current?.goToAndStop(freezeFrame, true);
+          playedThisPageLoad.add(animation);
+          lottieRef.current?.goToAndStop(0, true);
         }}
       />
     </div>

@@ -28,7 +28,7 @@ export function AdminLottiePreview({
   className?: string;
   size?: number;
   speed?: number;
-  /** Frame to hold after the two plays (0-based). */
+  /** Frame to hold after one play (0-based). */
   endFrame?: number;
 }) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
@@ -52,8 +52,7 @@ export function AdminLottiePreview({
       <Lottie
         lottieRef={lottieRef}
         animationData={ANIMATIONS[animation]}
-        /* loop={1} = play twice total, then stop */
-        loop={alreadyPlayed ? false : 1}
+        loop={false}
         autoplay={!alreadyPlayed}
         onDOMLoaded={() => {
           lottieRef.current?.setSpeed(speed);

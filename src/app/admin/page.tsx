@@ -286,7 +286,7 @@ function AdminPageContent() {
                   className="ym-admin-title-lottie"
                   size={80}
                   speed={0.5}
-                  endFrame={25}
+                  endFrame={53}
                 />
               ) : null}
             </div>

@@ -284,6 +284,7 @@ function AdminPageContent() {
                   animation="loan"
                   className="ym-admin-title-lottie"
                   size={80}
+                  endFrame={25}
                 />
               ) : null}
             </div>

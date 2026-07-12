@@ -276,6 +276,7 @@ function AdminPageContent() {
                   animation="favorites"
                   className="ym-admin-title-lottie"
                   size={60}
+                  speed={0.5}
                   endFrame={46}
                 />
               ) : null}
@@ -284,6 +285,7 @@ function AdminPageContent() {
                   animation="loan"
                   className="ym-admin-title-lottie"
                   size={80}
+                  speed={0.5}
                   endFrame={25}
                 />
               ) : null}

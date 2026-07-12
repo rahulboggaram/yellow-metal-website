@@ -275,7 +275,7 @@ function AdminPageContent() {
                 <AdminLottiePreview
                   animation="favorites"
                   className="ym-admin-title-lottie"
-                  size={80}
+                  size={60}
                   endFrame={46}
                 />
               ) : null}

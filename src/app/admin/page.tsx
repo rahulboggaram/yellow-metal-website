@@ -242,7 +242,7 @@ function AdminPageContent() {
               onClick={() => switchTab(item.id)}
             >
               <NavIcon name={item.icon} />
-              <span>{item.label}</span>
+              <span className="ym-admin-nav-label">{item.label}</span>
             </button>
           ))}
         </nav>
@@ -259,6 +259,24 @@ function AdminPageContent() {
       </aside>
 
       <div className="ym-admin-main">
+        <div className="ym-admin-mobile-top">
+          <Image
+            src="/images/ym-admin-logo.png"
+            alt="Yellow Metal"
+            width={1024}
+            height={195}
+            className="ym-admin-mobile-logo"
+            priority
+          />
+          <button
+            type="button"
+            className="ym-admin-btn ym-admin-btn--ghost ym-admin-mobile-signout"
+            onClick={signOut}
+          >
+            Sign out
+          </button>
+        </div>
+
         <div className="ym-admin-content-card">
           <header className="ym-admin-main-header">
             <div className="ym-admin-main-title-row">
@@ -290,13 +308,6 @@ function AdminPageContent() {
                 />
               ) : null}
             </div>
-            <button
-              type="button"
-              className="ym-admin-btn ym-admin-btn--ghost ym-admin-main-signout"
-              onClick={signOut}
-            >
-              Sign out
-            </button>
           </header>
 
           <div role="tabpanel" className="ym-admin-main-content">

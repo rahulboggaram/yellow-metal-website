@@ -1828,12 +1828,6 @@ body:has(.ym-admin-root),
   gap: 1rem;
 }
 
-.ym-admin-plans-column {
-  display: grid;
-  gap: 1rem;
-  align-content: start;
-}
-
 .ym-admin-heading {
   margin: 0 0 1rem;
   font-size: 1rem;
@@ -2104,12 +2098,6 @@ body:has(.ym-admin-root),
 .ym-admin-icon-btn svg {
   width: 1.05rem;
   height: 1.05rem;
-}
-
-.ym-admin-plans-column {
-  display: grid;
-  gap: 1rem;
-  align-content: start;
 }
 
 .ym-admin-empty {

@@ -167,7 +167,7 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
       {message && <p className="ym-admin-message">{message}</p>}
 
       <div className="ym-admin-split">
-        <section className="ym-admin-panel">
+        <section className="ym-admin-panel ym-admin-plan-form">
           <h2 className="ym-admin-heading">
             {editingId ? "Edit plan" : "Add plan"}
           </h2>
@@ -388,43 +388,41 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
           </form>
         </section>
 
-        <div className="ym-admin-plans-column">
-          <section className="ym-admin-panel">
-            <h2 className="ym-admin-heading">Live loan plans</h2>
-            {livePlans.length === 0 ? (
-              <p className="ym-admin-empty">No live plans yet.</p>
-            ) : (
-              <ul className="ym-admin-list">
-                {livePlans.map((plan) => (
-                  <PlanListItem
-                    key={plan.id}
-                    plan={plan}
-                    onEdit={() => startEdit(plan)}
-                    onDelete={() => void handleDelete(plan.id)}
-                  />
-                ))}
-              </ul>
-            )}
-          </section>
+        <section className="ym-admin-panel ym-admin-plans-live">
+          <h2 className="ym-admin-heading">Live loan plans</h2>
+          {livePlans.length === 0 ? (
+            <p className="ym-admin-empty">No live plans yet.</p>
+          ) : (
+            <ul className="ym-admin-list">
+              {livePlans.map((plan) => (
+                <PlanListItem
+                  key={plan.id}
+                  plan={plan}
+                  onEdit={() => startEdit(plan)}
+                  onDelete={() => void handleDelete(plan.id)}
+                />
+              ))}
+            </ul>
+          )}
+        </section>
 
-          <section className="ym-admin-panel">
-            <h2 className="ym-admin-heading">Disabled loan plans</h2>
-            {disabledPlans.length === 0 ? (
-              <p className="ym-admin-empty">No disabled plans.</p>
-            ) : (
-              <ul className="ym-admin-list">
-                {disabledPlans.map((plan) => (
-                  <PlanListItem
-                    key={plan.id}
-                    plan={plan}
-                    onEdit={() => startEdit(plan)}
-                    onDelete={() => void handleDelete(plan.id)}
-                  />
-                ))}
-              </ul>
-            )}
-          </section>
-        </div>
+        <section className="ym-admin-panel ym-admin-plans-disabled">
+          <h2 className="ym-admin-heading">Disabled loan plans</h2>
+          {disabledPlans.length === 0 ? (
+            <p className="ym-admin-empty">No disabled plans.</p>
+          ) : (
+            <ul className="ym-admin-list">
+              {disabledPlans.map((plan) => (
+                <PlanListItem
+                  key={plan.id}
+                  plan={plan}
+                  onEdit={() => startEdit(plan)}
+                  onDelete={() => void handleDelete(plan.id)}
+                />
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
     </div>
   );

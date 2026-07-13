@@ -1828,6 +1828,12 @@ body:has(.ym-admin-root),
   gap: 1rem;
 }
 
+.ym-admin-plans-column {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
 .ym-admin-heading {
   margin: 0 0 1rem;
   font-size: 1rem;
@@ -2341,6 +2347,21 @@ body:has(.ym-admin-root),
     grid-template-columns: 1.1fr 0.9fr;
     align-items: start;
   }
+
+  .ym-admin-plan-form {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .ym-admin-plans-live {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .ym-admin-plans-disabled {
+    grid-column: 2;
+    grid-row: 2;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2494,6 +2515,24 @@ body:has(.ym-admin-root),
 
   .ym-admin-toolbar .ym-admin-btn {
     width: 100%;
+  }
+
+  /* Loan plans: Live → Add/Edit form → Disabled */
+  .ym-admin-split {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ym-admin-plans-live {
+    order: 1;
+  }
+
+  .ym-admin-plan-form {
+    order: 2;
+  }
+
+  .ym-admin-plans-disabled {
+    order: 3;
   }
 }
 

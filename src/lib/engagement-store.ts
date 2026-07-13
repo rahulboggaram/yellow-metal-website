@@ -2,7 +2,6 @@ import "server-only";
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
-import { get, put } from "@vercel/blob";
 import { engagementInRange } from "@/lib/engagement-query";
 import type {
   CalculatorEntryEvent,
@@ -11,9 +10,16 @@ import type {
   EngagementSummary,
   LendingRateStopEvent,
 } from "@/lib/engagement-types";
+import {
+  hasBlobStorage,
+  listBlobJson,
+  readBlobJson,
+  writeBlobJson,
+} from "@/lib/blob-json-store";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "engagement.json");
 const BLOB_PATHNAME = "engagement/events.json";
+const EVENT_BLOB_PREFIX = "engagement/events/";
 const MAX_EVENTS = 50_000;
 
 type EngagementFile = {
@@ -23,9 +29,47 @@ type EngagementFile = {
 function parseEngagementFile(raw: string): EngagementFile {
   const parsed: unknown = JSON.parse(raw);
   if (!parsed || typeof parsed !== "object" || !Array.isArray((parsed as EngagementFile).events)) {
-    return { events: [] };
+    throw new Error("Invalid engagement data");
   }
   return parsed as EngagementFile;
+}
+
+function isEngagementEvent(value: unknown): value is EngagementEvent {
+  if (!value || typeof value !== "object") return false;
+  const event = value as EngagementEvent;
+  if (
+    typeof event.id !== "string" ||
+    typeof event.timestamp !== "string" ||
+    typeof event.sessionId !== "string" ||
+    typeof event.path !== "string"
+  ) {
+    return false;
+  }
+
+  if (event.type === "lending_rate_stop") {
+    return typeof event.durationMs === "number" && Number.isFinite(event.durationMs);
+  }
+
+  return (
+    event.type === "calculator_entry" &&
+    (event.weightEntered === undefined || typeof event.weightEntered === "string") &&
+    typeof event.weightGrams === "number" &&
+    Number.isFinite(event.weightGrams) &&
+    typeof event.karat === "string" &&
+    (event.loanAmountInr === null ||
+      (typeof event.loanAmountInr === "number" && Number.isFinite(event.loanAmountInr))) &&
+    (event.country === undefined || typeof event.country === "string") &&
+    (event.region === undefined || event.region === null || typeof event.region === "string") &&
+    (event.city === undefined || event.city === null || typeof event.city === "string")
+  );
+}
+
+function parseEngagementEvent(raw: string): EngagementEvent | null {
+  const parsed: unknown = JSON.parse(raw);
+  if (!isEngagementEvent(parsed)) {
+    throw new Error("Invalid engagement event data");
+  }
+  return parsed;
 }
 
 function readLocalFile(): EngagementFile {
@@ -42,31 +86,21 @@ function writeLocalFile(data: EngagementFile): void {
   writeFileSync(LOCAL_PATH, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
-function hasBlobStorage(): boolean {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
-}
-
 async function readBlobFile(): Promise<EngagementFile> {
-  try {
-    const result = await get(BLOB_PATHNAME, { access: "private" });
-    if (!result || result.statusCode !== 200 || !result.stream) {
-      return { events: [] };
-    }
-
-    const raw = await new Response(result.stream).text();
-    return parseEngagementFile(raw);
-  } catch {
-    return { events: [] };
-  }
+  const legacy = await readBlobJson(BLOB_PATHNAME, parseEngagementFile, {
+    events: [],
+  });
+  const appendedEvents = await listBlobJson(EVENT_BLOB_PREFIX, parseEngagementEvent);
+  return { events: [...legacy.events, ...appendedEvents].slice(-MAX_EVENTS) };
 }
 
 async function writeBlobFile(data: EngagementFile): Promise<void> {
-  await put(BLOB_PATHNAME, JSON.stringify(data), {
-    access: "private",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: "application/json",
-  });
+  await writeBlobJson(BLOB_PATHNAME, data, true);
+}
+
+async function writeBlobEvent(event: EngagementEvent): Promise<void> {
+  const date = event.timestamp.slice(0, 10);
+  await writeBlobJson(`${EVENT_BLOB_PREFIX}${date}/${event.id}.json`, event, false);
 }
 
 async function readStore(): Promise<EngagementFile> {
@@ -86,6 +120,11 @@ async function writeStore(data: EngagementFile): Promise<void> {
 }
 
 export async function appendEngagementEvent(event: EngagementEvent): Promise<void> {
+  if (hasBlobStorage()) {
+    await writeBlobEvent(event);
+    return;
+  }
+
   const store = await readStore();
   store.events.push(event);
   await writeStore(store);

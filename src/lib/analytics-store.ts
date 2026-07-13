@@ -2,11 +2,17 @@ import "server-only";
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
-import { get, put } from "@vercel/blob";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
+import {
+  hasBlobStorage,
+  listBlobJson,
+  readBlobJson,
+  writeBlobJson,
+} from "./blob-json-store";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "analytics.json");
 const BLOB_PATHNAME = "analytics/events.json";
+const EVENT_BLOB_PREFIX = "analytics/events/";
 const MAX_EVENTS = 20_000;
 
 type AnalyticsFile = {
@@ -16,9 +22,39 @@ type AnalyticsFile = {
 function parseAnalyticsFile(raw: string): AnalyticsFile {
   const parsed: unknown = JSON.parse(raw);
   if (!parsed || typeof parsed !== "object" || !Array.isArray((parsed as AnalyticsFile).events)) {
-    return { events: [] };
+    throw new Error("Invalid analytics data");
   }
   return parsed as AnalyticsFile;
+}
+
+function isAnalyticsEvent(value: unknown): value is AnalyticsEvent {
+  if (!value || typeof value !== "object") return false;
+  const event = value as AnalyticsEvent;
+  return (
+    typeof event.id === "string" &&
+    typeof event.timestamp === "string" &&
+    typeof event.path === "string" &&
+    typeof event.sessionId === "string" &&
+    (event.referrer === null || typeof event.referrer === "string") &&
+    typeof event.deviceType === "string" &&
+    typeof event.browser === "string" &&
+    typeof event.browserVersion === "string" &&
+    typeof event.os === "string" &&
+    typeof event.osVersion === "string" &&
+    (event.deviceVendor === null || typeof event.deviceVendor === "string") &&
+    (event.deviceModel === null || typeof event.deviceModel === "string") &&
+    typeof event.country === "string" &&
+    (event.region === null || typeof event.region === "string") &&
+    (event.city === null || typeof event.city === "string")
+  );
+}
+
+function parseAnalyticsEvent(raw: string): AnalyticsEvent | null {
+  const parsed: unknown = JSON.parse(raw);
+  if (!isAnalyticsEvent(parsed)) {
+    throw new Error("Invalid analytics event data");
+  }
+  return parsed;
 }
 
 function readLocalFile(): AnalyticsFile {
@@ -35,31 +71,21 @@ function writeLocalFile(data: AnalyticsFile): void {
   writeFileSync(LOCAL_PATH, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
-function hasBlobStorage(): boolean {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
-}
-
 async function readBlobFile(): Promise<AnalyticsFile> {
-  try {
-    const result = await get(BLOB_PATHNAME, { access: "private" });
-    if (!result || result.statusCode !== 200 || !result.stream) {
-      return { events: [] };
-    }
-
-    const raw = await new Response(result.stream).text();
-    return parseAnalyticsFile(raw);
-  } catch {
-    return { events: [] };
-  }
+  const legacy = await readBlobJson(BLOB_PATHNAME, parseAnalyticsFile, {
+    events: [],
+  });
+  const appendedEvents = await listBlobJson(EVENT_BLOB_PREFIX, parseAnalyticsEvent);
+  return { events: [...legacy.events, ...appendedEvents].slice(-MAX_EVENTS) };
 }
 
 async function writeBlobFile(data: AnalyticsFile): Promise<void> {
-  await put(BLOB_PATHNAME, JSON.stringify(data), {
-    access: "private",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: "application/json",
-  });
+  await writeBlobJson(BLOB_PATHNAME, data, true);
+}
+
+async function writeBlobEvent(event: AnalyticsEvent): Promise<void> {
+  const date = event.timestamp.slice(0, 10);
+  await writeBlobJson(`${EVENT_BLOB_PREFIX}${date}/${event.id}.json`, event, false);
 }
 
 async function readStore(): Promise<AnalyticsFile> {
@@ -79,6 +105,11 @@ async function writeStore(data: AnalyticsFile): Promise<void> {
 }
 
 export async function appendAnalyticsEvent(event: AnalyticsEvent): Promise<void> {
+  if (hasBlobStorage()) {
+    await writeBlobEvent(event);
+    return;
+  }
+
   const store = await readStore();
   store.events.push(event);
   await writeStore(store);

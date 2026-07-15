@@ -1,85 +1,17 @@
 import "server-only";
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
-import {
-  hasBlobStorage,
-  mutatePrivateJsonBlob,
-  readPrivateJsonBlob,
-} from "@/lib/blob-json-store";
+import { createDayShardedStore } from "@/lib/day-event-store";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
 
-const LOCAL_PATH = path.join(process.cwd(), "data", "analytics.json");
-const BLOB_PATHNAME = "analytics/events.json";
-const MAX_EVENTS = 20_000;
-
-type AnalyticsFile = {
-  events: AnalyticsEvent[];
-};
-
-const EMPTY: AnalyticsFile = { events: [] };
-
-/** Serialize local writes so concurrent serverless-like local requests don't clobber. */
-let localWriteChain: Promise<void> = Promise.resolve();
-
-function parseAnalyticsFile(raw: string): AnalyticsFile {
-  const parsed: unknown = JSON.parse(raw);
-  if (!parsed || typeof parsed !== "object" || !Array.isArray((parsed as AnalyticsFile).events)) {
-    return { events: [] };
-  }
-  return parsed as AnalyticsFile;
-}
-
-function readLocalFile(): AnalyticsFile {
-  if (!existsSync(LOCAL_PATH)) {
-    return { events: [] };
-  }
-  const raw = readFileSync(LOCAL_PATH, "utf8");
-  return parseAnalyticsFile(raw);
-}
-
-function writeLocalFile(data: AnalyticsFile): void {
-  const dir = path.dirname(LOCAL_PATH);
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  writeFileSync(LOCAL_PATH, `${JSON.stringify(data, null, 2)}\n`, "utf8");
-}
-
-async function readStore(): Promise<AnalyticsFile> {
-  if (hasBlobStorage()) {
-    const snapshot = await readPrivateJsonBlob(
-      BLOB_PATHNAME,
-      EMPTY,
-      parseAnalyticsFile,
-    );
-    return snapshot.data;
-  }
-  return readLocalFile();
-}
+const store = createDayShardedStore<AnalyticsEvent>({
+  localDir: path.join(process.cwd(), "data", "analytics-days"),
+  blobPrefix: "analytics/days",
+  maxEventsPerDay: 8_000,
+});
 
 export async function appendAnalyticsEvent(event: AnalyticsEvent): Promise<void> {
-  if (hasBlobStorage()) {
-    await mutatePrivateJsonBlob(
-      BLOB_PATHNAME,
-      EMPTY,
-      parseAnalyticsFile,
-      (store) => ({
-        events: [...store.events, event].slice(-MAX_EVENTS),
-      }),
-    );
-    return;
-  }
-
-  localWriteChain = localWriteChain.then(() => {
-    const store = readLocalFile();
-    store.events.push(event);
-    writeLocalFile({ events: store.events.slice(-MAX_EVENTS) });
-  });
-  try {
-    await localWriteChain;
-  } catch (error) {
-    localWriteChain = Promise.resolve();
-    throw error;
-  }
+  await store.appendEvent(event);
 }
 
 function parseMonth(month: string): { from: Date; to: Date } | null {
@@ -127,8 +59,8 @@ function countBy<T>(items: T[], keyFn: (item: T) => string, limit = 10) {
 }
 
 export async function getAnalyticsSummary(query: AnalyticsQuery): Promise<AnalyticsSummary> {
-  const store = await readStore();
-  const events = store.events.filter((event) => inRange(event.timestamp, query));
+  const all = await store.readAllEvents();
+  const events = all.filter((event) => inRange(event.timestamp, query));
 
   const sessionIds = new Set(events.map((event) => event.sessionId));
 
@@ -151,8 +83,8 @@ export async function getAnalyticsSummary(query: AnalyticsQuery): Promise<Analyt
     tabletViews: events.filter((event) => event.deviceType === "tablet").length,
     byCountry: countBy(events, (event) => event.country),
     byCity: countBy(
-      events.filter((event) => event.city),
-      (event) => `${event.city}, ${event.country}`,
+      events.filter((event) => event.region),
+      (event) => `${event.region}, ${event.country}`,
     ),
     byBrowser: countBy(
       events,

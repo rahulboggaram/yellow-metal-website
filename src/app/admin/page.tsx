@@ -11,6 +11,7 @@ import { FloatingInput } from "@/components/ui/floating-field";
 import {
   type AdminTab,
   checkAdminSession,
+  getAdminLoginConfig,
   loginAdmin,
   logoutAdmin,
   parseAdminTab,
@@ -83,6 +84,8 @@ function AdminPageContent() {
   const searchParams = useSearchParams();
   const tab = parseAdminTab(searchParams.get("tab"));
   const [passwordInput, setPasswordInput] = useState("");
+  const [totpInput, setTotpInput] = useState("");
+  const [totpRequired, setTotpRequired] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState(false);
@@ -93,8 +96,12 @@ function AdminPageContent() {
   useEffect(() => {
     let active = true;
     async function restore() {
-      const ok = await checkAdminSession();
+      const [ok, config] = await Promise.all([
+        checkAdminSession(),
+        getAdminLoginConfig(),
+      ]);
       if (!active) return;
+      setTotpRequired(config.totpRequired);
       setIsUnlocked(ok);
       setRestoringSession(false);
       if (ok && !searchParams.get("tab")) {
@@ -114,9 +121,13 @@ function AdminPageContent() {
       setAuthError("Enter your admin password.");
       return;
     }
+    if (totpRequired && !totpInput.trim()) {
+      setAuthError("Enter your authenticator code.");
+      return;
+    }
     setAuthLoading(true);
     setAuthError(null);
-    const result = await loginAdmin(trimmed);
+    const result = await loginAdmin(trimmed, totpInput.trim() || undefined);
     setAuthLoading(false);
     if (!result.ok) {
       setAuthError(result.error ?? "Wrong password. Try again.");
@@ -124,6 +135,7 @@ function AdminPageContent() {
       return;
     }
     setPasswordInput("");
+    setTotpInput("");
     setIsUnlocked(true);
     if (!searchParams.get("tab")) {
       router.replace("/admin?tab=analytics", { scroll: false });
@@ -133,6 +145,7 @@ function AdminPageContent() {
   async function signOut() {
     await logoutAdmin();
     setPasswordInput("");
+    setTotpInput("");
     setIsUnlocked(false);
     setAuthError(null);
   }
@@ -189,6 +202,21 @@ function AdminPageContent() {
                 error={Boolean(authError)}
                 fieldError={authError ?? undefined}
               />
+
+              {totpRequired ? (
+                <FloatingInput
+                  id="admin-totp"
+                  label="Authenticator code"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  value={totpInput}
+                  onChange={(event) => {
+                    setTotpInput(event.target.value);
+                    setAuthError(null);
+                  }}
+                />
+              ) : null}
 
               <button
                 type="submit"

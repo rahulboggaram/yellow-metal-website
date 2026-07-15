@@ -17,17 +17,44 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      // Next.js App Router still emits some inline bootstrapping; avoid unsafe-eval in production.
+      "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https:",
+      "img-src 'self' data: blob:",
       "font-src 'self' data:",
-      "connect-src 'self' https:",
+      "connect-src 'self'",
+      "worker-src 'self' blob:",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
+      "object-src 'none'",
+      "upgrade-insecure-requests",
     ].join("; "),
   },
 ];
+
+function buildSecurityHeaders(isDev: boolean) {
+  if (!isDev) return securityHeaders;
+  return securityHeaders.map((header) => {
+    if (header.key !== "Content-Security-Policy") return header;
+    return {
+      ...header,
+      value: [
+        "default-src 'self'",
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+        "style-src 'self' 'unsafe-inline'",
+        "img-src 'self' data: blob:",
+        "font-src 'self' data:",
+        "connect-src 'self' ws: wss:",
+        "worker-src 'self' blob:",
+        "frame-ancestors 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "object-src 'none'",
+      ].join("; "),
+    };
+  });
+}
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
@@ -38,10 +65,11 @@ const nextConfig: NextConfig = {
     return config;
   },
   async headers() {
+    const isDev = process.env.NODE_ENV !== "production";
     return [
       {
         source: "/:path*",
-        headers: securityHeaders,
+        headers: buildSecurityHeaders(isDev),
       },
     ];
   },

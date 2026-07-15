@@ -9,7 +9,7 @@ import { engagementQueryFromUrl } from "@/lib/engagement-query";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  if (!isAdminAuthenticated(request)) {
+  if (!(await isAdminAuthenticated(request))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     const query = engagementQueryFromUrl(url);
 
     if (url.searchParams.get("detail") === "calculator") {
-      const entries = await getCalculatorEntries(query);
+      const entries = await getCalculatorEntries(query, 200);
       return NextResponse.json({ entries });
     }
 

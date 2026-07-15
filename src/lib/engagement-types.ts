@@ -21,13 +21,18 @@ export type CalculatorEntryEvent = {
   timestamp: string;
   sessionId: string;
   path: string;
-  /** Exact text typed in the weight field (e.g. "23", "45"). */
+  /** @deprecated Prefer weightBucket — exact grams no longer stored for new events. */
   weightEntered?: string;
-  weightGrams: number;
+  /** Coarse bucket only (privacy minimizing). */
+  weightBucket?: string;
+  /** @deprecated Exact grams retained only for legacy events. */
+  weightGrams?: number;
   karat: GoldKarat;
+  /** Rounded/bucketed loan estimate band, not exact INR for new events. */
   loanAmountInr: number | null;
   country?: string;
   region?: string | null;
+  /** Not stored for new events (privacy). */
   city?: string | null;
 };
 

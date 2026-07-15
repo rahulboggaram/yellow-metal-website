@@ -18,8 +18,7 @@ import {
 } from "./spot-schedule";
 
 /** Public anon key from env — read-only market_prices access. */
-const SPOT_SUPABASE_URL =
-  process.env.SPOT_SUPABASE_URL ?? "https://jvnrafvsycvlqfmepqjv.supabase.co";
+const SPOT_SUPABASE_URL = process.env.SPOT_SUPABASE_URL ?? "";
 const SPOT_SUPABASE_ANON_KEY = process.env.SPOT_SUPABASE_ANON_KEY ?? "";
 
 const SPOT_APP_URL = "https://spot-app-bice.vercel.app";
@@ -32,8 +31,8 @@ type MarketPriceRow = {
 };
 
 async function fetchMarketPrices(): Promise<MarketPriceRow[]> {
-  if (!SPOT_SUPABASE_ANON_KEY) {
-    throw new Error("SPOT_SUPABASE_ANON_KEY is not configured");
+  if (!SPOT_SUPABASE_URL || !SPOT_SUPABASE_ANON_KEY) {
+    throw new Error("SPOT_SUPABASE_URL / SPOT_SUPABASE_ANON_KEY are not configured");
   }
 
   const url = new URL(`${SPOT_SUPABASE_URL}/rest/v1/market_prices`);

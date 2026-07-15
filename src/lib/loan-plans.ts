@@ -7,6 +7,7 @@ import {
   mutatePrivateJsonBlob,
   readPrivateJsonBlob,
 } from "@/lib/blob-json-store";
+import { appendLoanPlanAudit } from "@/lib/loan-plans-audit";
 import {
   type LoanPlan,
   type LoanPlanInput,
@@ -147,7 +148,14 @@ export async function createLoanPlan(input: LoanPlanInput): Promise<LoanPlan> {
     return [...current, plan];
   });
 
-  return plans.find((item) => item.id === id) ?? plan;
+  const created = plans.find((item) => item.id === id) ?? plan;
+  await appendLoanPlanAudit({
+    action: "create",
+    planId: created.id,
+    before: null,
+    after: created,
+  });
+  return created;
 }
 
 export async function updateLoanPlan(
@@ -158,25 +166,43 @@ export async function updateLoanPlan(
   if (validationError) throw new Error(validationError);
 
   const updated: LoanPlan = { ...input, id };
+  let before: LoanPlan | null = null;
   const plans = await mutatePlans((current) => {
     const index = current.findIndex((plan) => plan.id === id);
     if (index === -1) {
       throw new Error("Loan plan not found");
     }
+    before = current[index] ?? null;
     const next = [...current];
     next[index] = updated;
     return next;
   });
 
-  return plans.find((item) => item.id === id) ?? updated;
+  const after = plans.find((item) => item.id === id) ?? updated;
+  await appendLoanPlanAudit({
+    action: "update",
+    planId: id,
+    before,
+    after,
+  });
+  return after;
 }
 
 export async function deleteLoanPlan(id: string): Promise<void> {
+  let before: LoanPlan | null = null;
   await mutatePlans((current) => {
+    const found = current.find((plan) => plan.id === id) ?? null;
+    before = found;
     const next = current.filter((plan) => plan.id !== id);
     if (next.length === current.length) {
       throw new Error("Loan plan not found");
     }
     return next;
+  });
+  await appendLoanPlanAudit({
+    action: "delete",
+    planId: id,
+    before,
+    after: null,
   });
 }

@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FloatingInput, FloatingSelect } from "@/components/ui/floating-field";
+import { formatAdminDateTime } from "@/lib/admin-session";
 import type { LoanPlan, LoanPlanInput, LoanPlanInterestTier } from "@/lib/loan-plans-shared";
+import type { LoanPlanAuditEntry } from "@/lib/loan-plans-audit-types";
 
 const EMPTY_TIER: LoanPlanInterestTier = {
   daysFrom: 0,
@@ -34,6 +36,7 @@ function parseOptionalNumber(value: string): number | null {
 
 export function LoanPlansAdminPanel() {
   const [plans, setPlans] = useState<LoanPlan[]>([]);
+  const [audit, setAudit] = useState<LoanPlanAuditEntry[]>([]);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -42,13 +45,20 @@ export function LoanPlansAdminPanel() {
   const loadPlans = useCallback(async () => {
     setMessage(null);
     try {
-      const res = await fetch("/api/loan-plans?all=1");
-      if (res.status === 401) {
+      const [plansRes, auditRes] = await Promise.all([
+        fetch("/api/loan-plans?all=1"),
+        fetch("/api/loan-plans?audit=1"),
+      ]);
+      if (plansRes.status === 401 || auditRes.status === 401) {
         throw new Error("Your session expired. Sign in again.");
       }
-      if (!res.ok) throw new Error("Could not load plans");
-      const data: { plans?: LoanPlan[] } = await res.json();
+      if (!plansRes.ok) throw new Error("Could not load plans");
+      const data: { plans?: LoanPlan[] } = await plansRes.json();
       setPlans(data.plans ?? []);
+      if (auditRes.ok) {
+        const auditData: { entries?: LoanPlanAuditEntry[] } = await auditRes.json();
+        setAudit(auditData.entries ?? []);
+      }
     } catch (error) {
       setMessage(
         error instanceof Error ? error.message : "Could not load plans.",
@@ -421,6 +431,41 @@ export function LoanPlansAdminPanel() {
           )}
         </section>
       </div>
+
+      <section className="ym-admin-panel">
+        <h2 className="ym-admin-heading">Change log</h2>
+        <p className="ym-admin-section-lead">
+          Append-only record of loan plan creates, updates, and deletes.
+        </p>
+        {audit.length === 0 ? (
+          <p className="ym-admin-empty">No changes recorded yet.</p>
+        ) : (
+          <div className="ym-admin-table-wrap">
+            <table className="ym-admin-table">
+              <thead>
+                <tr>
+                  <th>When</th>
+                  <th>Action</th>
+                  <th>Plan</th>
+                </tr>
+              </thead>
+              <tbody>
+                {audit.map((entry) => (
+                  <tr key={entry.id}>
+                    <td>{formatAdminDateTime(entry.at)}</td>
+                    <td>{entry.action}</td>
+                    <td>
+                      {entry.after?.amountLabel ??
+                        entry.before?.amountLabel ??
+                        entry.planId}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
     </div>
   );
 }

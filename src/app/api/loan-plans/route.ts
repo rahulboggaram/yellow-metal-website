@@ -1,18 +1,31 @@
 import { NextResponse } from "next/server";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import {
+  assertSameOrigin,
+  isAdminAuthenticated,
+} from "@/lib/admin-auth";
 import {
   createLoanPlan,
   getLoanPlans,
   isLoanPlanInput,
 } from "@/lib/loan-plans";
+import { getLoanPlanAudit } from "@/lib/loan-plans-audit";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const showAll =
-      searchParams.get("all") === "1" && isAdminAuthenticated(request);
+    const isAdmin = await isAdminAuthenticated(request);
+
+    if (searchParams.get("audit") === "1") {
+      if (!isAdmin) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+      const entries = await getLoanPlanAudit(40);
+      return NextResponse.json({ entries });
+    }
+
+    const showAll = searchParams.get("all") === "1" && isAdmin;
     const plans = await getLoanPlans(!showAll);
     return NextResponse.json({ plans });
   } catch (error) {
@@ -25,8 +38,11 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!isAdminAuthenticated(request)) {
+  if (!(await isAdminAuthenticated(request))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!assertSameOrigin(request)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   try {

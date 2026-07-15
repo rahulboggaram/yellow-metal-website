@@ -127,19 +127,40 @@ function parseAdminDateParts(
 
 export async function loginAdmin(
   password: string,
+  totp?: string,
 ): Promise<{ ok: boolean; error?: string }> {
   const res = await fetch("/api/admin/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password }),
+    body: JSON.stringify({ password, totp: totp || undefined }),
   });
   if (res.status === 429) {
     return { ok: false, error: "Too many attempts. Try again later." };
   }
+  if (res.status === 503) {
+    return {
+      ok: false,
+      error: "Admin is not configured. Set ADMIN_SESSION_SECRET.",
+    };
+  }
   if (!res.ok) {
-    return { ok: false, error: "Wrong password. Try again." };
+    const data: { error?: string } = await res.json().catch(() => ({}));
+    return { ok: false, error: data.error ?? "Wrong password. Try again." };
   }
   return { ok: true };
+}
+
+export async function getAdminLoginConfig(): Promise<{
+  totpRequired: boolean;
+}> {
+  try {
+    const res = await fetch("/api/admin/login");
+    if (!res.ok) return { totpRequired: false };
+    const data: { totpRequired?: boolean } = await res.json();
+    return { totpRequired: Boolean(data.totpRequired) };
+  } catch {
+    return { totpRequired: false };
+  }
 }
 
 export async function checkAdminSession(): Promise<boolean> {

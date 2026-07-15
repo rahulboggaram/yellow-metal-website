@@ -20,18 +20,18 @@ function formatDuration(seconds: number): string {
 }
 
 function formatWeightEntered(entry: CalculatorEntryEvent): string {
+  if (entry.weightBucket) return entry.weightBucket;
   const raw = entry.weightEntered?.trim();
   if (raw) return `${raw} g`;
-  return `${entry.weightGrams.toLocaleString("en-IN")} g`;
+  if (typeof entry.weightGrams === "number") {
+    return `${entry.weightGrams.toLocaleString("en-IN")} g`;
+  }
+  return "—";
 }
 
 function formatEntryRegion(entry: CalculatorEntryEvent): string {
-  const city = entry.city?.trim();
   const region = entry.region?.trim();
   const country = entry.country?.trim() || "Unknown";
-
-  if (city && region) return `${city}, ${region}`;
-  if (city) return `${city}, ${country}`;
   if (region) return `${region}, ${country}`;
   if (country !== "Unknown") return country;
   return "—";
@@ -160,8 +160,8 @@ export function EngagementAdminPanel() {
             <div className="ym-admin-section-head">
               <h2 className="ym-admin-heading">Loan estimate calculator</h2>
               <p className="ym-admin-section-lead">
-                Exact gold weights people typed in the loan estimate field on the
-                home page.
+                Exact gold weight bands from the loan estimate field (exact grams
+                are not stored).
               </p>
             </div>
             <div className="ym-admin-stats">

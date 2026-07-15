@@ -1,12 +1,7 @@
 import "server-only";
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
-import {
-  hasBlobStorage,
-  mutatePrivateJsonBlob,
-  readPrivateJsonBlob,
-} from "@/lib/blob-json-store";
+import { createDayShardedStore } from "@/lib/day-event-store";
 import { engagementInRange } from "@/lib/engagement-query";
 import type {
   CalculatorEntryEvent,
@@ -16,76 +11,14 @@ import type {
   LendingRateStopEvent,
 } from "@/lib/engagement-types";
 
-const LOCAL_PATH = path.join(process.cwd(), "data", "engagement.json");
-const BLOB_PATHNAME = "engagement/events.json";
-const MAX_EVENTS = 50_000;
-
-type EngagementFile = {
-  events: EngagementEvent[];
-};
-
-const EMPTY: EngagementFile = { events: [] };
-
-let localWriteChain: Promise<void> = Promise.resolve();
-
-function parseEngagementFile(raw: string): EngagementFile {
-  const parsed: unknown = JSON.parse(raw);
-  if (!parsed || typeof parsed !== "object" || !Array.isArray((parsed as EngagementFile).events)) {
-    return { events: [] };
-  }
-  return parsed as EngagementFile;
-}
-
-function readLocalFile(): EngagementFile {
-  if (!existsSync(LOCAL_PATH)) {
-    return { events: [] };
-  }
-  const raw = readFileSync(LOCAL_PATH, "utf8");
-  return parseEngagementFile(raw);
-}
-
-function writeLocalFile(data: EngagementFile): void {
-  const dir = path.dirname(LOCAL_PATH);
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  writeFileSync(LOCAL_PATH, `${JSON.stringify(data, null, 2)}\n`, "utf8");
-}
-
-async function readStore(): Promise<EngagementFile> {
-  if (hasBlobStorage()) {
-    const snapshot = await readPrivateJsonBlob(
-      BLOB_PATHNAME,
-      EMPTY,
-      parseEngagementFile,
-    );
-    return snapshot.data;
-  }
-  return readLocalFile();
-}
+const store = createDayShardedStore<EngagementEvent>({
+  localDir: path.join(process.cwd(), "data", "engagement-days"),
+  blobPrefix: "engagement/days",
+  maxEventsPerDay: 10_000,
+});
 
 export async function appendEngagementEvent(event: EngagementEvent): Promise<void> {
-  if (hasBlobStorage()) {
-    await mutatePrivateJsonBlob(
-      BLOB_PATHNAME,
-      EMPTY,
-      parseEngagementFile,
-      (store) => ({
-        events: [...store.events, event].slice(-MAX_EVENTS),
-      }),
-    );
-    return;
-  }
-
-  localWriteChain = localWriteChain.then(() => {
-    const store = readLocalFile();
-    store.events.push(event);
-    writeLocalFile({ events: store.events.slice(-MAX_EVENTS) });
-  });
-  try {
-    await localWriteChain;
-  } catch (error) {
-    localWriteChain = Promise.resolve();
-    throw error;
-  }
+  await store.appendEvent(event);
 }
 
 function isLendingRateStop(event: EngagementEvent): event is LendingRateStopEvent {
@@ -97,8 +30,8 @@ function isCalculatorEntry(event: EngagementEvent): event is CalculatorEntryEven
 }
 
 export async function getEngagementSummary(query: EngagementQuery): Promise<EngagementSummary> {
-  const store = await readStore();
-  const events = store.events.filter((event) => engagementInRange(event.timestamp, query));
+  const all = await store.readAllEvents();
+  const events = all.filter((event) => engagementInRange(event.timestamp, query));
   const lendingStops = events.filter(isLendingRateStop);
   const calculatorEntries = events.filter(isCalculatorEntry);
 
@@ -166,12 +99,10 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
         .slice(0, 20)
         .map((event) => ({
           ...event,
-          weightEntered:
-            event.weightEntered ??
-            String(event.weightGrams),
+          weightEntered: event.weightEntered ?? event.weightBucket ?? String(event.weightGrams),
           country: event.country ?? "Unknown",
           region: event.region ?? null,
-          city: event.city ?? null,
+          city: null,
         })),
     },
   };
@@ -179,17 +110,19 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
 
 export async function getCalculatorEntries(
   query: EngagementQuery,
+  limit = 200,
 ): Promise<CalculatorEntryEvent[]> {
-  const store = await readStore();
-  return store.events
+  const all = await store.readAllEvents();
+  return all
     .filter(isCalculatorEntry)
     .filter((event) => engagementInRange(event.timestamp, query))
     .map((event) => ({
       ...event,
-      weightEntered: event.weightEntered ?? String(event.weightGrams),
+      weightEntered: event.weightEntered ?? event.weightBucket ?? String(event.weightGrams),
       country: event.country ?? "Unknown",
       region: event.region ?? null,
-      city: event.city ?? null,
+      city: null,
     }))
-    .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+    .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+    .slice(0, limit);
 }

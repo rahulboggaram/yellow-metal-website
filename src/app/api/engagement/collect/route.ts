@@ -1,17 +1,30 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
+import {
+  hashSessionIdForStorage,
+  weightBucketGrams,
+} from "@/lib/admin-auth";
 import { geoFromHeaders } from "@/lib/analytics-geo";
 import { appendEngagementEvent } from "@/lib/engagement-store";
 import type { EngagementCollectInput } from "@/lib/engagement-types";
 import { GOLD_KARAT_OPTIONS } from "@/lib/gold-price-format";
 import { isLikelyBot } from "@/lib/analytics-ua";
-import { clientIpFromRequest, rateLimitAllow } from "@/lib/rate-limit";
+import { durableRateLimitAllow, preferredClientIp } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 const VALID_KARATS = new Set<string>(GOLD_KARAT_OPTIONS);
 const MAX_PATH = 200;
 const MAX_SESSION_ID = 80;
+
+function loanAmountBucket(amount: number | null): number | null {
+  if (amount === null || !Number.isFinite(amount) || amount < 0) return null;
+  if (amount < 50_000) return 25_000;
+  if (amount < 100_000) return 75_000;
+  if (amount < 300_000) return 200_000;
+  if (amount < 500_000) return 400_000;
+  return 750_000;
+}
 
 function isValidInput(body: unknown): body is EngagementCollectInput {
   if (!body || typeof body !== "object") return false;
@@ -59,8 +72,8 @@ function isValidInput(body: unknown): body is EngagementCollectInput {
 }
 
 export async function POST(request: Request) {
-  const ip = clientIpFromRequest(request);
-  if (!rateLimitAllow(`engagement-collect:${ip}`, 60, 60_000)) {
+  const ip = preferredClientIp(request);
+  if (!(await durableRateLimitAllow(`engagement-collect:${ip}`, 60, 60_000))) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 
@@ -82,7 +95,7 @@ export async function POST(request: Request) {
 
     const timestamp = new Date().toISOString();
     const id = randomUUID();
-    const sessionId = body.sessionId.slice(0, MAX_SESSION_ID);
+    const sessionId = hashSessionIdForStorage(body.sessionId);
     const path = body.path.slice(0, MAX_PATH);
 
     if (body.type === "lending_rate_stop") {
@@ -102,13 +115,12 @@ export async function POST(request: Request) {
         timestamp,
         sessionId,
         path,
-        weightEntered: body.weightEntered.trim(),
-        weightGrams: body.weightGrams,
+        weightBucket: weightBucketGrams(body.weightGrams),
         karat: body.karat,
-        loanAmountInr: body.loanAmountInr,
+        loanAmountInr: loanAmountBucket(body.loanAmountInr),
         country: geo.country,
         region: geo.region,
-        city: geo.city,
+        city: null,
       });
     }
 

@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import {
+  assertSameOrigin,
+  isAdminAuthenticated,
+} from "@/lib/admin-auth";
 import {
   deleteLoanPlan,
   getLoanPlanById,
@@ -18,7 +21,7 @@ export async function GET(request: Request, context: RouteContext) {
     if (!plan) {
       return NextResponse.json({ error: "Loan plan not found." }, { status: 404 });
     }
-    if (!plan.active && !isAdminAuthenticated(request)) {
+    if (!plan.active && !(await isAdminAuthenticated(request))) {
       return NextResponse.json({ error: "Loan plan not found." }, { status: 404 });
     }
     return NextResponse.json({ plan });
@@ -32,8 +35,11 @@ export async function GET(request: Request, context: RouteContext) {
 }
 
 export async function PUT(request: Request, context: RouteContext) {
-  if (!isAdminAuthenticated(request)) {
+  if (!(await isAdminAuthenticated(request))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!assertSameOrigin(request)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   try {
@@ -60,8 +66,11 @@ export async function PUT(request: Request, context: RouteContext) {
 }
 
 export async function DELETE(request: Request, context: RouteContext) {
-  if (!isAdminAuthenticated(request)) {
+  if (!(await isAdminAuthenticated(request))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!assertSameOrigin(request)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   try {

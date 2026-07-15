@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 import {
   getCalculatorEntries,
   getEngagementSummary,
 } from "@/lib/engagement-store";
 import { engagementQueryFromUrl } from "@/lib/engagement-query";
-import { verifyAdminSecret } from "@/lib/loan-plans";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  if (!verifyAdminSecret(request.headers.get("x-admin-secret"))) {
+  if (!isAdminAuthenticated(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

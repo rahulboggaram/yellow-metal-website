@@ -32,37 +32,33 @@ function parseOptionalNumber(value: string): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-export function LoanPlansAdminPanel({ secret }: { secret: string }) {
+export function LoanPlansAdminPanel() {
   const [plans, setPlans] = useState<LoanPlan[]>([]);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<LoanPlanInput>(EMPTY_PLAN);
 
-  const headers = useMemo(
-    () => ({
-      "Content-Type": "application/json",
-      "x-admin-secret": secret,
-    }),
-    [secret],
-  );
-
   const loadPlans = useCallback(async () => {
-    if (!secret) return;
     setMessage(null);
     try {
-      const res = await fetch("/api/loan-plans?all=1", { headers });
+      const res = await fetch("/api/loan-plans?all=1");
+      if (res.status === 401) {
+        throw new Error("Your session expired. Sign in again.");
+      }
       if (!res.ok) throw new Error("Could not load plans");
       const data: { plans?: LoanPlan[] } = await res.json();
       setPlans(data.plans ?? []);
-    } catch {
-      setMessage("Could not load plans. Check your admin secret.");
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : "Could not load plans.",
+      );
     }
-  }, [headers, secret]);
+  }, []);
 
   useEffect(() => {
-    if (secret) void loadPlans();
-  }, [secret, loadPlans]);
+    void loadPlans();
+  }, [loadPlans]);
 
   function resetForm() {
     setEditingId(null);
@@ -103,10 +99,6 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (!secret) {
-      setMessage("Enter the admin secret first.");
-      return;
-    }
 
     setSaving(true);
     setMessage(null);
@@ -115,10 +107,13 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
       const method = editingId ? "PUT" : "POST";
       const res = await fetch(url, {
         method,
-        headers,
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
       const data: { error?: string } = await res.json();
+      if (res.status === 401) {
+        throw new Error("Your session expired. Sign in again.");
+      }
       if (!res.ok) throw new Error(data.error ?? "Save failed");
 
       setMessage(editingId ? "Plan updated." : "Plan created.");
@@ -132,16 +127,18 @@ export function LoanPlansAdminPanel({ secret }: { secret: string }) {
   }
 
   async function handleDelete(id: string) {
-    if (!secret || !window.confirm("Delete this loan plan?")) return;
+    if (!window.confirm("Delete this loan plan?")) return;
 
     setSaving(true);
     setMessage(null);
     try {
       const res = await fetch(`/api/loan-plans/${id}`, {
         method: "DELETE",
-        headers,
       });
       const data: { error?: string } = await res.json();
+      if (res.status === 401) {
+        throw new Error("Your session expired. Sign in again.");
+      }
       if (!res.ok) throw new Error(data.error ?? "Delete failed");
       setMessage("Plan deleted.");
       if (editingId === id) resetForm();

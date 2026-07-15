@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, Suspense, useCallback, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnalyticsAdminPanel } from "@/components/admin/analytics-panel";
@@ -9,10 +9,11 @@ import { AdminLottiePreview } from "@/components/admin/lottie-preview";
 import { LoanPlansAdminPanel } from "@/components/admin/loan-plans-panel";
 import { FloatingInput } from "@/components/ui/floating-field";
 import {
-  ADMIN_SESSION_KEY,
   type AdminTab,
+  checkAdminSession,
+  loginAdmin,
+  logoutAdmin,
   parseAdminTab,
-  verifyAdminSecret,
 } from "@/lib/admin-session";
 
 const TABS: {
@@ -81,7 +82,6 @@ function AdminPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tab = parseAdminTab(searchParams.get("tab"));
-  const [secret, setSecret] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -90,47 +90,22 @@ function AdminPageContent() {
 
   const activeTab = TABS.find((item) => item.id === tab) ?? TABS[0];
 
-  const unlock = useCallback(
-    async (value: string) => {
-      setAuthLoading(true);
-      setAuthError(null);
-      const ok = await verifyAdminSecret(value);
-      if (!ok) {
-        setAuthError("Wrong password. Try again.");
-        setIsUnlocked(false);
-        setSecret("");
-        sessionStorage.removeItem(ADMIN_SESSION_KEY);
-        setAuthLoading(false);
-        return false;
-      }
-      sessionStorage.setItem(ADMIN_SESSION_KEY, value);
-      setSecret(value);
-      setIsUnlocked(true);
-      setAuthLoading(false);
-      if (!searchParams.get("tab")) {
-        router.replace("/admin?tab=analytics", { scroll: false });
-      }
-      return true;
-    },
-    [router, searchParams],
-  );
-
   useEffect(() => {
     let active = true;
     async function restore() {
-      const stored = sessionStorage.getItem(ADMIN_SESSION_KEY);
-      if (!stored) {
-        if (active) setRestoringSession(false);
-        return;
+      const ok = await checkAdminSession();
+      if (!active) return;
+      setIsUnlocked(ok);
+      setRestoringSession(false);
+      if (ok && !searchParams.get("tab")) {
+        router.replace("/admin?tab=analytics", { scroll: false });
       }
-      await unlock(stored);
-      if (active) setRestoringSession(false);
     }
     void restore();
     return () => {
       active = false;
     };
-  }, [unlock]);
+  }, [router, searchParams]);
 
   async function handlePasswordSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -139,12 +114,24 @@ function AdminPageContent() {
       setAuthError("Enter your admin password.");
       return;
     }
-    await unlock(trimmed);
+    setAuthLoading(true);
+    setAuthError(null);
+    const result = await loginAdmin(trimmed);
+    setAuthLoading(false);
+    if (!result.ok) {
+      setAuthError(result.error ?? "Wrong password. Try again.");
+      setIsUnlocked(false);
+      return;
+    }
+    setPasswordInput("");
+    setIsUnlocked(true);
+    if (!searchParams.get("tab")) {
+      router.replace("/admin?tab=analytics", { scroll: false });
+    }
   }
 
-  function signOut() {
-    sessionStorage.removeItem(ADMIN_SESSION_KEY);
-    setSecret("");
+  async function signOut() {
+    await logoutAdmin();
     setPasswordInput("");
     setIsUnlocked(false);
     setAuthError(null);
@@ -251,7 +238,7 @@ function AdminPageContent() {
           <button
             type="button"
             className="ym-admin-nav-item ym-admin-nav-item--quiet"
-            onClick={signOut}
+            onClick={() => void signOut()}
           >
             Sign out
           </button>
@@ -271,7 +258,7 @@ function AdminPageContent() {
           <button
             type="button"
             className="ym-admin-btn ym-admin-btn--ghost ym-admin-mobile-signout"
-            onClick={signOut}
+            onClick={() => void signOut()}
           >
             Sign out
           </button>
@@ -312,11 +299,11 @@ function AdminPageContent() {
 
           <div role="tabpanel" className="ym-admin-main-content">
             {tab === "analytics" ? (
-              <AnalyticsAdminPanel secret={secret} />
+              <AnalyticsAdminPanel />
             ) : tab === "engagement" ? (
-              <EngagementAdminPanel secret={secret} />
+              <EngagementAdminPanel />
             ) : (
-              <LoanPlansAdminPanel secret={secret} />
+              <LoanPlansAdminPanel />
             )}
           </div>
         </div>

@@ -37,7 +37,7 @@ function formatEntryRegion(entry: CalculatorEntryEvent): string {
   return "—";
 }
 
-export function EngagementAdminPanel({ secret }: { secret: string }) {
+export function EngagementAdminPanel() {
   const initialRange = useMemo(() => last30DaysRange(), []);
   const [month, setMonth] = useState("last30");
   const [from, setFrom] = useState(initialRange.from);
@@ -46,37 +46,34 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  const headers = useMemo(
-    () => ({
-      "x-admin-secret": secret,
-    }),
-    [secret],
-  );
-
   const loadSummary = useCallback(async () => {
-    if (!secret) return;
     setLoading(true);
     setMessage(null);
     try {
       const params = buildAdminDateQuery(month, from, to);
       const query = params.toString();
-      const res = await fetch(`/api/engagement${query ? `?${query}` : ""}`, {
-        headers,
-      });
+      const res = await fetch(`/api/engagement${query ? `?${query}` : ""}`);
+      if (res.status === 401) {
+        throw new Error("Your session expired. Sign in again.");
+      }
       if (!res.ok) throw new Error("Could not load engagement");
       const data: { summary?: EngagementSummary } = await res.json();
       setSummary(data.summary ?? null);
-    } catch {
-      setMessage("Could not load engagement data. Check your admin secret.");
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Could not load engagement data.",
+      );
       setSummary(null);
     } finally {
       setLoading(false);
     }
-  }, [from, headers, month, secret, to]);
+  }, [from, month, to]);
 
   useEffect(() => {
-    if (secret) void loadSummary();
-  }, [secret, loadSummary]);
+    void loadSummary();
+  }, [loadSummary]);
 
   return (
     <div className="ym-admin-stack">
@@ -93,7 +90,7 @@ export function EngagementAdminPanel({ secret }: { secret: string }) {
           type="button"
           className="ym-admin-btn ym-admin-btn--primary"
           onClick={() => void loadSummary()}
-          disabled={!secret || loading}
+          disabled={loading}
         >
           {loading ? "Updating…" : "Update"}
         </button>

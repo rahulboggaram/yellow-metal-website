@@ -1,5 +1,3 @@
-export const ADMIN_SESSION_KEY = "ym-admin-secret";
-
 export type AdminTab = "loan-plans" | "analytics" | "engagement";
 
 export function parseAdminTab(value: string | null): AdminTab {
@@ -127,11 +125,28 @@ function parseAdminDateParts(
   };
 }
 
-export async function verifyAdminSecret(secret: string): Promise<boolean> {
-  const { from, to } = last30DaysRange();
-  const params = new URLSearchParams({ from, to });
-  const res = await fetch(`/api/analytics?${params}`, {
-    headers: { "x-admin-secret": secret },
+export async function loginAdmin(
+  password: string,
+): Promise<{ ok: boolean; error?: string }> {
+  const res = await fetch("/api/admin/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password }),
   });
+  if (res.status === 429) {
+    return { ok: false, error: "Too many attempts. Try again later." };
+  }
+  if (!res.ok) {
+    return { ok: false, error: "Wrong password. Try again." };
+  }
+  return { ok: true };
+}
+
+export async function checkAdminSession(): Promise<boolean> {
+  const res = await fetch("/api/admin/session");
   return res.ok;
+}
+
+export async function logoutAdmin(): Promise<void> {
+  await fetch("/api/admin/logout", { method: "POST" });
 }

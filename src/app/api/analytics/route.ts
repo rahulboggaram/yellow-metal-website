@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getAnalyticsSummary } from "@/lib/analytics-store";
 import type { AnalyticsQuery } from "@/lib/analytics-types";
-import { verifyAdminSecret } from "@/lib/loan-plans";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,7 @@ function queryFromUrl(url: URL): AnalyticsQuery {
 }
 
 export async function GET(request: Request) {
-  if (!verifyAdminSecret(request.headers.get("x-admin-secret"))) {
+  if (!isAdminAuthenticated(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

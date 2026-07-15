@@ -17,12 +17,10 @@ import {
   previousTradingDayYmd,
 } from "./spot-schedule";
 
-/** Public anon key from the spot app web bundle — read-only market_prices access. */
+/** Public anon key from env — read-only market_prices access. */
 const SPOT_SUPABASE_URL =
   process.env.SPOT_SUPABASE_URL ?? "https://jvnrafvsycvlqfmepqjv.supabase.co";
-const SPOT_SUPABASE_ANON_KEY =
-  process.env.SPOT_SUPABASE_ANON_KEY ??
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2bnJhZnZzeWN2bHFmbWVwcWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1NTk0OTgsImV4cCI6MjA4NDEzNTQ5OH0.39F_md2gcJw5yDxTXEdydwKLW-Yr-qfIbBmg9nXh_PM";
+const SPOT_SUPABASE_ANON_KEY = process.env.SPOT_SUPABASE_ANON_KEY ?? "";
 
 const SPOT_APP_URL = "https://spot-app-bice.vercel.app";
 
@@ -34,6 +32,10 @@ type MarketPriceRow = {
 };
 
 async function fetchMarketPrices(): Promise<MarketPriceRow[]> {
+  if (!SPOT_SUPABASE_ANON_KEY) {
+    throw new Error("SPOT_SUPABASE_ANON_KEY is not configured");
+  }
+
   const url = new URL(`${SPOT_SUPABASE_URL}/rest/v1/market_prices`);
   url.searchParams.set("select", "id,gold_999_base,silver_base,updated_at");
   url.searchParams.set("order", "updated_at.desc");

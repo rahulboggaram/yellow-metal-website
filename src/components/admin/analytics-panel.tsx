@@ -44,7 +44,7 @@ function DataTable({
   );
 }
 
-export function AnalyticsAdminPanel({ secret }: { secret: string }) {
+export function AnalyticsAdminPanel() {
   const initialRange = useMemo(() => last30DaysRange(), []);
   const [month, setMonth] = useState("last30");
   const [from, setFrom] = useState(initialRange.from);
@@ -53,37 +53,32 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  const headers = useMemo(
-    () => ({
-      "x-admin-secret": secret,
-    }),
-    [secret],
-  );
-
   const loadAnalytics = useCallback(async () => {
-    if (!secret) return;
     setLoading(true);
     setMessage(null);
     try {
       const params = buildAdminDateQuery(month, from, to);
       const query = params.toString();
-      const res = await fetch(`/api/analytics${query ? `?${query}` : ""}`, {
-        headers,
-      });
+      const res = await fetch(`/api/analytics${query ? `?${query}` : ""}`);
+      if (res.status === 401) {
+        throw new Error("Your session expired. Sign in again.");
+      }
       if (!res.ok) throw new Error("Could not load analytics");
       const data: { summary?: AnalyticsSummary } = await res.json();
       setSummary(data.summary ?? null);
-    } catch {
-      setMessage("Could not load analytics. Check your admin secret.");
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : "Could not load analytics.",
+      );
       setSummary(null);
     } finally {
       setLoading(false);
     }
-  }, [from, headers, month, secret, to]);
+  }, [from, month, to]);
 
   useEffect(() => {
-    if (secret) void loadAnalytics();
-  }, [secret, loadAnalytics]);
+    void loadAnalytics();
+  }, [loadAnalytics]);
 
   return (
     <div className="ym-admin-stack">
@@ -100,7 +95,7 @@ export function AnalyticsAdminPanel({ secret }: { secret: string }) {
           type="button"
           className="ym-admin-btn ym-admin-btn--primary"
           onClick={() => void loadAnalytics()}
-          disabled={!secret || loading}
+          disabled={loading}
         >
           {loading ? "Updating…" : "Update"}
         </button>

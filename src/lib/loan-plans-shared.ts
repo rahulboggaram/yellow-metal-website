@@ -82,13 +82,17 @@ export function formatTierRange(daysFrom: number, daysTo: number): string {
   return `${daysFrom}–${daysTo} days`;
 }
 
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
 function isInterestTier(value: unknown): value is LoanPlanInterestTier {
   if (!value || typeof value !== "object") return false;
   const tier = value as LoanPlanInterestTier;
   return (
-    typeof tier.daysFrom === "number" &&
-    typeof tier.daysTo === "number" &&
-    typeof tier.monthlyRatePercent === "number"
+    isFiniteNumber(tier.daysFrom) &&
+    isFiniteNumber(tier.daysTo) &&
+    isFiniteNumber(tier.monthlyRatePercent)
   );
 }
 
@@ -97,18 +101,49 @@ export function isLoanPlan(value: unknown): value is LoanPlan {
   const plan = value as LoanPlan;
   return (
     typeof plan.id === "string" &&
+    plan.id.length > 0 &&
+    plan.id.length <= 64 &&
     typeof plan.amountLabel === "string" &&
-    typeof plan.minAmountInr === "number" &&
-    (plan.maxAmountInr === null || typeof plan.maxAmountInr === "number") &&
-    (plan.category === null || typeof plan.category === "string") &&
+    plan.amountLabel.length > 0 &&
+    plan.amountLabel.length <= 80 &&
+    isFiniteNumber(plan.minAmountInr) &&
+    plan.minAmountInr >= 0 &&
+    plan.minAmountInr <= 1_000_000_000 &&
+    (plan.maxAmountInr === null ||
+      (isFiniteNumber(plan.maxAmountInr) &&
+        plan.maxAmountInr >= plan.minAmountInr &&
+        plan.maxAmountInr <= 1_000_000_000)) &&
+    (plan.category === null ||
+      (typeof plan.category === "string" && plan.category.length <= 80)) &&
     (plan.repaymentType === "monthly" || plan.repaymentType === "bullet") &&
     typeof plan.ltvLabel === "string" &&
-    typeof plan.tenureMonths === "number" &&
-    typeof plan.annualRatePercent === "number" &&
-    typeof plan.monthlyRatePercent === "number" &&
+    plan.ltvLabel.length > 0 &&
+    plan.ltvLabel.length <= 40 &&
+    isFiniteNumber(plan.tenureMonths) &&
+    plan.tenureMonths >= 1 &&
+    plan.tenureMonths <= 120 &&
+    isFiniteNumber(plan.annualRatePercent) &&
+    plan.annualRatePercent >= 0 &&
+    plan.annualRatePercent <= 100 &&
+    isFiniteNumber(plan.monthlyRatePercent) &&
+    plan.monthlyRatePercent >= 0 &&
+    plan.monthlyRatePercent <= 20 &&
     Array.isArray(plan.interestTiers) &&
-    plan.interestTiers.every(isInterestTier) &&
-    typeof plan.sortOrder === "number" &&
+    plan.interestTiers.length >= 1 &&
+    plan.interestTiers.length <= 12 &&
+    plan.interestTiers.every(
+      (tier) =>
+        isInterestTier(tier) &&
+        tier.daysFrom >= 0 &&
+        tier.daysFrom <= 3650 &&
+        tier.daysTo >= tier.daysFrom &&
+        tier.daysTo <= 3650 &&
+        tier.monthlyRatePercent >= 0 &&
+        tier.monthlyRatePercent <= 20,
+    ) &&
+    isFiniteNumber(plan.sortOrder) &&
+    plan.sortOrder >= 0 &&
+    plan.sortOrder <= 10_000 &&
     typeof plan.active === "boolean"
   );
 }
@@ -116,6 +151,20 @@ export function isLoanPlan(value: unknown): value is LoanPlan {
 export function isLoanPlanInput(value: unknown): value is LoanPlanInput {
   if (!value || typeof value !== "object") return false;
   const input = value as LoanPlanInput;
-  const { id: _id, ...rest } = input;
+  if (input.id !== undefined) {
+    if (typeof input.id !== "string" || input.id.length === 0 || input.id.length > 64) {
+      return false;
+    }
+  }
+  const rest = { ...input };
+  delete rest.id;
   return isLoanPlan({ id: "draft", ...rest });
+}
+
+/** Extra message for API 400 responses; null when valid. */
+export function validateLoanPlanInput(input: LoanPlanInput): string | null {
+  if (!isLoanPlanInput(input)) {
+    return "Invalid loan plan payload.";
+  }
+  return null;
 }

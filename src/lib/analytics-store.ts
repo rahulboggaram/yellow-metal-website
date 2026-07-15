@@ -2,7 +2,11 @@ import "server-only";
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
-import { get, put } from "@vercel/blob";
+import {
+  hasBlobStorage,
+  mutatePrivateJsonBlob,
+  readPrivateJsonBlob,
+} from "@/lib/blob-json-store";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "analytics.json");
@@ -12,6 +16,11 @@ const MAX_EVENTS = 20_000;
 type AnalyticsFile = {
   events: AnalyticsEvent[];
 };
+
+const EMPTY: AnalyticsFile = { events: [] };
+
+/** Serialize local writes so concurrent serverless-like local requests don't clobber. */
+let localWriteChain: Promise<void> = Promise.resolve();
 
 function parseAnalyticsFile(raw: string): AnalyticsFile {
   const parsed: unknown = JSON.parse(raw);
@@ -35,53 +44,42 @@ function writeLocalFile(data: AnalyticsFile): void {
   writeFileSync(LOCAL_PATH, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
-function hasBlobStorage(): boolean {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
-}
-
-async function readBlobFile(): Promise<AnalyticsFile> {
-  try {
-    const result = await get(BLOB_PATHNAME, { access: "private" });
-    if (!result || result.statusCode !== 200 || !result.stream) {
-      return { events: [] };
-    }
-
-    const raw = await new Response(result.stream).text();
-    return parseAnalyticsFile(raw);
-  } catch {
-    return { events: [] };
-  }
-}
-
-async function writeBlobFile(data: AnalyticsFile): Promise<void> {
-  await put(BLOB_PATHNAME, JSON.stringify(data), {
-    access: "private",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: "application/json",
-  });
-}
-
 async function readStore(): Promise<AnalyticsFile> {
-  if (hasBlobStorage()) return readBlobFile();
+  if (hasBlobStorage()) {
+    const snapshot = await readPrivateJsonBlob(
+      BLOB_PATHNAME,
+      EMPTY,
+      parseAnalyticsFile,
+    );
+    return snapshot.data;
+  }
   return readLocalFile();
 }
 
-async function writeStore(data: AnalyticsFile): Promise<void> {
-  const trimmed: AnalyticsFile = {
-    events: data.events.slice(-MAX_EVENTS),
-  };
+export async function appendAnalyticsEvent(event: AnalyticsEvent): Promise<void> {
   if (hasBlobStorage()) {
-    await writeBlobFile(trimmed);
+    await mutatePrivateJsonBlob(
+      BLOB_PATHNAME,
+      EMPTY,
+      parseAnalyticsFile,
+      (store) => ({
+        events: [...store.events, event].slice(-MAX_EVENTS),
+      }),
+    );
     return;
   }
-  writeLocalFile(trimmed);
-}
 
-export async function appendAnalyticsEvent(event: AnalyticsEvent): Promise<void> {
-  const store = await readStore();
-  store.events.push(event);
-  await writeStore(store);
+  localWriteChain = localWriteChain.then(() => {
+    const store = readLocalFile();
+    store.events.push(event);
+    writeLocalFile({ events: store.events.slice(-MAX_EVENTS) });
+  });
+  try {
+    await localWriteChain;
+  } catch (error) {
+    localWriteChain = Promise.resolve();
+    throw error;
+  }
 }
 
 function parseMonth(month: string): { from: Date; to: Date } | null {

@@ -2,7 +2,11 @@ import "server-only";
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import path from "node:path";
-import { get, put } from "@vercel/blob";
+import {
+  hasBlobStorage,
+  mutatePrivateJsonBlob,
+  readPrivateJsonBlob,
+} from "@/lib/blob-json-store";
 import { engagementInRange } from "@/lib/engagement-query";
 import type {
   CalculatorEntryEvent,
@@ -19,6 +23,10 @@ const MAX_EVENTS = 50_000;
 type EngagementFile = {
   events: EngagementEvent[];
 };
+
+const EMPTY: EngagementFile = { events: [] };
+
+let localWriteChain: Promise<void> = Promise.resolve();
 
 function parseEngagementFile(raw: string): EngagementFile {
   const parsed: unknown = JSON.parse(raw);
@@ -42,53 +50,42 @@ function writeLocalFile(data: EngagementFile): void {
   writeFileSync(LOCAL_PATH, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
-function hasBlobStorage(): boolean {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
-}
-
-async function readBlobFile(): Promise<EngagementFile> {
-  try {
-    const result = await get(BLOB_PATHNAME, { access: "private" });
-    if (!result || result.statusCode !== 200 || !result.stream) {
-      return { events: [] };
-    }
-
-    const raw = await new Response(result.stream).text();
-    return parseEngagementFile(raw);
-  } catch {
-    return { events: [] };
-  }
-}
-
-async function writeBlobFile(data: EngagementFile): Promise<void> {
-  await put(BLOB_PATHNAME, JSON.stringify(data), {
-    access: "private",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: "application/json",
-  });
-}
-
 async function readStore(): Promise<EngagementFile> {
-  if (hasBlobStorage()) return readBlobFile();
+  if (hasBlobStorage()) {
+    const snapshot = await readPrivateJsonBlob(
+      BLOB_PATHNAME,
+      EMPTY,
+      parseEngagementFile,
+    );
+    return snapshot.data;
+  }
   return readLocalFile();
 }
 
-async function writeStore(data: EngagementFile): Promise<void> {
-  const trimmed: EngagementFile = {
-    events: data.events.slice(-MAX_EVENTS),
-  };
+export async function appendEngagementEvent(event: EngagementEvent): Promise<void> {
   if (hasBlobStorage()) {
-    await writeBlobFile(trimmed);
+    await mutatePrivateJsonBlob(
+      BLOB_PATHNAME,
+      EMPTY,
+      parseEngagementFile,
+      (store) => ({
+        events: [...store.events, event].slice(-MAX_EVENTS),
+      }),
+    );
     return;
   }
-  writeLocalFile(trimmed);
-}
 
-export async function appendEngagementEvent(event: EngagementEvent): Promise<void> {
-  const store = await readStore();
-  store.events.push(event);
-  await writeStore(store);
+  localWriteChain = localWriteChain.then(() => {
+    const store = readLocalFile();
+    store.events.push(event);
+    writeLocalFile({ events: store.events.slice(-MAX_EVENTS) });
+  });
+  try {
+    await localWriteChain;
+  } catch (error) {
+    localWriteChain = Promise.resolve();
+    throw error;
+  }
 }
 
 function isLendingRateStop(event: EngagementEvent): event is LendingRateStopEvent {

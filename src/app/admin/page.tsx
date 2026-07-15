@@ -80,7 +80,8 @@ function NavIcon({ name }: { name: (typeof TABS)[number]["icon"] }) {
 function AdminPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tab = parseAdminTab(searchParams.get("tab"));
+  const tabParam = searchParams.get("tab");
+  const tab = parseAdminTab(tabParam);
   const [secret, setSecret] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -107,12 +108,9 @@ function AdminPageContent() {
       setSecret(value);
       setIsUnlocked(true);
       setAuthLoading(false);
-      if (!searchParams.get("tab")) {
-        router.replace("/admin?tab=analytics", { scroll: false });
-      }
       return true;
     },
-    [router, searchParams],
+    [],
   );
 
   useEffect(() => {
@@ -131,6 +129,12 @@ function AdminPageContent() {
       active = false;
     };
   }, [unlock]);
+
+  useEffect(() => {
+    if (isUnlocked && !tabParam) {
+      router.replace("/admin?tab=analytics", { scroll: false });
+    }
+  }, [isUnlocked, router, tabParam]);
 
   async function handlePasswordSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

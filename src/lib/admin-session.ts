@@ -128,10 +128,13 @@ function parseAdminDateParts(
 }
 
 export async function verifyAdminSecret(secret: string): Promise<boolean> {
-  const { from, to } = last30DaysRange();
-  const params = new URLSearchParams({ from, to });
-  const res = await fetch(`/api/analytics?${params}`, {
-    headers: { "x-admin-secret": secret },
-  });
-  return res.ok;
+  try {
+    const res = await fetch("/api/admin/session", {
+      cache: "no-store",
+      headers: { "x-admin-secret": secret },
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }

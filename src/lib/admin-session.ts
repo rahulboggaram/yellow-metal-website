@@ -70,7 +70,9 @@ const ADMIN_MONTHS = [
   "December",
 ] as const;
 
-/** Display dates as `03 July 2026` across the admin panel. */
+const ADMIN_TIME_ZONE = "Asia/Kolkata";
+
+/** Display dates as `03 July 2026` across the admin panel (IST). */
 export function formatAdminDate(value: string | Date): string {
   const parts = parseAdminDateParts(value);
   if (!parts) return typeof value === "string" ? value : "";
@@ -78,7 +80,7 @@ export function formatAdminDate(value: string | Date): string {
   return `${day} ${ADMIN_MONTHS[parts.month]} ${parts.year}`;
 }
 
-/** Date + time for timestamps, e.g. `03 July 2026, 3:45 pm`. */
+/** Date + time for timestamps in IST, e.g. `03 July 2026, 3:45 pm`. */
 export function formatAdminDateTime(value: string | Date): string {
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -90,6 +92,7 @@ export function formatAdminDateTime(value: string | Date): string {
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
+      timeZone: ADMIN_TIME_ZONE,
     })
     .toLowerCase();
   return `${datePart}, ${timePart}`;
@@ -100,11 +103,7 @@ function parseAdminDateParts(
 ): { year: number; month: number; day: number } | null {
   if (value instanceof Date) {
     if (Number.isNaN(value.getTime())) return null;
-    return {
-      year: value.getFullYear(),
-      month: value.getMonth(),
-      day: value.getDate(),
-    };
+    return istPartsFromDate(value);
   }
 
   const ymd = value.trim().match(/^(\d{4})-(\d{2})-(\d{2})/);
@@ -118,11 +117,20 @@ function parseAdminDateParts(
 
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) return null;
-  return {
-    year: parsed.getFullYear(),
-    month: parsed.getMonth(),
-    day: parsed.getDate(),
-  };
+  return istPartsFromDate(parsed);
+}
+
+function istPartsFromDate(date: Date): { year: number; month: number; day: number } {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: ADMIN_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const year = Number(parts.find((part) => part.type === "year")?.value);
+  const month = Number(parts.find((part) => part.type === "month")?.value) - 1;
+  const day = Number(parts.find((part) => part.type === "day")?.value);
+  return { year, month, day };
 }
 
 export async function loginAdmin(

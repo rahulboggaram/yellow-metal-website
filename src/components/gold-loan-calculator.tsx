@@ -11,6 +11,7 @@ import {
 } from "@/lib/gold-price-format";
 import {
   calculateMonthlyInterestInr,
+  formatPlanRate,
   formatPlanRepaymentLabel,
   getMatchingLoanPlansByType,
 } from "@/lib/loan-plans-shared";
@@ -218,7 +219,12 @@ export function GoldLoanCalculator() {
                                 </InterNumeric>
                                 <p className="ym-loan-interest-period">Per Month</p>
                                 <p className="ym-loan-interest-meta">
-                                  {formatPlanRepaymentLabel(plan.repaymentType)}
+                                  <span className="ym-loan-interest-plan-type">
+                                    {formatPlanRepaymentLabel(plan.repaymentType)}
+                                  </span>
+                                  <span className="ym-loan-interest-rate">
+                                    {formatPlanRate(plan.monthlyRatePercent)}% p.m.
+                                  </span>
                                 </p>
                               </article>
                             );

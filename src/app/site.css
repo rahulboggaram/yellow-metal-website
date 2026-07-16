@@ -1066,9 +1066,28 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: var(--ym-dash-muted);
 }
 
+.ym-loan-interest-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem 0.4rem;
+  margin-top: 0.15rem;
+  min-height: 0;
+}
+
 .ym-loan-interest-plan-type {
   font-weight: 500;
   color: var(--ym-dash-muted);
+}
+
+.ym-loan-interest-rate {
+  color: var(--ym-dash-muted);
+}
+
+.ym-loan-interest-rate::before {
+  content: "·";
+  margin-right: 0.4rem;
 }
 
 .ym-purity-pills {

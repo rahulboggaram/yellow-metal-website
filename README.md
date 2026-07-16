@@ -20,9 +20,11 @@ Open [http://localhost:3000](http://localhost:3000).
 | `ADMIN_SESSION_SECRET` | ≥32-char random secret used only to sign/revoke admin cookies (never reuse the password) |
 | `ADMIN_PASSWORD_HASH` | Optional `scrypt$…` hash instead of plaintext `ADMIN_SECRET` |
 | `ADMIN_TOTP_SECRET` | Optional base32 TOTP secret (Google Authenticator) — when set, login requires a 6-digit code |
+| `YM_SUPABASE_URL` | Yellow Metal official Supabase project URL |
+| `YM_SUPABASE_SERVICE_ROLE_KEY` | Server-only service role key (never expose to browser) |
 | `SPOT_SUPABASE_URL` | Spot prices Supabase project URL |
 | `SPOT_SUPABASE_ANON_KEY` | Spot anon key (RLS must be read-only on `market_prices`) |
-| `BLOB_READ_WRITE_TOKEN` / `BLOB_STORE_ID` | Vercel Blob for durable analytics, engagement, loan plans, sessions |
+| `BLOB_READ_WRITE_TOKEN` / `BLOB_STORE_ID` | Optional legacy Blob — not required once YM Supabase is configured |
 
 ## Deploy to Vercel
 

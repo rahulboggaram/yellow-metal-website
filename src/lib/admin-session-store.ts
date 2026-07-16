@@ -2,14 +2,9 @@ import "server-only";
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import {
-  hasBlobStorage,
-  mutatePrivateJsonBlob,
-  readPrivateJsonBlob,
-} from "@/lib/blob-json-store";
+import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "admin-sessions.json");
-const BLOB_PATHNAME = "admin/sessions.json";
 
 type SessionFile = {
   sessions: Record<string, { exp: number }>;
@@ -47,44 +42,50 @@ function writeLocal(file: SessionFile): void {
 
 let localChain: Promise<void> = Promise.resolve();
 
-async function mutateStore(
-  mutate: (current: SessionFile) => SessionFile,
-): Promise<SessionFile> {
-  if (hasBlobStorage()) {
-    return mutatePrivateJsonBlob(BLOB_PATHNAME, EMPTY, parseFile, (current) =>
-      prune(mutate(current)),
-    );
+export async function createSessionRecord(jti: string, exp: number): Promise<void> {
+  if (hasYmSupabase()) {
+    const { error } = await getYmSupabase().from("admin_sessions").upsert({
+      jti,
+      exp: new Date(exp).toISOString(),
+    });
+    if (error) throw error;
+    return;
   }
-  let result = EMPTY;
   const run = localChain.then(() => {
-    result = prune(mutate(readLocal()));
-    writeLocal(result);
+    const current = readLocal();
+    current.sessions[jti] = { exp };
+    writeLocal(current);
   });
   localChain = run.catch(() => undefined);
   await run;
-  return result;
-}
-
-export async function createSessionRecord(jti: string, exp: number): Promise<void> {
-  await mutateStore((current) => ({
-    sessions: { ...current.sessions, [jti]: { exp } },
-  }));
 }
 
 export async function revokeSession(jti: string): Promise<void> {
-  await mutateStore((current) => {
-    const sessions = { ...current.sessions };
-    delete sessions[jti];
-    return { sessions };
+  if (hasYmSupabase()) {
+    const { error } = await getYmSupabase().from("admin_sessions").delete().eq("jti", jti);
+    if (error) throw error;
+    return;
+  }
+  const run = localChain.then(() => {
+    const current = readLocal();
+    delete current.sessions[jti];
+    writeLocal(current);
   });
+  localChain = run.catch(() => undefined);
+  await run;
 }
 
 export async function sessionExists(jti: string, exp: number): Promise<boolean> {
   if (Date.now() > exp) return false;
-  if (hasBlobStorage()) {
-    const snapshot = await readPrivateJsonBlob(BLOB_PATHNAME, EMPTY, parseFile);
-    const meta = snapshot.data.sessions[jti];
-    return Boolean(meta && meta.exp === exp && meta.exp > Date.now());
+  if (hasYmSupabase()) {
+    const { data, error } = await getYmSupabase()
+      .from("admin_sessions")
+      .select("jti, exp")
+      .eq("jti", jti)
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) return false;
+    return new Date(String(data.exp)).getTime() === exp;
   }
   const meta = readLocal().sessions[jti];
   return Boolean(meta && meta.exp === exp && meta.exp > Date.now());

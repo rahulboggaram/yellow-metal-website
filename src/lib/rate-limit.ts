@@ -2,10 +2,7 @@ import "server-only";
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import {
-  hasBlobStorage,
-  mutatePrivateJsonBlob,
-} from "@/lib/blob-json-store";
+import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
 
 type Bucket = {
   count: number;
@@ -13,14 +10,9 @@ type Bucket = {
 };
 
 const memoryBuckets = new Map<string, Bucket>();
-
 const LOCAL_PATH = path.join(process.cwd(), "data", "rate-limits.json");
-const BLOB_PATHNAME = "rate-limits/counters.json";
 
-type RateLimitFile = {
-  buckets: Record<string, Bucket>;
-};
-
+type RateLimitFile = { buckets: Record<string, Bucket> };
 const EMPTY: RateLimitFile = { buckets: {} };
 
 /** Prefer Vercel’s trusted client IP header when present. */
@@ -94,7 +86,7 @@ function writeLocal(file: RateLimitFile): void {
 let localChain: Promise<void> = Promise.resolve();
 
 /**
- * Shared durable rate limit via Blob (or local file).
+ * Shared durable rate limit via Supabase (or local file).
  * Always applies in-memory first; durable store enforces across instances.
  */
 export async function durableRateLimitAllow(
@@ -104,50 +96,61 @@ export async function durableRateLimitAllow(
 ): Promise<boolean> {
   if (!rateLimitAllow(key, limit, windowMs)) return false;
 
-  if (!hasBlobStorage()) {
-    // Local multi-request serialization for non-Blob environments.
-    let allowed = true;
-    const run = localChain.then(() => {
-      const file = readLocal();
+  if (hasYmSupabase()) {
+    try {
       const now = Date.now();
-      const existing = file.buckets[key];
-      if (!existing || existing.resetAt <= now) {
-        file.buckets[key] = { count: 1, resetAt: now + windowMs };
-        writeLocal(file);
-        return;
+      const { data, error } = await getYmSupabase()
+        .from("rate_limit_buckets")
+        .select("key, count, reset_at")
+        .eq("key", key)
+        .maybeSingle();
+      if (error) throw error;
+
+      if (!data || new Date(String(data.reset_at)).getTime() <= now) {
+        const { error: upsertError } = await getYmSupabase()
+          .from("rate_limit_buckets")
+          .upsert({
+            key,
+            count: 1,
+            reset_at: new Date(now + windowMs).toISOString(),
+          });
+        if (upsertError) throw upsertError;
+        return true;
       }
-      if (existing.count >= limit) {
-        allowed = false;
-        return;
-      }
-      existing.count += 1;
-      writeLocal(file);
-    });
-    localChain = run.catch(() => undefined);
-    await run;
-    return allowed;
+
+      if (Number(data.count) >= limit) return false;
+
+      const { error: updateError } = await getYmSupabase()
+        .from("rate_limit_buckets")
+        .update({ count: Number(data.count) + 1 })
+        .eq("key", key)
+        .eq("reset_at", data.reset_at);
+      if (updateError) throw updateError;
+      return true;
+    } catch {
+      // Availability over strict limiting if store fails.
+      return true;
+    }
   }
 
-  try {
-    let allowed = true;
-    await mutatePrivateJsonBlob(BLOB_PATHNAME, EMPTY, parseFile, (current) => {
-      const file = prune(current);
-      const now = Date.now();
-      const existing = file.buckets[key];
-      if (!existing || existing.resetAt <= now) {
-        file.buckets[key] = { count: 1, resetAt: now + windowMs };
-        return file;
-      }
-      if (existing.count >= limit) {
-        allowed = false;
-        return file;
-      }
-      existing.count += 1;
-      return file;
-    });
-    return allowed;
-  } catch {
-    // If durable store fails, keep the in-memory allow (availability).
-    return true;
-  }
+  let allowed = true;
+  const run = localChain.then(() => {
+    const file = readLocal();
+    const now = Date.now();
+    const existing = file.buckets[key];
+    if (!existing || existing.resetAt <= now) {
+      file.buckets[key] = { count: 1, resetAt: now + windowMs };
+      writeLocal(file);
+      return;
+    }
+    if (existing.count >= limit) {
+      allowed = false;
+      return;
+    }
+    existing.count += 1;
+    writeLocal(file);
+  });
+  localChain = run.catch(() => undefined);
+  await run;
+  return allowed;
 }

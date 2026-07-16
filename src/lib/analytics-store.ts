@@ -1,17 +1,114 @@
 import "server-only";
 
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { createDayShardedStore } from "@/lib/day-event-store";
+import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
 
-const store = createDayShardedStore<AnalyticsEvent>({
-  localDir: path.join(process.cwd(), "data", "analytics-days"),
-  blobPrefix: "analytics/days",
-  maxEventsPerDay: 8_000,
-});
+const LOCAL_PATH = path.join(process.cwd(), "data", "analytics.json");
+const RETENTION_DAYS = 90;
+const MAX_EVENTS = 20_000;
+
+type AnalyticsFile = { events: AnalyticsEvent[] };
+
+let localChain: Promise<void> = Promise.resolve();
+
+function parseLocal(raw: string): AnalyticsFile {
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || !Array.isArray((parsed as AnalyticsFile).events)) {
+      return { events: [] };
+    }
+    return parsed as AnalyticsFile;
+  } catch {
+    return { events: [] };
+  }
+}
+
+function pruneEvents(events: AnalyticsEvent[]): AnalyticsEvent[] {
+  const cutoff = Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000;
+  return events
+    .filter((event) => {
+      const t = new Date(event.timestamp).getTime();
+      return Number.isFinite(t) && t >= cutoff;
+    })
+    .slice(-MAX_EVENTS);
+}
+
+function readLocal(): AnalyticsFile {
+  if (!existsSync(LOCAL_PATH)) return { events: [] };
+  return { events: pruneEvents(parseLocal(readFileSync(LOCAL_PATH, "utf8")).events) };
+}
+
+function writeLocal(file: AnalyticsFile): void {
+  const dir = path.dirname(LOCAL_PATH);
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  writeFileSync(LOCAL_PATH, `${JSON.stringify({ events: pruneEvents(file.events) })}\n`, "utf8");
+}
 
 export async function appendAnalyticsEvent(event: AnalyticsEvent): Promise<void> {
-  await store.appendEvent(event);
+  if (hasYmSupabase()) {
+    const { error } = await getYmSupabase().from("analytics_events").insert({
+      id: event.id,
+      timestamp: event.timestamp,
+      path: event.path,
+      session_id: event.sessionId,
+      referrer: event.referrer,
+      device_type: event.deviceType,
+      browser: event.browser,
+      browser_version: event.browserVersion,
+      os: event.os,
+      os_version: event.osVersion,
+      device_vendor: event.deviceVendor,
+      device_model: event.deviceModel,
+      country: event.country,
+      region: event.region,
+      city: event.city,
+    });
+    if (error) throw error;
+    return;
+  }
+
+  const run = localChain.then(() => {
+    const store = readLocal();
+    store.events.push(event);
+    writeLocal(store);
+  });
+  localChain = run.catch(() => undefined);
+  await run;
+}
+
+async function readAllEvents(): Promise<AnalyticsEvent[]> {
+  if (hasYmSupabase()) {
+    const cutoff = new Date(
+      Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000,
+    ).toISOString();
+    const { data, error } = await getYmSupabase()
+      .from("analytics_events")
+      .select("*")
+      .gte("timestamp", cutoff)
+      .order("timestamp", { ascending: true })
+      .limit(MAX_EVENTS);
+    if (error) throw error;
+    return (data ?? []).map((row) => ({
+      id: row.id,
+      timestamp: row.timestamp,
+      path: row.path,
+      sessionId: row.session_id,
+      referrer: row.referrer,
+      deviceType: row.device_type,
+      browser: row.browser,
+      browserVersion: row.browser_version ?? "",
+      os: row.os,
+      osVersion: row.os_version ?? "",
+      deviceVendor: row.device_vendor,
+      deviceModel: row.device_model,
+      country: row.country ?? "Unknown",
+      region: row.region,
+      city: row.city,
+    }));
+  }
+  return readLocal().events;
 }
 
 function parseMonth(month: string): { from: Date; to: Date } | null {
@@ -28,13 +125,11 @@ function parseMonth(month: string): { from: Date; to: Date } | null {
 function inRange(timestamp: string, query: AnalyticsQuery): boolean {
   const date = new Date(timestamp);
   if (Number.isNaN(date.getTime())) return false;
-
   if (query.month) {
     const monthRange = parseMonth(query.month);
     if (!monthRange) return false;
     return date >= monthRange.from && date <= monthRange.to;
   }
-
   if (query.from) {
     const from = new Date(`${query.from}T00:00:00.000Z`);
     if (date < from) return false;
@@ -59,11 +154,9 @@ function countBy<T>(items: T[], keyFn: (item: T) => string, limit = 10) {
 }
 
 export async function getAnalyticsSummary(query: AnalyticsQuery): Promise<AnalyticsSummary> {
-  const all = await store.readAllEvents();
+  const all = await readAllEvents();
   const events = all.filter((event) => inRange(event.timestamp, query));
-
   const sessionIds = new Set(events.map((event) => event.sessionId));
-
   const byDayMap = new Map<string, { views: number; sessions: Set<string> }>();
   for (const event of events) {
     const day = event.timestamp.slice(0, 10);
@@ -72,7 +165,6 @@ export async function getAnalyticsSummary(query: AnalyticsQuery): Promise<Analyt
     entry.sessions.add(event.sessionId);
     byDayMap.set(day, entry);
   }
-
   const mobileDevices = events.filter((event) => event.deviceType === "mobile");
 
   return {
@@ -89,9 +181,7 @@ export async function getAnalyticsSummary(query: AnalyticsQuery): Promise<Analyt
     byBrowser: countBy(
       events,
       (event) =>
-        event.browserVersion
-          ? `${event.browser} ${event.browserVersion}`
-          : event.browser,
+        event.browserVersion ? `${event.browser} ${event.browserVersion}` : event.browser,
     ),
     byMobileDevice: countBy(
       mobileDevices,

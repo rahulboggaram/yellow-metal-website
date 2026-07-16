@@ -2,23 +2,21 @@ import "server-only";
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import {
-  hasBlobStorage,
-  mutatePrivateJsonBlob,
-  readPrivateJsonBlob,
-} from "@/lib/blob-json-store";
+import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
 
-export type { LoanPlanAuditAction, LoanPlanAuditEntry } from "@/lib/loan-plans-audit-types";
+export type {
+  LoanPlanAuditAction,
+  LoanPlanAuditEntry,
+} from "@/lib/loan-plans-audit-types";
 import type { LoanPlanAuditEntry } from "@/lib/loan-plans-audit-types";
 
-type AuditFile = {
-  entries: LoanPlanAuditEntry[];
-};
+type AuditFile = { entries: LoanPlanAuditEntry[] };
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "loan-plans-audit.json");
-const BLOB_PATHNAME = "loan-plans/audit.json";
 const MAX_ENTRIES = 2_000;
 const EMPTY: AuditFile = { entries: [] };
+
+let localChain: Promise<void> = Promise.resolve();
 
 function parseFile(raw: string): AuditFile {
   try {
@@ -43,8 +41,6 @@ function writeLocal(file: AuditFile): void {
   writeFileSync(LOCAL_PATH, `${JSON.stringify(file, null, 2)}\n`, "utf8");
 }
 
-let localChain: Promise<void> = Promise.resolve();
-
 export async function appendLoanPlanAudit(
   entry: Omit<LoanPlanAuditEntry, "id" | "at"> & { id?: string; at?: string },
 ): Promise<void> {
@@ -57,10 +53,16 @@ export async function appendLoanPlanAudit(
     after: entry.after,
   };
 
-  if (hasBlobStorage()) {
-    await mutatePrivateJsonBlob(BLOB_PATHNAME, EMPTY, parseFile, (current) => ({
-      entries: [...current.entries, full].slice(-MAX_ENTRIES),
-    }));
+  if (hasYmSupabase()) {
+    const { error } = await getYmSupabase().from("loan_plan_audit").insert({
+      id: full.id,
+      at: full.at,
+      action: full.action,
+      plan_id: full.planId,
+      before: full.before,
+      after: full.after,
+    });
+    if (error) throw error;
     return;
   }
 
@@ -73,9 +75,21 @@ export async function appendLoanPlanAudit(
 }
 
 export async function getLoanPlanAudit(limit = 50): Promise<LoanPlanAuditEntry[]> {
-  if (hasBlobStorage()) {
-    const snapshot = await readPrivateJsonBlob(BLOB_PATHNAME, EMPTY, parseFile);
-    return [...snapshot.data.entries].reverse().slice(0, limit);
+  if (hasYmSupabase()) {
+    const { data, error } = await getYmSupabase()
+      .from("loan_plan_audit")
+      .select("*")
+      .order("at", { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    return (data ?? []).map((row) => ({
+      id: String(row.id),
+      at: String(row.at),
+      action: row.action as LoanPlanAuditEntry["action"],
+      planId: String(row.plan_id),
+      before: (row.before as LoanPlanAuditEntry["before"]) ?? null,
+      after: (row.after as LoanPlanAuditEntry["after"]) ?? null,
+    }));
   }
   return [...readLocal().entries].reverse().slice(0, limit);
 }

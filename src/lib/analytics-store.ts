@@ -7,6 +7,8 @@ import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analyti
 const store = createDayShardedStore<AnalyticsEvent>({
   localDir: path.join(process.cwd(), "data", "analytics-days"),
   blobPrefix: "analytics/days",
+  legacyLocalPath: path.join(process.cwd(), "data", "analytics.json"),
+  legacyBlobPath: "analytics/events.json",
   maxEventsPerDay: 8_000,
 });
 

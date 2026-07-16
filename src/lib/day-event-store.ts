@@ -30,7 +30,11 @@ function pruneOldEvents<T extends { timestamp: string }>(events: T[]): T[] {
 function parseDayFile<T>(raw: string): DayEventFile<T> {
   try {
     const parsed: unknown = JSON.parse(raw);
-    if (!parsed || typeof parsed !== "object" || !Array.isArray((parsed as DayEventFile<T>).events)) {
+    if (
+      !parsed ||
+      typeof parsed !== "object" ||
+      !Array.isArray((parsed as DayEventFile<T>).events)
+    ) {
       return { events: [] };
     }
     return parsed as DayEventFile<T>;
@@ -49,6 +53,8 @@ function ensureDir(dir: string): void {
 export function createDayShardedStore<T extends { timestamp: string; id: string }>(options: {
   localDir: string;
   blobPrefix: string;
+  legacyLocalPath?: string;
+  legacyBlobPath?: string;
   maxEventsPerDay?: number;
 }) {
   const maxPerDay = options.maxEventsPerDay ?? 5_000;
@@ -97,6 +103,35 @@ export function createDayShardedStore<T extends { timestamp: string; id: string 
     await run;
   }
 
+  function dedupeEvents(events: T[]): T[] {
+    const seen = new Set<string>();
+    const unique: T[] = [];
+    for (const event of events) {
+      if (seen.has(event.id)) continue;
+      seen.add(event.id);
+      unique.push(event);
+    }
+    return unique;
+  }
+
+  async function readLegacyBlobEvents(): Promise<T[]> {
+    if (!options.legacyBlobPath) return [];
+    const snapshot = await readPrivateJsonBlob(
+      options.legacyBlobPath,
+      { events: [] } as DayEventFile<T>,
+      (raw) => parseDayFile<T>(raw),
+    );
+    return pruneOldEvents(snapshot.data.events);
+  }
+
+  function readLegacyLocalEvents(): T[] {
+    if (!options.legacyLocalPath || !existsSync(options.legacyLocalPath)) {
+      return [];
+    }
+    const legacy = parseDayFile<T>(readFileSync(options.legacyLocalPath, "utf8"));
+    return pruneOldEvents(legacy.events);
+  }
+
   async function readAllEvents(): Promise<T[]> {
     const cutoffDay = new Date(Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000)
       .toISOString()
@@ -122,7 +157,8 @@ export function createDayShardedStore<T extends { timestamp: string; id: string 
       } catch {
         /* empty */
       }
-      return events;
+      const legacyEvents = await readLegacyBlobEvents();
+      return dedupeEvents([...events, ...legacyEvents]);
     }
 
     ensureDir(options.localDir);
@@ -134,7 +170,7 @@ export function createDayShardedStore<T extends { timestamp: string; id: string 
       const raw = readFileSync(path.join(options.localDir, file), "utf8");
       events.push(...pruneOldEvents(parseDayFile<T>(raw).events));
     }
-    return events;
+    return dedupeEvents([...events, ...readLegacyLocalEvents()]);
   }
 
   return { appendEvent, readAllEvents, retentionDays: RETENTION_DAYS };

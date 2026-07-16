@@ -14,6 +14,8 @@ import type {
 const store = createDayShardedStore<EngagementEvent>({
   localDir: path.join(process.cwd(), "data", "engagement-days"),
   blobPrefix: "engagement/days",
+  legacyLocalPath: path.join(process.cwd(), "data", "engagement.json"),
+  legacyBlobPath: "engagement/events.json",
   maxEventsPerDay: 10_000,
 });
 

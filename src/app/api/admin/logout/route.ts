@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import {
+  assertSameOrigin,
   clearAdminSessionCookieOptions,
   revokeAdminSessionToken,
   adminSessionCookieName,
@@ -8,6 +9,10 @@ import {
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
+  if (!assertSameOrigin(request)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const cookieHeader = request.headers.get("cookie") ?? "";
   const name = adminSessionCookieName();
   const match = cookieHeader

@@ -10,12 +10,18 @@ import type { EngagementCollectInput } from "@/lib/engagement-types";
 import { GOLD_KARAT_OPTIONS } from "@/lib/gold-price-format";
 import { isLikelyBot } from "@/lib/analytics-ua";
 import { durableRateLimitAllow, preferredClientIp } from "@/lib/rate-limit";
+import {
+  ALLOWED_TELEMETRY_PATHS,
+  normalizeTelemetryPath,
+  readJsonBody,
+} from "@/lib/site-paths";
 
 export const dynamic = "force-dynamic";
 
 const VALID_KARATS = new Set<string>(GOLD_KARAT_OPTIONS);
 const MAX_PATH = 200;
 const MAX_SESSION_ID = 80;
+const MAX_BODY_BYTES = 8_192;
 
 function loanAmountBucket(amount: number | null): number | null {
   if (amount === null || !Number.isFinite(amount) || amount < 0) return null;
@@ -78,13 +84,17 @@ export async function POST(request: Request) {
   }
 
   try {
-    const raw = await request.text();
-    const body: unknown = raw ? JSON.parse(raw) : null;
+    const bodyRead = await readJsonBody(request, MAX_BODY_BYTES);
+    if (!bodyRead.ok) {
+      return NextResponse.json({ error: bodyRead.error }, { status: bodyRead.status });
+    }
+    const body: unknown = bodyRead.raw ? JSON.parse(bodyRead.raw) : null;
     if (!isValidInput(body)) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
 
-    if (body.path.startsWith("/admin")) {
+    const pathOnly = normalizeTelemetryPath(body.path);
+    if (pathOnly.startsWith("/admin") || !ALLOWED_TELEMETRY_PATHS.has(pathOnly)) {
       return NextResponse.json({ ok: true, skipped: true });
     }
 
@@ -96,7 +106,7 @@ export async function POST(request: Request) {
     const timestamp = new Date().toISOString();
     const id = randomUUID();
     const sessionId = hashSessionIdForStorage(body.sessionId);
-    const path = body.path.slice(0, MAX_PATH);
+    const path = pathOnly.slice(0, MAX_PATH);
 
     if (body.type === "lending_rate_stop") {
       await appendEngagementEvent({

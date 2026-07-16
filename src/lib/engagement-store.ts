@@ -10,10 +10,10 @@ import type {
   EngagementSummary,
   LendingRateStopEvent,
 } from "@/lib/engagement-types";
-import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
+import { getYmSupabase, assertStoreBackend } from "@/lib/ym-supabase";
+import { RETENTION_DAYS } from "@/lib/retention-purge";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "engagement.json");
-const RETENTION_DAYS = 90;
 const MAX_EVENTS = 50_000;
 
 type EngagementFile = { events: EngagementEvent[] };
@@ -71,9 +71,6 @@ function rowToEvent(row: Record<string, unknown>): EngagementEvent {
     sessionId: String(row.session_id),
     path: String(row.path),
     weightBucket: row.weight_bucket ? String(row.weight_bucket) : undefined,
-    weightEntered: row.weight_entered ? String(row.weight_entered) : undefined,
-    weightGrams:
-      typeof row.weight_grams === "number" ? row.weight_grams : undefined,
     karat: row.karat as CalculatorEntryEvent["karat"],
     loanAmountInr:
       row.loan_amount_inr === null || row.loan_amount_inr === undefined
@@ -86,7 +83,7 @@ function rowToEvent(row: Record<string, unknown>): EngagementEvent {
 }
 
 export async function appendEngagementEvent(event: EngagementEvent): Promise<void> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const row =
       event.type === "lending_rate_stop"
         ? {
@@ -104,8 +101,6 @@ export async function appendEngagementEvent(event: EngagementEvent): Promise<voi
             session_id: event.sessionId,
             path: event.path,
             weight_bucket: event.weightBucket ?? null,
-            weight_entered: event.weightEntered ?? null,
-            weight_grams: event.weightGrams ?? null,
             karat: event.karat,
             loan_amount_inr: event.loanAmountInr,
             country: event.country ?? null,
@@ -129,7 +124,7 @@ export async function appendEngagementEvent(event: EngagementEvent): Promise<voi
 }
 
 async function readAllEvents(): Promise<EngagementEvent[]> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const cutoff = new Date(
       Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000,
     ).toISOString();
@@ -222,7 +217,7 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
         .slice(0, 20)
         .map((event) => ({
           ...event,
-          weightEntered: event.weightEntered ?? event.weightBucket ?? String(event.weightGrams ?? ""),
+          weightEntered: event.weightBucket ?? "",
           country: event.country ?? "Unknown",
           region: event.region ?? null,
           city: null,
@@ -241,7 +236,7 @@ export async function getCalculatorEntries(
     .filter((event) => engagementInRange(event.timestamp, query))
     .map((event) => ({
       ...event,
-      weightEntered: event.weightEntered ?? event.weightBucket ?? String(event.weightGrams ?? ""),
+      weightEntered: event.weightBucket ?? "",
       country: event.country ?? "Unknown",
       region: event.region ?? null,
       city: null,

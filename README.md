@@ -12,25 +12,28 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+Local `npm run dev` can use `data/*.json` if Yellow Metal Supabase is unset. **Vercel Production/Preview always requires YM Supabase** — there is no silent local fallback on hosted runtimes.
+
 ## Required environment variables
 
 | Variable | Purpose |
 |----------|---------|
-| `ADMIN_SECRET` | Admin login password (or use `ADMIN_PASSWORD_HASH`) |
+| `ADMIN_PASSWORD_HASH` | Preferred: `scrypt$…` hash for admin password (required style for production) |
+| `ADMIN_SECRET` | Fallback plaintext password only for local/dev if hash is unset |
 | `ADMIN_SESSION_SECRET` | ≥32-char random secret used only to sign/revoke admin cookies (never reuse the password) |
-| `ADMIN_PASSWORD_HASH` | Optional `scrypt$…` hash instead of plaintext `ADMIN_SECRET` |
 | `ADMIN_TOTP_SECRET` | Optional base32 TOTP secret (Google Authenticator) — when set, login requires a 6-digit code |
-| `YM_SUPABASE_URL` | Yellow Metal official Supabase project URL |
-| `YM_SUPABASE_SERVICE_ROLE_KEY` | Server-only service role key (never expose to browser) |
+| `YM_SUPABASE_URL` | Yellow Metal official Supabase project URL (**required on Vercel**) |
+| `YM_SUPABASE_SERVICE_ROLE_KEY` | Server-only secret key (`sb_secret_…` preferred; never expose to browser) |
 | `SPOT_SUPABASE_URL` | Spot prices Supabase project URL |
 | `SPOT_SUPABASE_ANON_KEY` | Spot anon key (RLS must be read-only on `market_prices`) |
-| `BLOB_READ_WRITE_TOKEN` / `BLOB_STORE_ID` | Optional legacy Blob — not required once YM Supabase is configured |
+| `CRON_SECRET` | Bearer token for `/api/cron/retention` (Vercel Cron Authorization header) |
 
 ## Deploy to Vercel
 
 1. Push to GitHub and import in Vercel.
 2. Set the environment variables above for Production and Preview.
 3. Deploy.
+4. Confirm Vercel Cron runs `/api/cron/retention` daily (see `vercel.json`).
 
 ## Admin
 
@@ -40,4 +43,8 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Website telemetry
 
-Public pages send minimal analytics/engagement beacons. Session IDs are hashed before storage; city and exact calculator grams are not stored. Retention ~90 days. See the Privacy Policy.
+Public pages send minimal analytics/engagement beacons. Session IDs are hashed before storage; city and exact calculator grams are not stored. Rows older than ~90 days are deleted by the daily retention cron. See the Privacy Policy.
+
+## Secret rotation (Supabase)
+
+Legacy `service_role` JWT keys cannot be regenerated in place. Create a new **Secret key** (`sb_secret_…`) under Project Settings → API Keys, put it in `YM_SUPABASE_SERVICE_ROLE_KEY`, redeploy, then disable the legacy `service_role` key.

@@ -3,7 +3,7 @@ import "server-only";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { appendLoanPlanAudit } from "@/lib/loan-plans-audit";
-import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
+import { assertStoreBackend, getYmSupabase } from "@/lib/ym-supabase";
 import {
   type LoanPlan,
   type LoanPlanInput,
@@ -108,14 +108,14 @@ async function seedSupabaseIfEmpty(): Promise<LoanPlan[]> {
 }
 
 async function readAllPlans(): Promise<LoanPlan[]> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     return seedSupabaseIfEmpty();
   }
   return readLocalPlans();
 }
 
 async function writeAllPlans(plans: LoanPlan[]): Promise<void> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     // Replace strategy: upsert all current, delete missing
     const sorted = sortPlans(plans);
     const { data: existing, error: readError } = await getYmSupabase()
@@ -145,7 +145,7 @@ async function writeAllPlans(plans: LoanPlan[]): Promise<void> {
 async function mutatePlans(
   mutate: (current: LoanPlan[]) => LoanPlan[],
 ): Promise<LoanPlan[]> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const current = await readAllPlans();
     const next = sortPlans(mutate(current));
     await writeAllPlans(next);

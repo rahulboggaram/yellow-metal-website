@@ -2,7 +2,12 @@ import "server-only";
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
+import {
+  assertStoreBackend,
+  getYmSupabase,
+  hasYmSupabase,
+  isHostedRuntime,
+} from "@/lib/ym-supabase";
 
 type Bucket = {
   count: number;
@@ -96,8 +101,12 @@ export async function durableRateLimitAllow(
 ): Promise<boolean> {
   if (!rateLimitAllow(key, limit, windowMs)) return false;
 
+  // Hosted without Supabase: deny (fail closed) rather than unlimited traffic.
+  if (isHostedRuntime() && !hasYmSupabase()) return false;
+
   if (hasYmSupabase()) {
     try {
+      assertStoreBackend();
       const now = Date.now();
       const { data, error } = await getYmSupabase()
         .from("rate_limit_buckets")
@@ -128,8 +137,8 @@ export async function durableRateLimitAllow(
       if (updateError) throw updateError;
       return true;
     } catch {
-      // Availability over strict limiting if store fails.
-      return true;
+      // Fail closed: store errors must not open unlimited traffic.
+      return false;
     }
   }
 

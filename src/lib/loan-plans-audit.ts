@@ -2,7 +2,7 @@ import "server-only";
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
+import { assertStoreBackend, getYmSupabase } from "@/lib/ym-supabase";
 
 export type {
   LoanPlanAuditAction,
@@ -53,7 +53,7 @@ export async function appendLoanPlanAudit(
     after: entry.after,
   };
 
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const { error } = await getYmSupabase().from("loan_plan_audit").insert({
       id: full.id,
       at: full.at,
@@ -75,7 +75,7 @@ export async function appendLoanPlanAudit(
 }
 
 export async function getLoanPlanAudit(limit = 50): Promise<LoanPlanAuditEntry[]> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const { data, error } = await getYmSupabase()
       .from("loan_plan_audit")
       .select("*")

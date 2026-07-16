@@ -2,11 +2,11 @@ import "server-only";
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
+import { getYmSupabase, assertStoreBackend } from "@/lib/ym-supabase";
+import { RETENTION_DAYS } from "@/lib/retention-purge";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "analytics.json");
-const RETENTION_DAYS = 90;
 const MAX_EVENTS = 20_000;
 
 type AnalyticsFile = { events: AnalyticsEvent[] };
@@ -47,7 +47,7 @@ function writeLocal(file: AnalyticsFile): void {
 }
 
 export async function appendAnalyticsEvent(event: AnalyticsEvent): Promise<void> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const { error } = await getYmSupabase().from("analytics_events").insert({
       id: event.id,
       timestamp: event.timestamp,
@@ -79,7 +79,7 @@ export async function appendAnalyticsEvent(event: AnalyticsEvent): Promise<void>
 }
 
 async function readAllEvents(): Promise<AnalyticsEvent[]> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const cutoff = new Date(
       Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000,
     ).toISOString();

@@ -2,7 +2,7 @@ import "server-only";
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { getYmSupabase, hasYmSupabase } from "@/lib/ym-supabase";
+import { assertStoreBackend, getYmSupabase } from "@/lib/ym-supabase";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "admin-sessions.json");
 
@@ -43,7 +43,7 @@ function writeLocal(file: SessionFile): void {
 let localChain: Promise<void> = Promise.resolve();
 
 export async function createSessionRecord(jti: string, exp: number): Promise<void> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const { error } = await getYmSupabase().from("admin_sessions").upsert({
       jti,
       exp: new Date(exp).toISOString(),
@@ -61,7 +61,7 @@ export async function createSessionRecord(jti: string, exp: number): Promise<voi
 }
 
 export async function revokeSession(jti: string): Promise<void> {
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const { error } = await getYmSupabase().from("admin_sessions").delete().eq("jti", jti);
     if (error) throw error;
     return;
@@ -77,7 +77,7 @@ export async function revokeSession(jti: string): Promise<void> {
 
 export async function sessionExists(jti: string, exp: number): Promise<boolean> {
   if (Date.now() > exp) return false;
-  if (hasYmSupabase()) {
+  if (assertStoreBackend() === "supabase") {
     const { data, error } = await getYmSupabase()
       .from("admin_sessions")
       .select("jti, exp")

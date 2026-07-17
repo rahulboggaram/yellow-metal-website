@@ -132,10 +132,12 @@ async function readAllEvents(): Promise<EngagementEvent[]> {
       .from("engagement_events")
       .select("*")
       .gte("timestamp", cutoff)
-      .order("timestamp", { ascending: true })
+      .order("timestamp", { ascending: false })
       .limit(MAX_EVENTS);
     if (error) throw error;
-    return (data ?? []).map((row) => rowToEvent(row as Record<string, unknown>));
+    return [...(data ?? [])]
+      .reverse()
+      .map((row) => rowToEvent(row as Record<string, unknown>));
   }
   return readLocal().events;
 }

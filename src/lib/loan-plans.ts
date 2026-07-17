@@ -93,12 +93,8 @@ function planToRow(plan: LoanPlan) {
 }
 
 function isUniqueViolation(error: unknown): boolean {
-  return (
-    Boolean(error) &&
-    typeof error === "object" &&
-    "code" in error &&
-    (error as { code?: unknown }).code === "23505"
-  );
+  if (!error || typeof error !== "object" || !("code" in error)) return false;
+  return (error as { code?: unknown }).code === "23505";
 }
 
 async function seedSupabaseIfEmpty(): Promise<LoanPlan[]> {

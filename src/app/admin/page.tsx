@@ -143,7 +143,11 @@ function AdminPageContent() {
   }
 
   async function signOut() {
-    await logoutAdmin();
+    const result = await logoutAdmin();
+    if (!result.ok) {
+      setAuthError(result.error ?? "Could not sign out. Please try again.");
+      return;
+    }
     setPasswordInput("");
     setTotpInput("");
     setIsUnlocked(false);
@@ -324,6 +328,12 @@ function AdminPageContent() {
               ) : null}
             </div>
           </header>
+
+          {authError ? (
+            <p className="ym-admin-message ym-admin-message--error" role="alert">
+              {authError}
+            </p>
+          ) : null}
 
           <div role="tabpanel" className="ym-admin-main-content">
             {tab === "analytics" ? (

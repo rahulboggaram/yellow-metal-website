@@ -27,8 +27,12 @@ export async function POST(request: Request) {
     const raw = match.slice(eq + 1);
     try {
       await revokeAdminSessionToken(decodeURIComponent(raw));
-    } catch {
-      /* ignore */
+    } catch (error) {
+      console.error("Failed to revoke admin session during logout", error);
+      return NextResponse.json(
+        { error: "Could not sign out. Please try again." },
+        { status: 503 },
+      );
     }
   }
 

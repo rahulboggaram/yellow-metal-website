@@ -59,10 +59,10 @@ export const BRANCH_LOCATIONS: BranchLocation[] = [
       "Shop #3, Sapthagiri Building, 1st Floor, Air Bypass Road, Tirupati",
   },
   {
-    town: "Bangalore",
+    town: "Avalahalli - Bangalore Rural",
     pincode: "560049",
     address:
-      "1st Floor, Muneshwara Layout, Near Geetha Hospital, Avalahalli, Rampura Main Road, Virgonagar Post, Bangalore",
+      "Near DTDC Courier, Hirandahalli Main Road, Avalahalli, Virgonagar post, Bangalore",
   },
   {
     town: "Srinivasapur",

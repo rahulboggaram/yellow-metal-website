@@ -14,7 +14,7 @@ process.stdout.write(
   "[build] Stopped dev server (if running). Dev and build cannot run together.\n",
 );
 
-const child = spawn("npx", ["next", "build"], {
+const child = spawn("npx", ["next", "build", "--webpack"], {
   cwd: root,
   stdio: "inherit",
   env: process.env,

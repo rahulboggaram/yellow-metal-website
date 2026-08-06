@@ -22,6 +22,8 @@ const nextArgs = ["next", "dev"];
 if (useTurbo) {
   nextArgs.push("--turbopack");
   log("[dev] Turbopack enabled — use `npm run dev` without turbo if issues return.");
+} else {
+  nextArgs.push("--webpack");
 }
 
 const child = spawn("npx", nextArgs, {

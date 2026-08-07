@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { getGoldPriceSnapshot } from "@/lib/gold-price";
-import { durableRateLimitAllow, preferredClientIp } from "@/lib/rate-limit";
+import { preferredClientIp, rateLimitAllow } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const ip = preferredClientIp(request);
-  if (!(await durableRateLimitAllow(`gold-price:${ip}`, 120, 60_000))) {
+  // Gold prices come from the Spot feed, so this public read should not depend
+  // on the private Yellow Metal store being healthy just to throttle requests.
+  if (!rateLimitAllow(`gold-price:${ip}`, 120, 60_000)) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 

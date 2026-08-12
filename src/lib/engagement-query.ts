@@ -1,14 +1,11 @@
 import type { EngagementQuery } from "@/lib/engagement-types";
+import {
+  parseIstDateBoundary,
+  parseIstMonthRange,
+} from "@/lib/ist-date";
 
 function parseMonth(month: string): { from: Date; to: Date } | null {
-  const match = /^(\d{4})-(\d{2})$/.exec(month);
-  if (!match) return null;
-  const year = Number(match[1]);
-  const monthIndex = Number(match[2]) - 1;
-  if (monthIndex < 0 || monthIndex > 11) return null;
-  const from = new Date(Date.UTC(year, monthIndex, 1, 0, 0, 0, 0));
-  const to = new Date(Date.UTC(year, monthIndex + 1, 0, 23, 59, 59, 999));
-  return { from, to };
+  return parseIstMonthRange(month);
 }
 
 export function engagementInRange(timestamp: string, query: EngagementQuery): boolean {
@@ -22,11 +19,13 @@ export function engagementInRange(timestamp: string, query: EngagementQuery): bo
   }
 
   if (query.from) {
-    const from = new Date(`${query.from}T00:00:00.000Z`);
+    const from = parseIstDateBoundary(query.from, "start");
+    if (!from) return false;
     if (date < from) return false;
   }
   if (query.to) {
-    const to = new Date(`${query.to}T23:59:59.999Z`);
+    const to = parseIstDateBoundary(query.to, "end");
+    if (!to) return false;
     if (date > to) return false;
   }
   return true;

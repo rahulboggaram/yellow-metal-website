@@ -4,6 +4,11 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { getYmSupabase, assertStoreBackend } from "@/lib/ym-supabase";
 import { RETENTION_DAYS } from "@/lib/retention-purge";
+import {
+  istDateKey,
+  parseIstDateBoundary,
+  parseIstMonthRange,
+} from "@/lib/ist-date";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "analytics.json");
@@ -112,14 +117,7 @@ async function readAllEvents(): Promise<AnalyticsEvent[]> {
 }
 
 function parseMonth(month: string): { from: Date; to: Date } | null {
-  const match = /^(\d{4})-(\d{2})$/.exec(month);
-  if (!match) return null;
-  const year = Number(match[1]);
-  const monthIndex = Number(match[2]) - 1;
-  if (monthIndex < 0 || monthIndex > 11) return null;
-  const from = new Date(Date.UTC(year, monthIndex, 1, 0, 0, 0, 0));
-  const to = new Date(Date.UTC(year, monthIndex + 1, 0, 23, 59, 59, 999));
-  return { from, to };
+  return parseIstMonthRange(month);
 }
 
 function inRange(timestamp: string, query: AnalyticsQuery): boolean {
@@ -131,11 +129,13 @@ function inRange(timestamp: string, query: AnalyticsQuery): boolean {
     return date >= monthRange.from && date <= monthRange.to;
   }
   if (query.from) {
-    const from = new Date(`${query.from}T00:00:00.000Z`);
+    const from = parseIstDateBoundary(query.from, "start");
+    if (!from) return false;
     if (date < from) return false;
   }
   if (query.to) {
-    const to = new Date(`${query.to}T23:59:59.999Z`);
+    const to = parseIstDateBoundary(query.to, "end");
+    if (!to) return false;
     if (date > to) return false;
   }
   return true;
@@ -159,7 +159,8 @@ export async function getAnalyticsSummary(query: AnalyticsQuery): Promise<Analyt
   const sessionIds = new Set(events.map((event) => event.sessionId));
   const byDayMap = new Map<string, { views: number; sessions: Set<string> }>();
   for (const event of events) {
-    const day = event.timestamp.slice(0, 10);
+    const day = istDateKey(event.timestamp);
+    if (!day) continue;
     const entry = byDayMap.get(day) ?? { views: 0, sessions: new Set<string>() };
     entry.views += 1;
     entry.sessions.add(event.sessionId);

@@ -1,3 +1,9 @@
+import {
+  currentIstMonthParts,
+  shiftDateKey,
+  todayIstDateKey,
+} from "@/lib/ist-date";
+
 export type AdminTab = "loan-plans" | "analytics" | "engagement";
 
 export function parseAdminTab(value: string | null): AdminTab {
@@ -7,12 +13,10 @@ export function parseAdminTab(value: string | null): AdminTab {
 }
 
 export function last30DaysRange(): { from: string; to: string } {
-  const toDate = new Date();
-  const fromDate = new Date();
-  fromDate.setUTCDate(fromDate.getUTCDate() - 30);
+  const to = todayIstDateKey();
   return {
-    from: fromDate.toISOString().slice(0, 10),
-    to: toDate.toISOString().slice(0, 10),
+    from: shiftDateKey(to, -30) ?? to,
+    to,
   };
 }
 
@@ -22,9 +26,9 @@ export function monthFilterOptions(): { value: string; label: string }[] {
     { value: "all", label: "All time" },
     { value: "custom", label: "Custom range" },
   ];
-  const now = new Date();
+  const now = currentIstMonthParts();
   for (let i = 0; i < 12; i += 1) {
-    const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
+    const date = new Date(Date.UTC(now.year, now.monthIndex - i, 1));
     const value = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
     const label = date.toLocaleDateString("en-IN", {
       month: "long",

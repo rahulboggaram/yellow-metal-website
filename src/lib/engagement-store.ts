@@ -12,6 +12,7 @@ import type {
 } from "@/lib/engagement-types";
 import { getYmSupabase, assertStoreBackend } from "@/lib/ym-supabase";
 import { RETENTION_DAYS } from "@/lib/retention-purge";
+import { istDateKey } from "@/lib/ist-date";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "engagement.json");
 const MAX_EVENTS = 50_000;
@@ -162,7 +163,8 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
     { stops: number; sessions: Set<string>; durationMs: number }
   >();
   for (const event of lendingStops) {
-    const day = event.timestamp.slice(0, 10);
+    const day = istDateKey(event.timestamp);
+    if (!day) continue;
     const entry = lendingByDay.get(day) ?? {
       stops: 0,
       sessions: new Set<string>(),
@@ -176,7 +178,8 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
 
   const calculatorByDay = new Map<string, { entries: number; sessions: Set<string> }>();
   for (const event of calculatorEntries) {
-    const day = event.timestamp.slice(0, 10);
+    const day = istDateKey(event.timestamp);
+    if (!day) continue;
     const entry = calculatorByDay.get(day) ?? { entries: 0, sessions: new Set<string>() };
     entry.entries += 1;
     entry.sessions.add(event.sessionId);

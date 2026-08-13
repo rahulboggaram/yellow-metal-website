@@ -195,16 +195,26 @@ export function slotLabel(slot: GoldPriceSlot): string {
   return "Spot 22K benchmark";
 }
 
+function isPositiveFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
+function isNullablePositiveFiniteNumber(value: unknown): value is number | null {
+  return value === null || isPositiveFiniteNumber(value);
+}
+
 export function isGoldPriceSnapshot(value: unknown): value is GoldPriceSnapshot {
   if (!value || typeof value !== "object") return false;
   const v = value as GoldPriceSnapshot;
   return (
-    typeof v.rate22kPerGramInr === "number" &&
-    typeof v.rate22kPer10gInr === "number" &&
-    typeof v.loanPerGramInr === "number" &&
-    typeof v.loanPer10gInr === "number" &&
-    (v.silver999PerKgInr === null || typeof v.silver999PerKgInr === "number") &&
-    (v.silver999PerGramInr === null || typeof v.silver999PerGramInr === "number") &&
-    (v.silverLoanPerGramInr === null || typeof v.silverLoanPerGramInr === "number")
+    isPositiveFiniteNumber(v.rate22kPerGramInr) &&
+    isPositiveFiniteNumber(v.rate22kPer10gInr) &&
+    isPositiveFiniteNumber(v.loanPerGramInr) &&
+    isPositiveFiniteNumber(v.loanPer10gInr) &&
+    isNullablePositiveFiniteNumber(v.gold999BaseRaw) &&
+    isNullablePositiveFiniteNumber(v.gold999Per10gInr) &&
+    isNullablePositiveFiniteNumber(v.silver999PerKgInr) &&
+    isNullablePositiveFiniteNumber(v.silver999PerGramInr) &&
+    isNullablePositiveFiniteNumber(v.silverLoanPerGramInr)
   );
 }

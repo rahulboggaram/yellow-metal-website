@@ -9,6 +9,22 @@ import { killDevServers } from "./next-helpers.mjs";
 
 const root = process.cwd();
 
+function requireVercelCronSecret() {
+  if (!process.env.VERCEL) return;
+
+  const secret = process.env.CRON_SECRET?.trim();
+  if (secret) return;
+
+  console.error(
+    [
+      "[build] CRON_SECRET is required on Vercel.",
+      "[build] Without it, Vercel Cron cannot authorize /api/cron/retention and old telemetry is never purged.",
+    ].join("\n"),
+  );
+  process.exit(1);
+}
+
+requireVercelCronSecret();
 killDevServers();
 process.stdout.write(
   "[build] Stopped dev server (if running). Dev and build cannot run together.\n",

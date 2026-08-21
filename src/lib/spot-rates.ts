@@ -30,6 +30,17 @@ type MarketPriceRow = {
   updated_at: string;
 };
 
+function isPositiveFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
+function isUsableMarketPriceRow(row: MarketPriceRow): boolean {
+  return (
+    isPositiveFiniteNumber(row.gold_999_base) &&
+    Number.isFinite(new Date(row.updated_at).getTime())
+  );
+}
+
 async function fetchMarketPrices(): Promise<MarketPriceRow[]> {
   if (!SPOT_SUPABASE_URL || !SPOT_SUPABASE_ANON_KEY) {
     throw new Error("SPOT_SUPABASE_URL / SPOT_SUPABASE_ANON_KEY are not configured");
@@ -65,7 +76,10 @@ function pickPmRateForSession(
   sessionYmd: string,
 ): MarketPriceRow | null {
   const matches = rows.filter(
-    (row) => getIstYmd(new Date(row.updated_at)) === sessionYmd && isPmRateSlot(row.updated_at),
+    (row) =>
+      isUsableMarketPriceRow(row) &&
+      getIstYmd(new Date(row.updated_at)) === sessionYmd &&
+      isPmRateSlot(row.updated_at),
   );
 
   if (matches.length === 0) return null;
@@ -91,15 +105,18 @@ export async function fetchSpotGoldRates(): Promise<GoldPriceSnapshot> {
   const rows = await fetchMarketPrices();
   const active = resolveActivePmRate(rows);
   const gold999BaseRaw = active.gold_999_base;
+  const silverBase = isPositiveFiniteNumber(active.silver_base)
+    ? active.silver_base
+    : null;
   const { perGramInr: rate22kPerGramInr, per10gInr: rate22kPer10gInr } =
     spotKaratRates(gold999BaseRaw, "22K");
   const loanPerGramInr = loanRatePerGramFromRaw(gold999BaseRaw, "22K");
   const loanPer10gInr = loanRatePer10gFromRaw(gold999BaseRaw, "22K");
 
-  const silver999PerKgInr = active.silver_base
-    ? Math.round(active.silver_base * 1000)
+  const silver999PerKgInr = silverBase
+    ? Math.round(silverBase * 1000)
     : null;
-  const silver999PerGramInr = active.silver_base ?? null;
+  const silver999PerGramInr = silverBase;
   const silverLoanPerGramInr = silver999PerGramInr
     ? Math.round(silver999PerGramInr * GOLD_LTV)
     : null;

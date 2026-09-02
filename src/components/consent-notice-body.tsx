@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { GRIEVANCE_OFFICER } from "@/lib/grievance-officer";
 import {

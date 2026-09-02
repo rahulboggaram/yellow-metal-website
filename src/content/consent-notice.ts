@@ -29,9 +29,6 @@ export type ConsentNoticeCopy = {
   board: string;
   withdraw: string;
   policyLink: string;
-  checkboxLabel: string;
-  agree: string;
-  agreedStatus: string;
 };
 
 export const CONSENT_NOTICE = {
@@ -76,7 +73,6 @@ export const CONSENT_NOTICE = {
       "This site does not take loan applications. Name, KYC documents, mobile number, bank details, and gold ornament details are collected at our branches, with a separate notice at that time.",
     rightsHeading: "Your choices and rights",
     rights: [
-      "Tick the box and tap I agree after you have read this notice.",
       "You can return to this page any time from the website footer.",
       "Ask what data we hold, ask us to correct it, or ask us to delete it where the law allows.",
       "Write to our Grievance Officer below. If we do not resolve it within 30 days, you may complain to the Data Protection Board of India.",
@@ -93,11 +89,8 @@ export const CONSENT_NOTICE = {
     board:
       "If your concern is not resolved within 30 days, you may complain to the Data Protection Board of India under the Digital Personal Data Protection Act, 2023.",
     withdraw:
-      "To record agreement again, return to this page, tick the box, and tap I agree.",
+      "To ask a question or raise a complaint about this notice, write to the Grievance Officer below.",
     policyLink: "Full privacy policy",
-    checkboxLabel: "I have read this notice",
-    agree: "I agree",
-    agreedStatus: "You have agreed to this notice.",
   },
   kn: {
     title: "ಜಾಲತಾಣ ದತ್ತಾಂಶ ಸಮ್ಮತಿ ಸೂಚನೆ",
@@ -140,7 +133,6 @@ export const CONSENT_NOTICE = {
       "ಈ ತಾಣದಲ್ಲಿ ಸಾಲ ಅರ್ಜಿ ಸಲ್ಲಿಸಲಾಗುವುದಿಲ್ಲ. ಹೆಸರು, ಕೆವೈಸಿ ದಾಖಲೆಗಳು, ಮೊಬೈಲ್ ಸಂಖ್ಯೆ, ಬ್ಯಾಂಕ್ ವಿವರಗಳು ಮತ್ತು ಚಿನ್ನದ ಆಭರಣ ವಿವರಗಳನ್ನು ನಮ್ಮ ಶಾಖೆಗಳಲ್ಲಿ, ಆ ಸಮಯದ ಪ್ರತ್ಯೇಕ ಸೂಚನೆಯೊಂದಿಗೆ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ.",
     rightsHeading: "ನಿಮ್ಮ ಆಯ್ಕೆಗಳು ಮತ್ತು ಹಕ್ಕುಗಳು",
     rights: [
-      "ಈ ಸೂಚನೆಯನ್ನು ಓದಿದ ನಂತರ ಚೌಕವನ್ನು ಗುರುತಿಸಿ ಮತ್ತು «ನಾನು ಒಪ್ಪುತ್ತೇನೆ» ಒತ್ತಿ.",
       "ಜಾಲತಾಣದ ಅಡಿಟಿಪ್ಪಣಿಯಿಂದ ಯಾವಾಗ ಬೇಕಾದರೂ ಈ ಪುಟಕ್ಕೆ ಹಿಂತಿರುಗಬಹುದು.",
       "ನಾವು ಇಟ್ಟಿರುವ ದತ್ತಾಂಶ ಏನು ಎಂದು ಕೇಳಿ, ತಿದ್ದಲು ಕೇಳಿ, ಅಥವಾ ಕಾನೂನು ಅನುಮತಿಸುವಲ್ಲಿ ಅಳಿಸಲು ಕೇಳಿ.",
       "ಕೆಳಗಿನ ದೂರು ನಿವಾರಣಾಧಿಕಾರಿಗೆ ಬರೆಯಿರಿ. ೩೦ ದಿನಗಳಲ್ಲಿ ಪರಿಹಾರವಾಗದಿದ್ದರೆ, ಭಾರತದ ದತ್ತಾಂಶ ಸಂರಕ್ಷಣಾ ಮಂಡಳಿಗೆ ದೂರು ಸಲ್ಲಿಸಬಹುದು.",
@@ -157,10 +149,7 @@ export const CONSENT_NOTICE = {
     board:
       "೩೦ ದಿನಗಳಲ್ಲಿ ನಿಮ್ಮ ಆಕ್ಷೇಪಣೆ ಪರಿಹಾರವಾಗದಿದ್ದರೆ, ಡಿಜಿಟಲ್ ವೈಯಕ್ತಿಕ ದತ್ತಾಂಶ ಸಂರಕ್ಷಣಾ ಅಧಿನಿಯಮ, ೨೦೨೩ ರ ಅಡಿಯಲ್ಲಿ ಭಾರತದ ದತ್ತಾಂಶ ಸಂರಕ್ಷಣಾ ಮಂಡಳಿಗೆ ದೂರು ಸಲ್ಲಿಸಬಹುದು.",
     withdraw:
-      "ಮತ್ತೆ ಒಪ್ಪಿಗೆ ದಾಖಲಿಸಲು ಈ ಪುಟಕ್ಕೆ ಬನ್ನಿ, ಚೌಕವನ್ನು ಗುರುತಿಸಿ, ಮತ್ತು «ನಾನು ಒಪ್ಪುತ್ತೇನೆ» ಒತ್ತಿ.",
+      "ಈ ಸೂಚನೆಯ ಬಗ್ಗೆ ಪ್ರಶ್ನೆ ಅಥವಾ ದೂರಿಗೆ, ಕೆಳಗಿನ ದೂರು ನಿವಾರಣಾಧಿಕಾರಿಗೆ ಬರೆಯಿರಿ.",
     policyLink: "ಪೂರ್ಣ ಗೌಪ್ಯತಾ ನೀತಿ",
-    checkboxLabel: "ನಾನು ಈ ಸೂಚನೆಯನ್ನು ಓದಿದ್ದೇನೆ",
-    agree: "ನಾನು ಒಪ್ಪುತ್ತೇನೆ",
-    agreedStatus: "ನೀವು ಈ ಸೂಚನೆಗೆ ಒಪ್ಪಿಗೆ ನೀಡಿದ್ದೀರಿ.",
   },
 } as const satisfies Record<ConsentNoticeLanguage, ConsentNoticeCopy>;

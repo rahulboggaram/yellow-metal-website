@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { LegalLanguageSwitch } from "@/components/legal-language-switch";
-import { ConsentNoticeActions } from "@/components/consent-notice";
 import { ConsentNoticeBody } from "@/components/consent-notice-body";
 import { CONSENT_NOTICE } from "@/content/consent-notice";
 
@@ -21,7 +20,6 @@ export default function ConsentNoticeKannadaPage() {
           {copy.title}
         </h1>
         <ConsentNoticeBody language="kn" />
-        <ConsentNoticeActions language="kn" />
       </div>
     </div>
   );

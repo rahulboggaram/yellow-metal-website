@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { LegalLanguageSwitch } from "@/components/legal-language-switch";
-import { ConsentNoticeActions } from "@/components/consent-notice";
 import { ConsentNoticeBody } from "@/components/consent-notice-body";
 import { CONSENT_NOTICE } from "@/content/consent-notice";
 
@@ -19,7 +18,6 @@ export default function ConsentNoticePage() {
         <LegalLanguageSwitch active="en" document="consent-notice" />
         <h1 className="ym-page-title">{copy.title}</h1>
         <ConsentNoticeBody language="en" />
-        <ConsentNoticeActions language="en" />
       </div>
     </div>
   );

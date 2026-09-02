@@ -74,6 +74,7 @@ export type EngagementSummary = {
     uniqueVisitors: number;
     totalEntries: number;
     byDay: { date: string; entries: number; visitors: number }[];
+    byWeightBand: { band: string; entries: number }[];
     recentEntries: CalculatorEntryEvent[];
   };
 };

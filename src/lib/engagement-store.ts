@@ -3,6 +3,7 @@ import "server-only";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { engagementInRange } from "@/lib/engagement-query";
+import { weightBucketGrams } from "@/lib/admin-auth";
 import type {
   CalculatorEntryEvent,
   EngagementEvent,
@@ -148,6 +149,16 @@ function isCalculatorEntry(event: EngagementEvent): event is CalculatorEntryEven
   return event.type === "calculator_entry";
 }
 
+function calculatorWeightBand(event: CalculatorEntryEvent): string {
+  if (event.weightBucket) return event.weightBucket;
+  if (typeof event.weightGrams === "number") {
+    return weightBucketGrams(event.weightGrams);
+  }
+  return "unknown";
+}
+
+const WEIGHT_BAND_ORDER = ["0-10g", "10-20g", "20-50g", "50-100g", "100g+", "unknown"];
+
 export async function getEngagementSummary(query: EngagementQuery): Promise<EngagementSummary> {
   const all = await readAllEvents();
   const events = all.filter((event) => engagementInRange(event.timestamp, query));
@@ -175,12 +186,16 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
   }
 
   const calculatorByDay = new Map<string, { entries: number; sessions: Set<string> }>();
+  const calculatorByBand = new Map<string, number>();
   for (const event of calculatorEntries) {
     const day = event.timestamp.slice(0, 10);
     const entry = calculatorByDay.get(day) ?? { entries: 0, sessions: new Set<string>() };
     entry.entries += 1;
     entry.sessions.add(event.sessionId);
     calculatorByDay.set(day, entry);
+
+    const band = calculatorWeightBand(event);
+    calculatorByBand.set(band, (calculatorByBand.get(band) ?? 0) + 1);
   }
 
   return {
@@ -212,9 +227,16 @@ export async function getEngagementSummary(query: EngagementQuery): Promise<Enga
           visitors: stats.sessions.size,
         }))
         .sort((a, b) => a.date.localeCompare(b.date)),
+      byWeightBand: [...calculatorByBand.entries()]
+        .map(([band, entries]) => ({ band, entries }))
+        .sort((a, b) => {
+          const aIndex = WEIGHT_BAND_ORDER.indexOf(a.band);
+          const bIndex = WEIGHT_BAND_ORDER.indexOf(b.band);
+          return (aIndex === -1 ? 99 : aIndex) - (bIndex === -1 ? 99 : bIndex);
+        }),
       recentEntries: [...calculatorEntries]
         .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
-        .slice(0, 20)
+        .slice(0, 40)
         .map((event) => ({
           ...event,
           weightEntered: event.weightBucket ?? "",

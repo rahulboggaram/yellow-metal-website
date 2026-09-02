@@ -133,7 +133,7 @@ export function GoldLoanCalculator() {
                       onFocus={() => setWeightFocused(true)}
                       onBlur={() => {
                         setWeightFocused(false);
-                        recordWeightEntry(true);
+                        recordWeightEntry();
                       }}
                       className={weightInputBindings.className}
                       style={weightInputBindings.style}
@@ -166,7 +166,7 @@ export function GoldLoanCalculator() {
                             onClick={() => {
                               setKarat(option);
                               if (weightGrams > 0) {
-                                window.setTimeout(() => recordWeightEntry(true), 0);
+                                window.setTimeout(() => recordWeightEntry(), 0);
                               }
                             }}
                           >

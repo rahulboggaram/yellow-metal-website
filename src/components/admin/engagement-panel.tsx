@@ -9,6 +9,7 @@ import {
   formatAdminDateTime,
   last30DaysRange,
 } from "@/lib/admin-session";
+import { countryDisplayName, regionDisplayName } from "@/lib/analytics-geo";
 import type { CalculatorEntryEvent, EngagementSummary } from "@/lib/engagement-types";
 import { formatInr } from "@/lib/gold-price-format";
 
@@ -19,8 +20,14 @@ function formatDuration(seconds: number): string {
   return remainder > 0 ? `${minutes}m ${remainder}s` : `${minutes}m`;
 }
 
+function formatWeightBand(band: string): string {
+  return band.replace(/-/g, "–").replace(/g$/, " g");
+}
+
 function formatWeightEntered(entry: CalculatorEntryEvent): string {
-  const bucket = entry.weightBucket?.replace(/-/g, "–").replace(/g$/, " g");
+  const bucket = entry.weightBucket
+    ? formatWeightBand(entry.weightBucket)
+    : null;
   if (bucket) return bucket;
   const raw = entry.weightEntered?.trim();
   if (raw) return raw.endsWith("g") ? raw.replace(/g$/, " g") : `${raw} g`;
@@ -31,9 +38,10 @@ function formatWeightEntered(entry: CalculatorEntryEvent): string {
 }
 
 function formatEntryRegion(entry: CalculatorEntryEvent): string {
-  const region = entry.region?.trim();
-  const country = entry.country?.trim() || "Unknown";
-  if (region) return `${region}, ${country}`;
+  const country = countryDisplayName(entry.country);
+  const region = regionDisplayName(entry.country, entry.region);
+  if (region && country !== "Unknown") return `${region}, ${country}`;
+  if (region) return region;
   if (country !== "Unknown") return country;
   return "—";
 }
@@ -161,8 +169,8 @@ export function EngagementAdminPanel() {
             <div className="ym-admin-section-head">
               <h2 className="ym-admin-heading">Loan estimate calculator</h2>
               <p className="ym-admin-section-lead">
-                Gold weight is stored as a band, not the exact grams typed. A
-                21 g estimate is saved as 20–50 g.
+                Type 20, then tap outside the box. We save a band, not the
+                exact grams — 20 g is stored as 20–50 g.
               </p>
             </div>
             <div className="ym-admin-stats">
@@ -176,11 +184,36 @@ export function EngagementAdminPanel() {
               />
             </div>
             <div className="ym-admin-section-block">
+              <h3 className="ym-admin-subheading">By weight band</h3>
+              {summary.calculator.byWeightBand.length === 0 ? (
+                <p className="ym-admin-empty">No calculator entries recorded yet.</p>
+              ) : (
+                <div className="ym-admin-table-wrap">
+                  <table className="ym-admin-table">
+                    <thead>
+                      <tr>
+                        <th>Weight band</th>
+                        <th>Entries</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {summary.calculator.byWeightBand.map((row) => (
+                        <tr key={row.band}>
+                          <td>{formatWeightBand(row.band)}</td>
+                          <td>{row.entries.toLocaleString("en-IN")}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+            <div className="ym-admin-section-block">
               <h3 className="ym-admin-subheading">Recent entries</h3>
               {summary.calculator.recentEntries.length === 0 ? (
                 <p className="ym-admin-empty">
-                  No entries yet. On the home page, type a weight like 23 or 45 in
-                  the loan estimate field, then tap away from the field.
+                  No entries yet. On the home page, type 20 in the loan estimate
+                  field, then tap outside the box.
                 </p>
               ) : (
                 <div className="ym-admin-table-wrap">

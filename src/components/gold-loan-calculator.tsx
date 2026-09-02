@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FloatingInput } from "@/components/ui/floating-field";
 import type { GoldKarat, GoldPriceSnapshot } from "@/lib/gold-price-format";
 import {
+  GOLD_LTV,
   GOLD_KARAT_OPTIONS,
   formatInr,
   isGoldPriceSnapshot,
@@ -13,13 +14,19 @@ import {
   calculateMonthlyInterestInr,
   formatPlanRate,
   formatPlanRepaymentLabel,
-  getMatchingLoanPlansByType,
+  getPlanLtvRatio,
 } from "@/lib/loan-plans-shared";
 import { useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
 import { InterNumeric } from "@/components/inter-numeric";
 import { brandFont, interFontBindings } from "@/lib/fonts";
 import { useCalculatorEngagement } from "@/hooks/use-calculator-engagement";
+import type { LoanPlan, LoanPlanRepaymentType } from "@/lib/loan-plans-shared";
+
+type MatchedPlanOffer = {
+  plan: LoanPlan;
+  loanAmountInr: number;
+};
 
 export function GoldLoanCalculator() {
   const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
@@ -71,10 +78,40 @@ export function GoldLoanCalculator() {
     );
   }, [price, weightGrams, karat]);
 
-  const matchedPlans = useMemo(() => {
-    if (loanAmount === null || loanAmount <= 0) return [];
-    return getMatchingLoanPlansByType(loanAmount, plans);
-  }, [loanAmount, plans]);
+  const matchedPlanOffers = useMemo(() => {
+    if (!price || weightGrams <= 0) return [];
+
+    const matching = plans
+      .map((plan): MatchedPlanOffer => {
+        const planLoanAmount = loanAmountFromWeightGrams(
+          weightGrams,
+          karat,
+          price.gold999BaseRaw,
+          price.rate22kPerGramInr,
+          getPlanLtvRatio(plan, GOLD_LTV),
+        );
+        return { plan, loanAmountInr: planLoanAmount };
+      })
+      .filter(
+        ({ plan, loanAmountInr }) =>
+          plan.active &&
+          loanAmountInr > 0 &&
+          loanAmountInr >= plan.minAmountInr &&
+          (plan.maxAmountInr === null || loanAmountInr <= plan.maxAmountInr),
+      )
+      .sort((a, b) => a.plan.sortOrder - b.plan.sortOrder);
+
+    const byType = new Map<LoanPlanRepaymentType, MatchedPlanOffer>();
+    for (const offer of matching) {
+      if (!byType.has(offer.plan.repaymentType)) {
+        byType.set(offer.plan.repaymentType, offer);
+      }
+    }
+
+    return Array.from(byType.values()).sort(
+      (a, b) => a.plan.sortOrder - b.plan.sortOrder,
+    );
+  }, [karat, plans, price, weightGrams]);
 
   const hasWeightValue = weightInput.trim().length > 0 && weightGrams > 0;
   const weightFieldActive = weightFocused || weightInput.trim().length > 0;
@@ -188,23 +225,23 @@ export function GoldLoanCalculator() {
                       {amountText}
                     </InterNumeric>
 
-                    {!plansLoading && !plansError && matchedPlans.length > 0 && (
+                    {!plansLoading && !plansError && matchedPlanOffers.length > 0 && (
                       <div className="ym-loan-interest-section">
                         <div
                           className={[
                             "ym-loan-interest-cards",
-                            matchedPlans.length === 1
+                            matchedPlanOffers.length === 1
                               ? "ym-loan-interest-cards--single"
                               : "",
                           ]
                             .filter(Boolean)
                             .join(" ")}
                         >
-                          {matchedPlans.map((plan) => {
-                            const monthlyInterest =
-                              loanAmount === null
-                                ? 0
-                                : calculateMonthlyInterestInr(loanAmount, plan);
+                          {matchedPlanOffers.map(({ plan, loanAmountInr }) => {
+                            const monthlyInterest = calculateMonthlyInterestInr(
+                              loanAmountInr,
+                              plan,
+                            );
 
                             return (
                               <article

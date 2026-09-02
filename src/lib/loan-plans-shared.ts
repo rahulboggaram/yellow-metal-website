@@ -56,6 +56,18 @@ export function getMatchingLoanPlansByType(
   return Array.from(byType.values()).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
+export function getPlanLtvRatio(plan: Pick<LoanPlan, "ltvLabel">, fallback: number): number {
+  const match = plan.ltvLabel.match(/(\d+(?:\.\d+)?)\s*%/);
+  if (!match) return fallback;
+
+  const percent = Number.parseFloat(match[1]);
+  if (!Number.isFinite(percent) || percent <= 0 || percent > 100) {
+    return fallback;
+  }
+
+  return percent / 100;
+}
+
 export function calculateMonthlyInterestInr(
   principalInr: number,
   plan: LoanPlan,

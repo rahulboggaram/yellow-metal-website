@@ -10,8 +10,9 @@ export type LegalBlock =
   | { type: "p"; text: string };
 
 function renderParagraph(text: string) {
-  const privacyHref = "/privacy";
-  const parts = text.split(/(www\.yellowmetal\.co\/privacy-policy|\/privacy)/g);
+  const parts = text.split(
+    /(www\.yellowmetal\.co\/privacy-policy|\/privacy\/notice|\/privacy)/g,
+  );
 
   if (parts.length === 1) {
     return text;
@@ -20,8 +21,15 @@ function renderParagraph(text: string) {
   return parts.map((part, index) => {
     if (part === "www.yellowmetal.co/privacy-policy" || part === "/privacy") {
       return (
-        <Link key={index} href={privacyHref} className="ym-legal-link">
+        <Link key={index} href="/privacy" className="ym-legal-link">
           Privacy policy
+        </Link>
+      );
+    }
+    if (part === "/privacy/notice") {
+      return (
+        <Link key={index} href="/privacy/notice" className="ym-legal-link">
+          Consent notice
         </Link>
       );
     }

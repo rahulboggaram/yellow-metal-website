@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { brandFont, displayFont } from "@/lib/fonts";
+import { brandFont, displayFont, kannadaFont } from "@/lib/fonts";
 import { AnalyticsBeacon } from "@/components/analytics-beacon";
 import { SiteFrame } from "@/components/site-frame";
 import "./globals.css";
@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${brandFont.variable} ${displayFont.variable}`}
+      className={`h-full antialiased ${brandFont.variable} ${displayFont.variable} ${kannadaFont.variable}`}
     >
       <head>
         <link

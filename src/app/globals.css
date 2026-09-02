@@ -22,6 +22,8 @@ html {
   background-color: #000000;
   --font-inter-stack: var(--font-display-family, Inter), ui-sans-serif, system-ui,
     sans-serif;
+  --font-kannada-stack: var(--font-kannada-family), ui-sans-serif, system-ui,
+    sans-serif;
   --ym-inter-features: "liga" 1, "calt" 1, "ss01" 1, "ss03" 1, "ss07" 1, "cv01" 1,
     "cv03" 1, "cv04" 1, "cv06" 1, "cv07" 1, "cv08" 1, "cv09" 1, "cv10" 1, "cv11" 1;
   --ym-inter-tabular-features: "liga" 1, "calt" 1, "ss01" 1, "ss03" 1, "ss07" 1,
@@ -37,6 +39,11 @@ body {
   background-color: #ffffff;
   color: #000000;
   overflow-x: hidden;
+}
+
+:lang(kn) {
+  font-family: var(--font-kannada-stack);
+  font-feature-settings: normal;
 }
 
 .ym-site {

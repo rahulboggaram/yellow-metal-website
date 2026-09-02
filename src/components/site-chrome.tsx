@@ -12,6 +12,11 @@ const FOOTER_LINKS = [
   { href: "/policies", label: "Policies" },
 ];
 
+const FOOTER_LEGAL_LINKS = [
+  { href: "/privacy", label: "Privacy" },
+  { href: "/privacy/notice", label: "Consent notice" },
+];
+
 export function SiteFooter() {
   return (
     <footer className="ym-footer">
@@ -64,6 +69,14 @@ export function SiteFooter() {
             </Link>
           ))}
         </nav>
+
+        <div className="ym-footer-legal">
+          {FOOTER_LEGAL_LINKS.map((link) => (
+            <Link key={link.href} href={link.href}>
+              {link.label}
+            </Link>
+          ))}
+        </div>
 
         <p className="ym-footer-copy">
           © {new Date().getFullYear()} Yellow Metal. All rights reserved.

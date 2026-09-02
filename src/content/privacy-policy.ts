@@ -2,11 +2,11 @@ import type { LegalBlock } from "@/components/legal-document";
 
 export const PRIVACY_POLICY_BLOCKS = [
   { type: "title", text: "Privacy policy" },
-  { type: "meta", text: "Policy version 1.1 · Updated 15 July 2026 · Approved by Board of Directors" },
+  { type: "meta", text: "Policy version 1.2 · Updated 2 September 2026 · Approved by Board of Directors" },
   { type: "h2", text: "1. Introduction" },
   { type: "p", text: "1.1.  This Privacy Policy describes how Yellow Metal Loans Private Limited (\"Yellow Metal Loans\", \"we\", \"us\", or \"our\") collects, uses, stores, and shares your personal information when you apply for or avail a gold loan from us, visit our website, or interact with us through any channel." },
   { type: "p", text: "1.2.  We are a Reserve Bank of India (RBI)-registered Non-Banking Financial Company (NBFC) primarily engaged in providing gold loans. We take the privacy of your personal information seriously and are committed to handling it responsibly and in accordance with applicable law, including the Digital Personal Data Protection Act, 2023 (DPDP Act)." },
-  { type: "p", text: "1.3.  By submitting a loan application, visiting our website, or availing any of our services, you agree to the collection and use of your information as described in this Policy. Please read it carefully. For non-essential website analytics described in Section 2, you may contact us (Section 9 / Section 10) to request that we stop using your website interaction data where legally permitted." },
+  { type: "p", text: "1.3.  This Policy describes our practices. It is not itself a request for consent. A separate, standalone consent notice is available in English and Kannada. Open /privacy/notice to see what personal data this website collects, why, and how to contact the Grievance Officer. Loan applications are taken at our branches, with a separate notice at that time." },
   { type: "p", text: "1.4.  This Policy should be read together with the Loan Agreement and the Key Facts Statement (KFS) issued to you at loan sanction." },
   { type: "h2", text: "2. What Information We Collect About You" },
   { type: "p", text: "We collect only the information that is necessary to process your loan application, complete KYC verification, manage your loan account, improve our website, and comply with legal and regulatory requirements. The categories of information we collect include:" },

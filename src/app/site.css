@@ -3633,8 +3633,217 @@ body:has(.ym-admin-root),
 .ym-footer-copy {
   font-size: 0.75rem;
   color: rgb(255 255 255 / 0.35);
-  padding-top: 1.8rem;
+  padding-top: 1rem;
+}
+
+.ym-footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.35rem;
+  margin-top: 1.8rem;
+  padding-top: 1.35rem;
   border-top: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.ym-footer-legal a {
+  color: rgb(255 255 255 / 0.5);
+  text-decoration: none;
+  font-size: 0.8125rem;
+}
+
+.ym-footer-legal a:hover {
+  color: #ffffff;
+}
+
+/* Consent notice page */
+.ym-consent-body {
+  display: grid;
+  gap: 0.7rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgb(0 0 0 / 0.72);
+}
+
+.ym-consent-standalone {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.ym-consent-intro,
+.ym-consent-body p {
+  margin: 0;
+}
+
+.ym-consent-heading {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.ym-consent-items,
+.ym-consent-rights {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.ym-consent-item {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgb(0 0 0 / 0.08);
+  border-radius: 0.9rem;
+  background: rgb(0 0 0 / 0.02);
+}
+
+.ym-consent-item-data {
+  font-weight: 600;
+  color: #000000;
+}
+
+.ym-consent-item-label {
+  display: inline;
+  margin-right: 0.35rem;
+  font-weight: 600;
+  color: rgb(0 0 0 / 0.45);
+}
+
+.ym-consent-item-label::after {
+  content: ": ";
+}
+
+.ym-consent-rights li {
+  padding-left: 1rem;
+  position: relative;
+}
+
+.ym-consent-rights li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 9999px;
+  background: #000000;
+}
+
+.ym-consent-officer {
+  margin: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.ym-consent-officer div {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.ym-consent-officer dt {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(0 0 0 / 0.42);
+}
+
+.ym-consent-officer dd {
+  margin: 0;
+  font-weight: 500;
+  color: #000000;
+}
+
+.ym-consent-officer a {
+  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.ym-consent-withdraw,
+.ym-consent-policy {
+  font-size: 0.875rem;
+}
+
+.ym-consent-agree {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
+  margin-top: 2rem;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid rgb(0 0 0 / 0.1);
+}
+
+.ym-consent-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #000000;
+  cursor: pointer;
+}
+
+.ym-consent-check input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  accent-color: #000000;
+}
+
+.ym-consent-status {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgb(0 0 0 / 0.55);
+}
+
+.ym-consent-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.85rem;
+  padding: 0.7rem 1.35rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.ym-consent-btn--primary {
+  background: #000000;
+  color: #ffffff;
+}
+
+.ym-consent-btn--primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+  transform: none;
+}
+
+.ym-consent-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.ym-legal-document .ym-consent-body {
+  margin-top: 0.25rem;
+}
+
+.ym-legal-document .ym-consent-heading {
+  margin-top: 1.5rem;
+  font-size: 0.82rem;
 }
 
 /* Ancillary pages */
@@ -3865,11 +4074,15 @@ body:has(.ym-admin-root),
   justify-content: center;
   min-width: 5.5rem;
   padding: 0.45rem 0.9rem;
+  border: none;
   border-radius: 9999px;
+  background: none;
+  font: inherit;
   font-size: 0.875rem;
   font-weight: 600;
   color: rgb(0 0 0 / 0.55);
   text-decoration: none;
+  cursor: pointer;
   transition:
     background 0.2s ease,
     color 0.2s ease;

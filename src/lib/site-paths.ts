@@ -12,6 +12,8 @@ export const ALLOWED_TELEMETRY_PATHS = new Set([
   "/policies/interest-rate",
   "/policies/refund-and-cancellation",
   "/privacy",
+  "/privacy/notice",
+  "/privacy/notice/kannada",
   "/terms",
 ]);
 

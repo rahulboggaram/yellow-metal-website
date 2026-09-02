@@ -1,4 +1,4 @@
-import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { Bricolage_Grotesque, Inter, Noto_Sans_Kannada } from "next/font/google";
 import type { CSSProperties } from "react";
 
 /** Section headings */
@@ -14,6 +14,14 @@ export const displayFont = Inter({
   subsets: ["latin", "latin-ext"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-display-family",
+  display: "swap",
+});
+
+/** Kannada consent notice, legal switcher, and hero phrases */
+export const kannadaFont = Noto_Sans_Kannada({
+  subsets: ["kannada"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-kannada-family",
   display: "swap",
 });
 

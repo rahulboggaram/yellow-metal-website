@@ -20,9 +20,10 @@ function formatDuration(seconds: number): string {
 }
 
 function formatWeightEntered(entry: CalculatorEntryEvent): string {
-  if (entry.weightBucket) return entry.weightBucket;
+  const bucket = entry.weightBucket?.replace(/-/g, "–").replace(/g$/, " g");
+  if (bucket) return bucket;
   const raw = entry.weightEntered?.trim();
-  if (raw) return `${raw} g`;
+  if (raw) return raw.endsWith("g") ? raw.replace(/g$/, " g") : `${raw} g`;
   if (typeof entry.weightGrams === "number") {
     return `${entry.weightGrams.toLocaleString("en-IN")} g`;
   }
@@ -160,8 +161,8 @@ export function EngagementAdminPanel() {
             <div className="ym-admin-section-head">
               <h2 className="ym-admin-heading">Loan estimate calculator</h2>
               <p className="ym-admin-section-lead">
-                Exact gold weight bands from the loan estimate field (exact grams
-                are not stored).
+                Gold weight is stored as a band, not the exact grams typed. A
+                21 g estimate is saved as 20–50 g.
               </p>
             </div>
             <div className="ym-admin-stats">
@@ -187,7 +188,7 @@ export function EngagementAdminPanel() {
                     <thead>
                       <tr>
                         <th>When</th>
-                        <th>Gold weight</th>
+                        <th>Weight band</th>
                         <th>Purity</th>
                         <th>Estimated loan</th>
                         <th>Region</th>

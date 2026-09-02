@@ -136,7 +136,8 @@ export function LoanPlansModal({
               All loan plans
             </h3>
             <p className="ym-loan-plans-modal-subtitle">
-              6-month tenure plans with up to 75% LTV. Choose monthly interest or bullet repayment.
+              6-month tenure. Monthly plans up to 75% LTV, bullet plans up to
+              68% LTV.
             </p>
           </div>
           <button

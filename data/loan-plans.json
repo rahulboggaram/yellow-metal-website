@@ -8,10 +8,10 @@
     "repaymentType": "monthly",
     "ltvLabel": "up to 75%",
     "tenureMonths": 6,
-    "annualRatePercent": 22.5,
-    "monthlyRatePercent": 1.875,
+    "annualRatePercent": 22.56,
+    "monthlyRatePercent": 1.88,
     "interestTiers": [
-      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.875 }
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.88 }
     ],
     "sortOrder": 1,
     "active": true
@@ -25,7 +25,7 @@
     "repaymentType": "monthly",
     "ltvLabel": "up to 75%",
     "tenureMonths": 6,
-    "annualRatePercent": 20.5,
+    "annualRatePercent": 20.4,
     "monthlyRatePercent": 1.7,
     "interestTiers": [
       { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.7 }
@@ -42,7 +42,7 @@
     "repaymentType": "monthly",
     "ltvLabel": "up to 75%",
     "tenureMonths": 6,
-    "annualRatePercent": 19,
+    "annualRatePercent": 18.96,
     "monthlyRatePercent": 1.58,
     "interestTiers": [
       { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.58 }
@@ -76,27 +76,27 @@
     "repaymentType": "monthly",
     "ltvLabel": "up to 75%",
     "tenureMonths": 6,
-    "annualRatePercent": 17,
-    "monthlyRatePercent": 1.416,
+    "annualRatePercent": 17.04,
+    "monthlyRatePercent": 1.42,
     "interestTiers": [
-      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.416 }
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.42 }
     ],
     "sortOrder": 5,
     "active": true
   },
   {
-    "id": "bullet-200k-10m",
-    "amountLabel": "₹2,00,001 – ₹10,00,000",
-    "minAmountInr": 200001,
-    "maxAmountInr": 10000000,
+    "id": "monthly-1m-5m",
+    "amountLabel": "₹10,00,001 – ₹50,00,000",
+    "minAmountInr": 1000001,
+    "maxAmountInr": 5000000,
     "category": null,
-    "repaymentType": "bullet",
-    "ltvLabel": "up to 75% (including accrued interest)",
+    "repaymentType": "monthly",
+    "ltvLabel": "up to 75%",
     "tenureMonths": 6,
-    "annualRatePercent": 18.5,
-    "monthlyRatePercent": 1.54,
+    "annualRatePercent": 17.04,
+    "monthlyRatePercent": 1.42,
     "interestTiers": [
-      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.54 }
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.42 }
     ],
     "sortOrder": 6,
     "active": true
@@ -108,14 +108,65 @@
     "maxAmountInr": 200000,
     "category": null,
     "repaymentType": "bullet",
-    "ltvLabel": "up to 75% (including accrued interest)",
+    "ltvLabel": "up to 68%",
     "tenureMonths": 6,
-    "annualRatePercent": 21.5,
-    "monthlyRatePercent": 1.79,
+    "annualRatePercent": 22.2,
+    "monthlyRatePercent": 1.85,
     "interestTiers": [
-      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.79 }
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.85 }
     ],
     "sortOrder": 7,
+    "active": true
+  },
+  {
+    "id": "bullet-200k-500k",
+    "amountLabel": "₹2,00,001 – ₹5,00,000",
+    "minAmountInr": 200001,
+    "maxAmountInr": 500000,
+    "category": null,
+    "repaymentType": "bullet",
+    "ltvLabel": "up to 68%",
+    "tenureMonths": 6,
+    "annualRatePercent": 21,
+    "monthlyRatePercent": 1.75,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.75 }
+    ],
+    "sortOrder": 8,
+    "active": true
+  },
+  {
+    "id": "bullet-500k-1m",
+    "amountLabel": "₹5,00,001 – ₹10,00,000",
+    "minAmountInr": 500001,
+    "maxAmountInr": 1000000,
+    "category": null,
+    "repaymentType": "bullet",
+    "ltvLabel": "up to 68%",
+    "tenureMonths": 6,
+    "annualRatePercent": 19.8,
+    "monthlyRatePercent": 1.65,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.65 }
+    ],
+    "sortOrder": 9,
+    "active": true
+  },
+  {
+    "id": "bullet-1m-5m",
+    "amountLabel": "₹10,00,001 – ₹50,00,000",
+    "minAmountInr": 1000001,
+    "maxAmountInr": 5000000,
+    "category": null,
+    "repaymentType": "bullet",
+    "ltvLabel": "up to 68%",
+    "tenureMonths": 6,
+    "annualRatePercent": 18.48,
+    "monthlyRatePercent": 1.54,
+    "interestTiers": [
+      { "daysFrom": 0, "daysTo": 180, "monthlyRatePercent": 1.54 }
+    ],
+    "sortOrder": 10,
     "active": true
   }
 ]

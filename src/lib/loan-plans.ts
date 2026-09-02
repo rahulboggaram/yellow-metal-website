@@ -244,3 +244,45 @@ export async function deleteLoanPlan(id: string): Promise<void> {
     after: null,
   });
 }
+
+/** Replace the full published set. Used when swapping the rate card. */
+export async function replaceAllLoanPlans(nextPlans: LoanPlan[]): Promise<LoanPlan[]> {
+  if (!nextPlans.every(isLoanPlan)) {
+    throw new Error("Invalid loan plans data");
+  }
+  const current = await readAllPlans();
+  const currentById = new Map(current.map((plan) => [plan.id, plan]));
+  const next = sortPlans(nextPlans);
+  await writeAllPlans(next);
+
+  const nextIds = new Set(next.map((plan) => plan.id));
+  for (const plan of current) {
+    if (!nextIds.has(plan.id)) {
+      await appendLoanPlanAudit({
+        action: "delete",
+        planId: plan.id,
+        before: plan,
+        after: null,
+      });
+    }
+  }
+  for (const plan of next) {
+    const before = currentById.get(plan.id) ?? null;
+    if (!before) {
+      await appendLoanPlanAudit({
+        action: "create",
+        planId: plan.id,
+        before: null,
+        after: plan,
+      });
+      continue;
+    }
+    await appendLoanPlanAudit({
+      action: "update",
+      planId: plan.id,
+      before,
+      after: plan,
+    });
+  }
+  return next;
+}

@@ -20,19 +20,17 @@ function formatDuration(seconds: number): string {
   return remainder > 0 ? `${minutes}m ${remainder}s` : `${minutes}m`;
 }
 
-function formatWeightBand(band: string): string {
-  return band.replace(/-/g, "–").replace(/g$/, " g");
-}
-
 function formatWeightEntered(entry: CalculatorEntryEvent): string {
-  const bucket = entry.weightBucket
-    ? formatWeightBand(entry.weightBucket)
-    : null;
-  if (bucket) return bucket;
   const raw = entry.weightEntered?.trim();
-  if (raw) return raw.endsWith("g") ? raw.replace(/g$/, " g") : `${raw} g`;
+  if (raw) {
+    const asNumber = Number.parseFloat(raw.replace(/,/g, ""));
+    if (Number.isFinite(asNumber)) {
+      return `${asNumber.toLocaleString("en-IN", { maximumFractionDigits: 1 })} g`;
+    }
+    return raw.endsWith("g") ? raw : `${raw} g`;
+  }
   if (typeof entry.weightGrams === "number") {
-    return `${entry.weightGrams.toLocaleString("en-IN")} g`;
+    return `${entry.weightGrams.toLocaleString("en-IN", { maximumFractionDigits: 1 })} g`;
   }
   return "—";
 }
@@ -169,8 +167,8 @@ export function EngagementAdminPanel() {
             <div className="ym-admin-section-head">
               <h2 className="ym-admin-heading">Loan estimate calculator</h2>
               <p className="ym-admin-section-lead">
-                Type 20, then tap outside the box. We save a band, not the
-                exact grams — 20 g is stored as 20–50 g.
+                Type a weight, then tap outside the box. We save the grams
+                entered and the loan estimate shown.
               </p>
             </div>
             <div className="ym-admin-stats">
@@ -182,31 +180,6 @@ export function EngagementAdminPanel() {
                 label="Total entries saved"
                 value={summary.calculator.totalEntries}
               />
-            </div>
-            <div className="ym-admin-section-block">
-              <h3 className="ym-admin-subheading">By weight band</h3>
-              {summary.calculator.byWeightBand.length === 0 ? (
-                <p className="ym-admin-empty">No calculator entries recorded yet.</p>
-              ) : (
-                <div className="ym-admin-table-wrap">
-                  <table className="ym-admin-table">
-                    <thead>
-                      <tr>
-                        <th>Weight band</th>
-                        <th>Entries</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {summary.calculator.byWeightBand.map((row) => (
-                        <tr key={row.band}>
-                          <td>{formatWeightBand(row.band)}</td>
-                          <td>{row.entries.toLocaleString("en-IN")}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
             </div>
             <div className="ym-admin-section-block">
               <h3 className="ym-admin-subheading">Recent entries</h3>
@@ -221,7 +194,7 @@ export function EngagementAdminPanel() {
                     <thead>
                       <tr>
                         <th>When</th>
-                        <th>Weight band</th>
+                        <th>Weight</th>
                         <th>Purity</th>
                         <th>Estimated loan</th>
                         <th>Region</th>

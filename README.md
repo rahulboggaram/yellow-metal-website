@@ -43,7 +43,7 @@ Local `npm run dev` can use `data/*.json` if Yellow Metal Supabase is unset. **V
 
 ## Website telemetry
 
-Public pages send minimal analytics/engagement beacons. Session IDs are hashed before storage; city and exact calculator grams are not stored. Rows older than ~90 days are deleted by the daily retention cron. See the Privacy Policy.
+Public pages send minimal analytics/engagement beacons. Session IDs are hashed before storage; city is not stored. Calculator engagement stores the weight entered and the estimate shown. Rows older than ~90 days are deleted by the daily retention cron. See the Privacy Policy.
 
 ## Secret rotation (Supabase)
 

@@ -2,7 +2,7 @@ import type { LegalBlock } from "@/components/legal-document";
 
 export const PRIVACY_POLICY_BLOCKS = [
   { type: "title", text: "Privacy policy" },
-  { type: "meta", text: "Policy version 1.2 · Updated 2 September 2026 · Approved by Board of Directors" },
+  { type: "meta", text: "Policy version 1.3 · Updated 2 September 2026 · Approved by Board of Directors" },
   { type: "h2", text: "1. Introduction" },
   { type: "p", text: "1.1.  This Privacy Policy describes how Yellow Metal Loans Private Limited (\"Yellow Metal Loans\", \"we\", \"us\", or \"our\") collects, uses, stores, and shares your personal information when you apply for or avail a gold loan from us, visit our website, or interact with us through any channel." },
   { type: "p", text: "1.2.  We are a Reserve Bank of India (RBI)-registered Non-Banking Financial Company (NBFC) primarily engaged in providing gold loans. We take the privacy of your personal information seriously and are committed to handling it responsibly and in accordance with applicable law, including the Digital Personal Data Protection Act, 2023 (DPDP Act)." },
@@ -23,7 +23,7 @@ export const PRIVACY_POLICY_BLOCKS = [
   { type: "h3", text: "Device and Location Information (for Digital KYC)" },
   { type: "p", text: "If you use Aadhaar-based offline verification (OVSE), Video-based Customer Identification (V-CIP), or any other digital KYC mode, we may collect your device information and geographic location as required by RBI guidelines for such modes." },
   { type: "h3", text: "Website visit and interaction information" },
-  { type: "p", text: "When you visit yellowmetal.co (or related domains we operate), we automatically collect limited technical information to understand how the marketing website is used and to improve it. This may include: the page path you viewed, a temporary browser session identifier (stored in your browser and hashed before storage on our systems), approximate region/country derived from network routing (we do not store city-level location for website analytics), device/browser type inferred from the user-agent string, and anonymised interaction signals such as whether the lending-rate display was viewed or a loan-estimate calculator was used. For calculator interactions we store coarse weight ranges and estimate bands — not the exact grams or exact INR figure you typed." },
+  { type: "p", text: "When you visit yellowmetal.co (or related domains we operate), we automatically collect limited technical information to understand how the marketing website is used and to improve it. This may include: the page path you viewed, a temporary browser session identifier (stored in your browser and hashed before storage on our systems), approximate region/country derived from network routing (we do not store city-level location for website analytics), device/browser type inferred from the user-agent string, and interaction signals such as whether the lending-rate display was viewed or a loan-estimate calculator was used. For calculator interactions we store the gold weight you entered, the purity you selected, and the loan estimate shown." },
   { type: "p", text: "This website telemetry is separate from Digital KYC. It is not used to underwrite a loan by itself, is retained for a limited period (generally up to 90 days for aggregated website analytics), and is accessible only to authorised staff for operational analytics." },
   { type: "h2", text: "3. How We Collect Your Information" },
   { type: "p", text: "We collect your information through the following means:" },

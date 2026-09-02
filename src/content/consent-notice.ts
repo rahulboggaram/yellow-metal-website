@@ -63,7 +63,7 @@ export const CONSENT_NOTICE = {
         enables: "Keep the site readable on the devices people use.",
       },
       {
-        data: "Coarse calculator and lending-rate interaction bands — not the exact grams or rupee amount you typed.",
+        data: "The gold weight you type in the loan estimator, the purity you pick, and the loan estimate shown.",
         purpose: "To see whether the loan estimator is useful.",
         enables: "Improve the calculator.",
       },
@@ -123,7 +123,7 @@ export const CONSENT_NOTICE = {
         enables: "ಜನರು ಬಳಸುವ ಸಾಧನಗಳಲ್ಲಿ ತಾಣ ಓದಲು ಸುಲಭವಾಗಿರುವಂತೆ ಇಡುವುದು.",
       },
       {
-        data: "ಕ್ಯಾಲ್ಕುಲೇಟರ್ ಮತ್ತು ಸಾಲದ ದರದ ಸ್ಥೂಲ ಬಳಕೆಯ ವ್ಯಾಪ್ತಿ — ನೀವು ಟೈಪ್ ಮಾಡಿದ ನಿಖರ ಗ್ರಾಂ ಅಥವಾ ರೂಪಾಯಿ ಅಲ್ಲ.",
+        data: "ಸಾಲ ಅಂದಾಜು ಕ್ಯಾಲ್ಕುಲೇಟರ್‌ನಲ್ಲಿ ನೀವು ಟೈಪ್ ಮಾಡಿದ ಚಿನ್ನದ ತೂಕ, ನೀವು ಆರಿಸಿದ ಶುದ್ಧತೆ, ಮತ್ತು ತೋರಿಸಿದ ಸಾಲದ ಅಂದಾಜು.",
         purpose: "ಸಾಲ ಅಂದಾಜು ಸಾಧನ ಉಪಯುಕ್ತವಾಗಿದೆಯೇ ಎಂದು ನೋಡಲು.",
         enables: "ಕ್ಯಾಲ್ಕುಲೇಟರ್ ಸುಧಾರಿಸುವುದು.",
       },

@@ -21,14 +21,12 @@ export type CalculatorEntryEvent = {
   timestamp: string;
   sessionId: string;
   path: string;
-  /** @deprecated Prefer weightBucket — exact grams no longer stored for new events. */
+  /** Grams typed in the calculator, as entered. */
   weightEntered?: string;
-  /** Coarse bucket only (privacy minimizing). */
-  weightBucket?: string;
-  /** @deprecated Exact grams retained only for legacy events. */
   weightGrams?: number;
+  /** Legacy coarse band, kept for older rows. */
+  weightBucket?: string;
   karat: GoldKarat;
-  /** Rounded/bucketed loan estimate band, not exact INR for new events. */
   loanAmountInr: number | null;
   country?: string;
   region?: string | null;
@@ -74,7 +72,6 @@ export type EngagementSummary = {
     uniqueVisitors: number;
     totalEntries: number;
     byDay: { date: string; entries: number; visitors: number }[];
-    byWeightBand: { band: string; entries: number }[];
     recentEntries: CalculatorEntryEvent[];
   };
 };

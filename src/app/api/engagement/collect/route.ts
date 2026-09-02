@@ -1,9 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import {
-  hashSessionIdForStorage,
-  weightBucketGrams,
-} from "@/lib/admin-auth";
+import { hashSessionIdForStorage } from "@/lib/admin-auth";
 import { geoFromHeaders } from "@/lib/analytics-geo";
 import { appendEngagementEvent } from "@/lib/engagement-store";
 import type { EngagementCollectInput } from "@/lib/engagement-types";
@@ -22,15 +19,6 @@ const VALID_KARATS = new Set<string>(GOLD_KARAT_OPTIONS);
 const MAX_PATH = 200;
 const MAX_SESSION_ID = 80;
 const MAX_BODY_BYTES = 8_192;
-
-function loanAmountBucket(amount: number | null): number | null {
-  if (amount === null || !Number.isFinite(amount) || amount < 0) return null;
-  if (amount < 50_000) return 25_000;
-  if (amount < 100_000) return 75_000;
-  if (amount < 300_000) return 200_000;
-  if (amount < 500_000) return 400_000;
-  return 750_000;
-}
 
 function isValidInput(body: unknown): body is EngagementCollectInput {
   if (!body || typeof body !== "object") return false;
@@ -119,15 +107,18 @@ export async function POST(request: Request) {
       });
     } else {
       const geo = geoFromHeaders(request.headers);
+      const grams = Math.round(body.weightGrams * 10) / 10;
       await appendEngagementEvent({
         id,
         type: "calculator_entry",
         timestamp,
         sessionId,
         path,
-        weightBucket: weightBucketGrams(body.weightGrams),
+        weightEntered: body.weightEntered.trim(),
+        weightGrams: grams,
         karat: body.karat,
-        loanAmountInr: loanAmountBucket(body.loanAmountInr),
+        loanAmountInr:
+          body.loanAmountInr === null ? null : Math.round(body.loanAmountInr),
         country: geo.country,
         region: geo.region,
         city: null,

@@ -92,6 +92,11 @@ function planToRow(plan: LoanPlan) {
   };
 }
 
+function isUniqueViolation(error: unknown): boolean {
+  if (!error || typeof error !== "object" || !("code" in error)) return false;
+  return (error as { code?: unknown }).code === "23505";
+}
+
 async function seedSupabaseIfEmpty(): Promise<LoanPlan[]> {
   const { data, error } = await getYmSupabase().from("loan_plans").select("*");
   if (error) throw error;
@@ -114,42 +119,11 @@ async function readAllPlans(): Promise<LoanPlan[]> {
   return readLocalPlans();
 }
 
-async function writeAllPlans(plans: LoanPlan[]): Promise<void> {
-  if (assertStoreBackend() === "supabase") {
-    // Replace strategy: upsert all current, delete missing
-    const sorted = sortPlans(plans);
-    const { data: existing, error: readError } = await getYmSupabase()
-      .from("loan_plans")
-      .select("id");
-    if (readError) throw readError;
-    const nextIds = new Set(sorted.map((plan) => plan.id));
-    const toDelete = (existing ?? [])
-      .map((row) => String(row.id))
-      .filter((id) => !nextIds.has(id));
-    if (toDelete.length > 0) {
-      const { error: delError } = await getYmSupabase()
-        .from("loan_plans")
-        .delete()
-        .in("id", toDelete);
-      if (delError) throw delError;
-    }
-    const { error: upsertError } = await getYmSupabase()
-      .from("loan_plans")
-      .upsert(sorted.map(planToRow));
-    if (upsertError) throw upsertError;
-    return;
-  }
-  writeLocalPlans(plans);
-}
-
 async function mutatePlans(
   mutate: (current: LoanPlan[]) => LoanPlan[],
 ): Promise<LoanPlan[]> {
   if (assertStoreBackend() === "supabase") {
-    const current = await readAllPlans();
-    const next = sortPlans(mutate(current));
-    await writeAllPlans(next);
-    return next;
+    throw new Error("Supabase loan-plan mutations must be row-scoped");
   }
 
   let result: LoanPlan[] = [];
@@ -160,6 +134,75 @@ async function mutatePlans(
   localWriteChain = run.catch(() => undefined);
   await run;
   return result;
+}
+
+async function createSupabaseLoanPlan(plan: LoanPlan): Promise<LoanPlan> {
+  await seedSupabaseIfEmpty();
+
+  const { data, error } = await getYmSupabase()
+    .from("loan_plans")
+    .insert(planToRow(plan))
+    .select("*")
+    .single();
+  if (error) {
+    if (isUniqueViolation(error)) {
+      throw new Error("A plan with this id already exists");
+    }
+    throw error;
+  }
+  return rowToPlan(data as Record<string, unknown>);
+}
+
+async function updateSupabaseLoanPlan(
+  id: string,
+  updated: LoanPlan,
+): Promise<{ before: LoanPlan; after: LoanPlan }> {
+  await seedSupabaseIfEmpty();
+
+  const { data: existing, error: readError } = await getYmSupabase()
+    .from("loan_plans")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (readError) throw readError;
+  if (!existing) throw new Error("Loan plan not found");
+
+  const { data, error } = await getYmSupabase()
+    .from("loan_plans")
+    .update(planToRow(updated))
+    .eq("id", id)
+    .select("*")
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error("Loan plan not found");
+
+  return {
+    before: rowToPlan(existing as Record<string, unknown>),
+    after: rowToPlan(data as Record<string, unknown>),
+  };
+}
+
+async function deleteSupabaseLoanPlan(id: string): Promise<LoanPlan> {
+  await seedSupabaseIfEmpty();
+
+  const { data: existing, error: readError } = await getYmSupabase()
+    .from("loan_plans")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (readError) throw readError;
+  if (!existing) throw new Error("Loan plan not found");
+
+  const { data, error } = await getYmSupabase()
+    .from("loan_plans")
+    .delete()
+    .eq("id", id)
+    .select("id")
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error("Loan plan not found");
+
+  return rowToPlan(existing as Record<string, unknown>);
 }
 
 export async function getLoanPlans(activeOnly = true): Promise<LoanPlan[]> {
@@ -189,6 +232,17 @@ export async function createLoanPlan(input: LoanPlanInput): Promise<LoanPlan> {
     input.id?.trim() || `plan-${slugifyId(input.amountLabel)}-${Date.now()}`;
   const plan: LoanPlan = { ...input, id };
 
+  if (assertStoreBackend() === "supabase") {
+    const created = await createSupabaseLoanPlan(plan);
+    await appendLoanPlanAudit({
+      action: "create",
+      planId: created.id,
+      before: null,
+      after: created,
+    });
+    return created;
+  }
+
   const plans = await mutatePlans((current) => {
     if (current.some((item) => item.id === id)) {
       throw new Error("A plan with this id already exists");
@@ -214,6 +268,13 @@ export async function updateLoanPlan(
   if (validationError) throw new Error(validationError);
 
   const updated: LoanPlan = { ...input, id };
+
+  if (assertStoreBackend() === "supabase") {
+    const { before, after } = await updateSupabaseLoanPlan(id, updated);
+    await appendLoanPlanAudit({ action: "update", planId: id, before, after });
+    return after;
+  }
+
   let before: LoanPlan | null = null;
   const plans = await mutatePlans((current) => {
     const index = current.findIndex((plan) => plan.id === id);
@@ -230,6 +291,17 @@ export async function updateLoanPlan(
 }
 
 export async function deleteLoanPlan(id: string): Promise<void> {
+  if (assertStoreBackend() === "supabase") {
+    const before = await deleteSupabaseLoanPlan(id);
+    await appendLoanPlanAudit({
+      action: "delete",
+      planId: id,
+      before,
+      after: null,
+    });
+    return;
+  }
+
   let before: LoanPlan | null = null;
   await mutatePlans((current) => {
     before = current.find((plan) => plan.id === id) ?? null;

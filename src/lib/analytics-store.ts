@@ -87,10 +87,10 @@ async function readAllEvents(): Promise<AnalyticsEvent[]> {
       .from("analytics_events")
       .select("*")
       .gte("timestamp", cutoff)
-      .order("timestamp", { ascending: true })
+      .order("timestamp", { ascending: false })
       .limit(MAX_EVENTS);
     if (error) throw error;
-    return (data ?? []).map((row) => ({
+    return [...(data ?? [])].reverse().map((row) => ({
       id: row.id,
       timestamp: row.timestamp,
       path: row.path,

@@ -107,35 +107,16 @@ export async function durableRateLimitAllow(
   if (hasYmSupabase()) {
     try {
       assertStoreBackend();
-      const now = Date.now();
-      const { data, error } = await getYmSupabase()
-        .from("rate_limit_buckets")
-        .select("key, count, reset_at")
-        .eq("key", key)
-        .maybeSingle();
+      const { data, error } = await getYmSupabase().rpc(
+        "consume_rate_limit_bucket",
+        {
+          p_key: key,
+          p_limit: limit,
+          p_window_ms: windowMs,
+        },
+      );
       if (error) throw error;
-
-      if (!data || new Date(String(data.reset_at)).getTime() <= now) {
-        const { error: upsertError } = await getYmSupabase()
-          .from("rate_limit_buckets")
-          .upsert({
-            key,
-            count: 1,
-            reset_at: new Date(now + windowMs).toISOString(),
-          });
-        if (upsertError) throw upsertError;
-        return true;
-      }
-
-      if (Number(data.count) >= limit) return false;
-
-      const { error: updateError } = await getYmSupabase()
-        .from("rate_limit_buckets")
-        .update({ count: Number(data.count) + 1 })
-        .eq("key", key)
-        .eq("reset_at", data.reset_at);
-      if (updateError) throw updateError;
-      return true;
+      return data === true;
     } catch {
       // Fail closed: store errors must not open unlimited traffic.
       return false;

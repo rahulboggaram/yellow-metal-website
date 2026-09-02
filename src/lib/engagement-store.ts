@@ -10,7 +10,7 @@ import type {
   EngagementSummary,
   LendingRateStopEvent,
 } from "@/lib/engagement-types";
-import { getYmSupabase, assertStoreBackend } from "@/lib/ym-supabase";
+import { getYmSupabase, assertStoreBackend, fetchAllPaged } from "@/lib/ym-supabase";
 import { RETENTION_DAYS } from "@/lib/retention-purge";
 
 const LOCAL_PATH = path.join(process.cwd(), "data", "engagement.json");
@@ -134,14 +134,18 @@ async function readAllEvents(): Promise<EngagementEvent[]> {
     const cutoff = new Date(
       Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000,
     ).toISOString();
-    const { data, error } = await getYmSupabase()
-      .from("engagement_events")
-      .select("*")
-      .gte("timestamp", cutoff)
-      .order("timestamp", { ascending: true })
-      .limit(MAX_EVENTS);
-    if (error) throw error;
-    return (data ?? []).map((row) => rowToEvent(row as Record<string, unknown>));
+    const rows = await fetchAllPaged<Record<string, unknown>>(
+      (from, to) =>
+        getYmSupabase()
+          .from("engagement_events")
+          .select("*")
+          .gte("timestamp", cutoff)
+          .order("timestamp", { ascending: true })
+          .order("id", { ascending: true })
+          .range(from, to),
+      MAX_EVENTS,
+    );
+    return rows.map((row) => rowToEvent(row));
   }
   return readLocal().events;
 }

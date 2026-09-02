@@ -29,6 +29,34 @@ export function assertStoreBackend(): "supabase" | "local" {
   return "local";
 }
 
+/** PostgREST returns at most 1,000 rows per request, even when `.limit()` is higher. */
+export const SUPABASE_PAGE_SIZE = 1000;
+
+/**
+ * Load every matching row by paging past the 1,000-row cap.
+ * Without this, admin views silently stop at the oldest thousand events.
+ */
+export async function fetchAllPaged<T>(
+  loadPage: (
+    from: number,
+    to: number,
+  ) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
+  maxRows: number,
+): Promise<T[]> {
+  const rows: T[] = [];
+  let from = 0;
+  while (rows.length < maxRows) {
+    const to = Math.min(from + SUPABASE_PAGE_SIZE - 1, maxRows - 1);
+    const { data, error } = await loadPage(from, to);
+    if (error) throw new Error(error.message);
+    const page = data ?? [];
+    rows.push(...page);
+    if (page.length < SUPABASE_PAGE_SIZE) break;
+    from += SUPABASE_PAGE_SIZE;
+  }
+  return rows.slice(0, maxRows);
+}
+
 /** Server-only Supabase client for Yellow Metal private data. Never import in client components. */
 export function getYmSupabase(): SupabaseClient {
   const url = process.env.YM_SUPABASE_URL;

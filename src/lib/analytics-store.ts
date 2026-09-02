@@ -3,7 +3,7 @@ import "server-only";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { analyticsPlaceLabel, countryDisplayName } from "@/lib/analytics-geo";
-import { getYmSupabase, assertStoreBackend } from "@/lib/ym-supabase";
+import { getYmSupabase, assertStoreBackend, fetchAllPaged } from "@/lib/ym-supabase";
 import { RETENTION_DAYS } from "@/lib/retention-purge";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
 
@@ -84,29 +84,33 @@ async function readAllEvents(): Promise<AnalyticsEvent[]> {
     const cutoff = new Date(
       Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000,
     ).toISOString();
-    const { data, error } = await getYmSupabase()
-      .from("analytics_events")
-      .select("*")
-      .gte("timestamp", cutoff)
-      .order("timestamp", { ascending: true })
-      .limit(MAX_EVENTS);
-    if (error) throw error;
-    return (data ?? []).map((row) => ({
-      id: row.id,
-      timestamp: row.timestamp,
-      path: row.path,
-      sessionId: row.session_id,
-      referrer: row.referrer,
-      deviceType: row.device_type,
-      browser: row.browser,
-      browserVersion: row.browser_version ?? "",
-      os: row.os,
-      osVersion: row.os_version ?? "",
-      deviceVendor: row.device_vendor,
-      deviceModel: row.device_model,
-      country: row.country ?? "Unknown",
-      region: row.region,
-      city: row.city,
+    const rows = await fetchAllPaged<Record<string, unknown>>(
+      (from, to) =>
+        getYmSupabase()
+          .from("analytics_events")
+          .select("*")
+          .gte("timestamp", cutoff)
+          .order("timestamp", { ascending: true })
+          .order("id", { ascending: true })
+          .range(from, to),
+      MAX_EVENTS,
+    );
+    return rows.map((row) => ({
+      id: String(row.id),
+      timestamp: String(row.timestamp),
+      path: String(row.path),
+      sessionId: String(row.session_id),
+      referrer: (row.referrer as string | null) ?? null,
+      deviceType: row.device_type as AnalyticsEvent["deviceType"],
+      browser: String(row.browser),
+      browserVersion: String(row.browser_version ?? ""),
+      os: String(row.os),
+      osVersion: String(row.os_version ?? ""),
+      deviceVendor: (row.device_vendor as string | null) ?? null,
+      deviceModel: (row.device_model as string | null) ?? null,
+      country: String(row.country ?? "Unknown"),
+      region: (row.region as string | null) ?? null,
+      city: (row.city as string | null) ?? null,
     }));
   }
   return readLocal().events;

@@ -90,15 +90,17 @@ export function spotRatePerGramFromRaw(
 export function loanRatePer10gFromRaw(
   baseField: number,
   karat: GoldKarat,
+  ltv = GOLD_LTV,
 ): number {
-  return Math.round(spotRatePer10gFromRaw(baseField, karat) * GOLD_LTV);
+  return Math.round(spotRatePer10gFromRaw(baseField, karat) * ltv);
 }
 
 export function loanRatePerGramFromRaw(
   baseField: number,
   karat: GoldKarat,
+  ltv = GOLD_LTV,
 ): number {
-  return Math.round(spotRatePerGramFromRaw(baseField, karat) * GOLD_LTV);
+  return Math.round(spotRatePerGramFromRaw(baseField, karat) * ltv);
 }
 
 function gold999BaseFieldFromPer10g(gold999Per10g: number): number {
@@ -126,18 +128,19 @@ export function loanAmountFromWeightGrams(
   karat: GoldKarat,
   gold999BaseRaw: number | null,
   rate22kPerGramInr: number,
+  ltv = GOLD_LTV,
 ): number {
   if (!Number.isFinite(weightGrams) || weightGrams <= 0) return 0;
 
   if (gold999BaseRaw != null) {
     return Math.round(
-      loanRatePerGramFromRaw(gold999BaseRaw, karat) * weightGrams,
+      loanRatePerGramFromRaw(gold999BaseRaw, karat, ltv) * weightGrams,
     );
   }
 
   const loanPerGram = Math.round(
     rate22kPerGramInr *
-      GOLD_LTV *
+      ltv *
       (GOLD_KARAT_PURITIES[karat] / GOLD_KARAT_PURITIES["22K"]),
   );
   return Math.round(loanPerGram * weightGrams);
@@ -147,14 +150,15 @@ export function loanRatePerGram(
   karat: GoldKarat,
   gold999BaseRaw: number | null,
   rate22kPerGramInr: number,
+  ltv = GOLD_LTV,
 ): number {
   if (gold999BaseRaw != null) {
-    return loanRatePerGramFromRaw(gold999BaseRaw, karat);
+    return loanRatePerGramFromRaw(gold999BaseRaw, karat, ltv);
   }
 
   return Math.round(
     rate22kPerGramInr *
-      GOLD_LTV *
+      ltv *
       (GOLD_KARAT_PURITIES[karat] / GOLD_KARAT_PURITIES["22K"]),
   );
 }

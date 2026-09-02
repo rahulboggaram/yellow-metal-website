@@ -149,9 +149,9 @@ export function AnalyticsAdminPanel() {
               emptyLabel="No location data yet."
             />
             <DataTable
-              title="Top cities"
+              title="Top cities & regions"
               rows={summary.byCity}
-              emptyLabel="No city data yet."
+              emptyLabel="No city or region data yet."
             />
             <DataTable
               title="Browsers"

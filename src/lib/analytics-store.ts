@@ -2,6 +2,7 @@ import "server-only";
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { analyticsPlaceLabel, countryDisplayName } from "@/lib/analytics-geo";
 import { getYmSupabase, assertStoreBackend } from "@/lib/ym-supabase";
 import { RETENTION_DAYS } from "@/lib/retention-purge";
 import type { AnalyticsEvent, AnalyticsQuery, AnalyticsSummary } from "./analytics-types";
@@ -173,10 +174,10 @@ export async function getAnalyticsSummary(query: AnalyticsQuery): Promise<Analyt
     mobileViews: events.filter((event) => event.deviceType === "mobile").length,
     desktopViews: events.filter((event) => event.deviceType === "desktop").length,
     tabletViews: events.filter((event) => event.deviceType === "tablet").length,
-    byCountry: countBy(events, (event) => event.country),
+    byCountry: countBy(events, (event) => countryDisplayName(event.country)),
     byCity: countBy(
-      events.filter((event) => event.region),
-      (event) => `${event.region}, ${event.country}`,
+      events.map(analyticsPlaceLabel).filter((label): label is string => Boolean(label)),
+      (label) => label,
     ),
     byBrowser: countBy(
       events,

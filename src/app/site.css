@@ -1008,6 +1008,15 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: var(--ym-dash-text);
 }
 
+.ym-loan-plan-limit-note {
+  max-width: 22rem;
+  margin: 0.1rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ym-dash-muted);
+}
+
 .ym-loan-interest-section {
   display: grid;
   gap: 0.5rem;

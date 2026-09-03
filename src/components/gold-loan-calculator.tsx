@@ -13,6 +13,7 @@ import {
   calculateMonthlyInterestInr,
   formatPlanRate,
   formatPlanRepaymentLabel,
+  getMaximumCoveredLoanAmount,
   getMatchingLoanPlansByType,
 } from "@/lib/loan-plans-shared";
 import { useLoanPlans } from "@/components/loan-plans";
@@ -76,6 +77,16 @@ export function GoldLoanCalculator() {
     return getMatchingLoanPlansByType(loanAmount, plans);
   }, [loanAmount, plans]);
 
+  const maximumCoveredLoanAmount = useMemo(
+    () => getMaximumCoveredLoanAmount(plans),
+    [plans],
+  );
+  const abovePublishedPlanLimit =
+    loanAmount !== null &&
+    maximumCoveredLoanAmount !== null &&
+    loanAmount > maximumCoveredLoanAmount;
+  const displayedLoanAmount =
+    abovePublishedPlanLimit ? maximumCoveredLoanAmount : loanAmount;
   const hasWeightValue = weightInput.trim().length > 0 && weightGrams > 0;
   const weightFieldActive = weightFocused || weightInput.trim().length > 0;
 
@@ -83,7 +94,9 @@ export function GoldLoanCalculator() {
     hasWeightValue && !loading && !error && loanAmount !== null;
 
   const amountText =
-    loading || error || loanAmount === null ? "—" : formatInr(loanAmount);
+    loading || error || displayedLoanAmount === null
+      ? "—"
+      : formatInr(displayedLoanAmount);
 
   const weightInputBindings = interFontBindings("font-tabular-nums");
 
@@ -180,7 +193,11 @@ export function GoldLoanCalculator() {
 
                 {showEligibleAmount && (
                   <div className="ym-loan-eligible-amount" aria-live="polite">
-                    <p className="ym-loan-eligible-label">Eligible loan amount</p>
+                    <p className="ym-loan-eligible-label">
+                      {abovePublishedPlanLimit
+                        ? "Online estimate available up to"
+                        : "Eligible loan amount"}
+                    </p>
                     <InterNumeric
                       as="p"
                       className="ym-loan-eligible-value font-tabular-nums"
@@ -188,50 +205,63 @@ export function GoldLoanCalculator() {
                       {amountText}
                     </InterNumeric>
 
-                    {!plansLoading && !plansError && matchedPlans.length > 0 && (
-                      <div className="ym-loan-interest-section">
-                        <div
-                          className={[
-                            "ym-loan-interest-cards",
-                            matchedPlans.length === 1
-                              ? "ym-loan-interest-cards--single"
-                              : "",
-                          ]
-                            .filter(Boolean)
-                            .join(" ")}
-                        >
-                          {matchedPlans.map((plan) => {
-                            const monthlyInterest =
-                              loanAmount === null
-                                ? 0
-                                : calculateMonthlyInterestInr(loanAmount, plan);
-
-                            return (
-                              <article
-                                key={plan.id}
-                                className="ym-loan-interest-card"
-                              >
-                                <InterNumeric
-                                  as="p"
-                                  className="ym-loan-interest-value font-tabular-nums"
-                                >
-                                  {formatInr(monthlyInterest)}
-                                </InterNumeric>
-                                <p className="ym-loan-interest-period">Per Month</p>
-                                <p className="ym-loan-interest-meta">
-                                  <span className="ym-loan-interest-plan-type">
-                                    {formatPlanRepaymentLabel(plan.repaymentType)}
-                                  </span>
-                                  <span className="ym-loan-interest-rate">
-                                    {formatPlanRate(plan.monthlyRatePercent)}% p.m.
-                                  </span>
-                                </p>
-                              </article>
-                            );
-                          })}
-                        </div>
-                      </div>
+                    {!plansLoading && !plansError && abovePublishedPlanLimit && (
+                      <p className="ym-loan-plan-limit-note">
+                        Our online rate card currently covers gold loans up to{" "}
+                        {amountText}. For higher-value estimates, please contact
+                        your nearest branch.
+                      </p>
                     )}
+
+                    {!plansLoading &&
+                      !plansError &&
+                      !abovePublishedPlanLimit &&
+                      matchedPlans.length > 0 && (
+                        <div className="ym-loan-interest-section">
+                          <div
+                            className={[
+                              "ym-loan-interest-cards",
+                              matchedPlans.length === 1
+                                ? "ym-loan-interest-cards--single"
+                                : "",
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                          >
+                            {matchedPlans.map((plan) => {
+                              const monthlyInterest =
+                                loanAmount === null
+                                  ? 0
+                                  : calculateMonthlyInterestInr(loanAmount, plan);
+
+                              return (
+                                <article
+                                  key={plan.id}
+                                  className="ym-loan-interest-card"
+                                >
+                                  <InterNumeric
+                                    as="p"
+                                    className="ym-loan-interest-value font-tabular-nums"
+                                  >
+                                    {formatInr(monthlyInterest)}
+                                  </InterNumeric>
+                                  <p className="ym-loan-interest-period">
+                                    Per Month
+                                  </p>
+                                  <p className="ym-loan-interest-meta">
+                                    <span className="ym-loan-interest-plan-type">
+                                      {formatPlanRepaymentLabel(plan.repaymentType)}
+                                    </span>
+                                    <span className="ym-loan-interest-rate">
+                                      {formatPlanRate(plan.monthlyRatePercent)}% p.m.
+                                    </span>
+                                  </p>
+                                </article>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
 
                   </div>
                 )}

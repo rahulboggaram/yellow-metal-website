@@ -56,6 +56,20 @@ export function getMatchingLoanPlansByType(
   return Array.from(byType.values()).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
+export function getMaximumCoveredLoanAmount(plans: LoanPlan[]): number | null {
+  let maximum: number | null = null;
+
+  for (const plan of plans) {
+    if (!plan.active) continue;
+    if (plan.maxAmountInr === null) return null;
+    if (maximum === null || plan.maxAmountInr > maximum) {
+      maximum = plan.maxAmountInr;
+    }
+  }
+
+  return maximum;
+}
+
 export function calculateMonthlyInterestInr(
   principalInr: number,
   plan: LoanPlan,

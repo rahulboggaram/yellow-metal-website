@@ -55,6 +55,11 @@ const toDelete = (existing ?? [])
   .map((row) => String(row.id))
   .filter((id) => !nextIds.has(id));
 
+const { error: upsertError } = await supabase
+  .from("loan_plans")
+  .upsert(plans.map(planToRow));
+if (upsertError) throw upsertError;
+
 if (toDelete.length > 0) {
   const { error: delError } = await supabase
     .from("loan_plans")
@@ -62,11 +67,6 @@ if (toDelete.length > 0) {
     .in("id", toDelete);
   if (delError) throw delError;
 }
-
-const { error: upsertError } = await supabase
-  .from("loan_plans")
-  .upsert(plans.map(planToRow));
-if (upsertError) throw upsertError;
 
 process.stdout.write(
   `Replaced loan plans: ${plans.length} published, ${toDelete.length} removed.\n`,

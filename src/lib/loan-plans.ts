@@ -116,7 +116,7 @@ async function readAllPlans(): Promise<LoanPlan[]> {
 
 async function writeAllPlans(plans: LoanPlan[]): Promise<void> {
   if (assertStoreBackend() === "supabase") {
-    // Replace strategy: upsert all current, delete missing
+    // Upsert first so a failed replacement never deletes currently published rows.
     const sorted = sortPlans(plans);
     const { data: existing, error: readError } = await getYmSupabase()
       .from("loan_plans")
@@ -126,6 +126,10 @@ async function writeAllPlans(plans: LoanPlan[]): Promise<void> {
     const toDelete = (existing ?? [])
       .map((row) => String(row.id))
       .filter((id) => !nextIds.has(id));
+    const { error: upsertError } = await getYmSupabase()
+      .from("loan_plans")
+      .upsert(sorted.map(planToRow));
+    if (upsertError) throw upsertError;
     if (toDelete.length > 0) {
       const { error: delError } = await getYmSupabase()
         .from("loan_plans")
@@ -133,10 +137,6 @@ async function writeAllPlans(plans: LoanPlan[]): Promise<void> {
         .in("id", toDelete);
       if (delError) throw delError;
     }
-    const { error: upsertError } = await getYmSupabase()
-      .from("loan_plans")
-      .upsert(sorted.map(planToRow));
-    if (upsertError) throw upsertError;
     return;
   }
   writeLocalPlans(plans);

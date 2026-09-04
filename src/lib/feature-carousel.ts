@@ -45,7 +45,7 @@ export const FEATURE_CAROUSEL_SLIDES: FeatureCarouselSlide[] = [
     description:
       "Track your loan, view statements, and manage repayments from your phone — anytime, anywhere.",
     playStoreUrl:
-      "https://play.google.com/store/apps/details?id=com.consumer.yellow_metal",
+      "https://play.google.com/store/apps/details?id=com.consumer.ym",
     qrSrc: "/images/site/app-qr.png",
     screens: [
       {

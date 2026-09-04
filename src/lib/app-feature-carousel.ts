@@ -10,7 +10,7 @@ export const APP_FEATURE_SLIDES: AppFeatureSlide[] = [
     id: "download-app",
     title: "Download Yellow Metal App",
     imageSrc: "/images/features/download-app.png",
-    href: "https://play.google.com/store/apps/details?id=com.consumer.yellow_metal",
+    href: "https://play.google.com/store/apps/details?id=com.consumer.ym",
   },
   {
     id: "interest-reminders",

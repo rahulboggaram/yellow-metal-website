@@ -92,24 +92,17 @@ function planToRow(plan: LoanPlan) {
   };
 }
 
-async function seedSupabaseIfEmpty(): Promise<LoanPlan[]> {
+async function readSupabasePlans(): Promise<LoanPlan[]> {
   const { data, error } = await getYmSupabase().from("loan_plans").select("*");
   if (error) throw error;
-  if (data && data.length > 0) {
-    return sortPlans(data.map((row) => rowToPlan(row as Record<string, unknown>)));
-  }
-  const local = readLocalPlans();
-  if (local.length === 0) return [];
-  const { error: upsertError } = await getYmSupabase()
-    .from("loan_plans")
-    .upsert(local.map(planToRow));
-  if (upsertError) throw upsertError;
-  return sortPlans(local);
+  return sortPlans(
+    (data ?? []).map((row) => rowToPlan(row as Record<string, unknown>)),
+  );
 }
 
 async function readAllPlans(): Promise<LoanPlan[]> {
   if (assertStoreBackend() === "supabase") {
-    return seedSupabaseIfEmpty();
+    return readSupabasePlans();
   }
   return readLocalPlans();
 }

@@ -176,6 +176,14 @@ export async function checkAdminSession(): Promise<boolean> {
   return res.ok;
 }
 
-export async function logoutAdmin(): Promise<void> {
-  await fetch("/api/admin/logout", { method: "POST" });
+export async function logoutAdmin(): Promise<{ ok: boolean; error?: string }> {
+  const res = await fetch("/api/admin/logout", { method: "POST" });
+  if (!res.ok) {
+    const data: { error?: string } = await res.json().catch(() => ({}));
+    return {
+      ok: false,
+      error: data.error ?? "Could not sign out. Please try again.",
+    };
+  }
+  return { ok: true };
 }

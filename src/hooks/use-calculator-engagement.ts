@@ -11,6 +11,12 @@ type CalculatorEngagementOptions = {
   loanAmountInr: number | null;
 };
 
+type PendingCalculatorEntry = {
+  weightEntered: string;
+  weightGrams: number;
+  karat: GoldKarat;
+};
+
 export function useCalculatorEngagement({
   weightInput,
   weightGrams,
@@ -19,6 +25,7 @@ export function useCalculatorEngagement({
 }: CalculatorEngagementOptions) {
   const loanAmountRef = useRef(loanAmountInr);
   const lastSentRef = useRef<string | null>(null);
+  const pendingEntryRef = useRef<PendingCalculatorEntry | null>(null);
   const weightInputRef = useRef(weightInput);
   const weightGramsRef = useRef(weightGrams);
   const karatRef = useRef(karat);
@@ -28,24 +35,66 @@ export function useCalculatorEngagement({
   weightGramsRef.current = weightGrams;
   karatRef.current = karat;
 
-  const recordWeightEntry = useCallback(() => {
+  const sendEntry = useCallback(
+    (entry: PendingCalculatorEntry, amountInr: number) => {
+      const key = `${entry.weightEntered}|${entry.karat}|${amountInr}`;
+      if (lastSentRef.current === key) return;
+      lastSentRef.current = key;
+
+      sendEngagementEvent({
+        type: "calculator_entry",
+        weightEntered: entry.weightEntered,
+        weightGrams: entry.weightGrams,
+        karat: entry.karat,
+        loanAmountInr: amountInr,
+      });
+    },
+    [],
+  );
+
+  const currentEntry = useCallback((): PendingCalculatorEntry | null => {
     const trimmed = weightInputRef.current.trim();
     const grams = weightGramsRef.current;
-    const purity = karatRef.current;
-    if (!trimmed || grams <= 0) return;
+    if (!trimmed || grams <= 0) return null;
 
-    const key = `${trimmed}|${purity}|${loanAmountRef.current ?? ""}`;
-    if (lastSentRef.current === key) return;
-    lastSentRef.current = key;
-
-    sendEngagementEvent({
-      type: "calculator_entry",
+    return {
       weightEntered: trimmed,
       weightGrams: grams,
-      karat: purity,
-      loanAmountInr: loanAmountRef.current,
-    });
+      karat: karatRef.current,
+    };
   }, []);
+
+  const recordWeightEntry = useCallback(() => {
+    const entry = currentEntry();
+    if (!entry) {
+      pendingEntryRef.current = null;
+      return;
+    }
+
+    const amountInr = loanAmountRef.current;
+    if (amountInr === null) {
+      pendingEntryRef.current = entry;
+      return;
+    }
+
+    pendingEntryRef.current = null;
+    sendEntry(entry, amountInr);
+  }, [currentEntry, sendEntry]);
+
+  useEffect(() => {
+    const pending = pendingEntryRef.current;
+    if (!pending || loanAmountInr === null) return;
+
+    const entry = currentEntry();
+    const pendingStillCurrent =
+      entry &&
+      entry.weightEntered === pending.weightEntered &&
+      entry.weightGrams === pending.weightGrams &&
+      entry.karat === pending.karat;
+
+    pendingEntryRef.current = null;
+    if (pendingStillCurrent) sendEntry(pending, loanAmountInr);
+  }, [currentEntry, karat, loanAmountInr, sendEntry, weightGrams, weightInput]);
 
   useEffect(() => {
     const onHide = () => recordWeightEntry();

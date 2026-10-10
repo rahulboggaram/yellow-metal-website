@@ -212,7 +212,7 @@ export function GoldRatesAdminPanel() {
                 <table className="ym-admin-table ym-admin-table--rates">
                   <thead>
                     <tr>
-                      <th>Date on the site</th>
+                      <th>Date</th>
                       <th>24K gold / g</th>
                       <th>Lending rate / g</th>
                       <th>Change</th>

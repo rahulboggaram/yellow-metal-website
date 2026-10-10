@@ -101,10 +101,8 @@ export function GoldRatesAdminPanel() {
 
   const stats = useMemo(() => {
     if (!history || history.rows.length === 0) return null;
-    const rows = history.rows;
     return {
-      days: rows.length,
-      latest: rows[rows.length - 1],
+      latest: history.rows[history.rows.length - 1],
     };
   }, [history]);
 
@@ -157,7 +155,6 @@ export function GoldRatesAdminPanel() {
           {stats ? (
             <>
               <div className="ym-admin-stats">
-                <StatCard label="Days shown" value={stats.days} />
                 <StatCard
                   label="Latest lending rate"
                   value={`${formatInr(stats.latest.loanPerGramInr)}/g`}

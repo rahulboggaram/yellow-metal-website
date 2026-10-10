@@ -19,41 +19,88 @@ function changeClass(delta: number | null): string {
   return delta > 0 ? "ym-admin-rate-up" : "ym-admin-rate-down";
 }
 
-function RateSparkline({ rows }: { rows: SeenGoldRateDay[] }) {
-  const values = rows.map((row) => row.loanPerGramInr);
-  if (values.length < 2) return null;
+function GoldRateChart({ rows }: { rows: SeenGoldRateDay[] }) {
+  if (rows.length < 2) return null;
 
+  const values = rows.map((row) => row.rate24kPerGramInr);
   const min = Math.min(...values);
   const max = Math.max(...values);
   const span = max - min || 1;
-  const width = 100;
-  const height = 36;
-  const points = values
-    .map((value, index) => {
-      const x = (index / (values.length - 1)) * width;
-      const y = height - ((value - min) / span) * (height - 4) - 2;
-      return `${x.toFixed(2)},${y.toFixed(2)}`;
-    })
-    .join(" ");
+  const width = 1000;
+  const height = 180;
+  const padY = 10;
+  const coords = values.map((value, index) => {
+    const x = (index / (values.length - 1)) * width;
+    const y = padY + (1 - (value - min) / span) * (height - padY * 2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  });
+  const line = coords.join(" ");
+  const area = `0,${height} ${line} ${width},${height}`;
+  const first = rows[0];
+  const last = rows[rows.length - 1];
+  const fromLabel = formatAdminDate(first.shownOn);
+  const toLabel = formatAdminDate(last.shownOn);
 
   return (
-    <svg
-      className="ym-admin-spark"
-      viewBox={`0 0 ${width} ${height}`}
-      preserveAspectRatio="none"
-      role="img"
-      aria-label="Lending rate from the first day in this list to the latest day"
-    >
-      <polyline
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        vectorEffect="non-scaling-stroke"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        points={points}
-      />
-    </svg>
+    <figure className="ym-admin-chart">
+      <figcaption>
+        <p className="ym-admin-chart-title">24K gold price per gram</p>
+        <p className="ym-admin-chart-caption">
+          The price on the site each day. The top line is the highest price,
+          and the bottom line is the lowest.
+        </p>
+      </figcaption>
+      <div className="ym-admin-chart-body">
+        <div className="ym-admin-chart-scale" aria-hidden>
+          <span>{formatInr(max)}</span>
+          <span>{formatInr(min)}</span>
+        </div>
+        <div>
+          <svg
+            className="ym-admin-chart-svg"
+            viewBox={`0 0 ${width} ${height}`}
+            preserveAspectRatio="none"
+            role="img"
+            aria-label={`24K gold price per gram from ${fromLabel} to ${toLabel}. Highest ${formatInr(max)}, lowest ${formatInr(min)}.`}
+          >
+            <line
+              x1="0"
+              y1={padY}
+              x2={width}
+              y2={padY}
+              stroke="currentColor"
+              strokeOpacity="0.12"
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+            />
+            <line
+              x1="0"
+              y1={height - padY}
+              x2={width}
+              y2={height - padY}
+              stroke="currentColor"
+              strokeOpacity="0.12"
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+            />
+            <polygon points={area} fill="currentColor" fillOpacity="0.06" />
+            <polyline
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              vectorEffect="non-scaling-stroke"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              points={line}
+            />
+          </svg>
+          <div className="ym-admin-chart-axis" aria-hidden>
+            <span>{fromLabel}</span>
+            <span>{toLabel}</span>
+          </div>
+        </div>
+      </div>
+    </figure>
   );
 }
 
@@ -155,7 +202,7 @@ export function GoldRatesAdminPanel() {
                   info="The pure gold price per gram from that day’s 5:30 PM close."
                 />
               </div>
-              <RateSparkline rows={history.rows} />
+              <GoldRateChart rows={history.rows} />
             </>
           ) : (
             <p className="ym-admin-empty">

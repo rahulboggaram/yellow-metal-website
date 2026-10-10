@@ -2364,9 +2364,32 @@ body:has(.ym-admin-root),
   font-variant-numeric: tabular-nums;
 }
 
+.ym-admin-table--rates {
+  table-layout: fixed;
+  min-width: 36rem;
+}
+
+.ym-admin-table--rates th,
+.ym-admin-table--rates td {
+  padding: 0.7rem 1.25rem;
+}
+
+.ym-admin-table--rates th:first-child,
+.ym-admin-table--rates td:first-child {
+  width: 28%;
+  padding-left: 0;
+  text-align: left;
+}
+
 .ym-admin-table--rates th:nth-child(n + 2),
 .ym-admin-table--rates td:nth-child(n + 2) {
+  width: 24%;
   text-align: right;
+}
+
+.ym-admin-table--rates th:last-child,
+.ym-admin-table--rates td:last-child {
+  padding-right: 0;
 }
 
 .ym-admin-spark {

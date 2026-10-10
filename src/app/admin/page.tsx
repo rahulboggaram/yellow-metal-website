@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnalyticsAdminPanel } from "@/components/admin/analytics-panel";
 import { EngagementAdminPanel } from "@/components/admin/engagement-panel";
+import { GoldRatesAdminPanel } from "@/components/admin/gold-rates-panel";
 import { AdminLottiePreview } from "@/components/admin/lottie-preview";
 import { LoanPlansAdminPanel } from "@/components/admin/loan-plans-panel";
 import { FloatingInput } from "@/components/ui/floating-field";
@@ -20,9 +21,10 @@ import {
 const TABS: {
   id: AdminTab;
   label: string;
-  icon: "analytics" | "engagement" | "plans";
+  icon: "analytics" | "engagement" | "rates" | "plans";
 }[] = [
   { id: "analytics", label: "Analytics", icon: "analytics" },
+  { id: "gold-rates", label: "Gold rates", icon: "rates" },
   { id: "engagement", label: "Engagement", icon: "engagement" },
   { id: "loan-plans", label: "Loan plans", icon: "plans" },
 ];
@@ -55,6 +57,20 @@ function NavIcon({ name }: { name: (typeof TABS)[number]["icon"] }) {
           strokeWidth="1.6"
           strokeLinejoin="round"
         />
+      </svg>
+    );
+  }
+  if (name === "rates") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden className="ym-admin-nav-icon">
+        <path
+          d="M4.5 16.5 9 11.8l3.2 2.2L19.5 7.5"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="19.5" cy="7.5" r="1.35" fill="currentColor" />
       </svg>
     );
   }
@@ -181,7 +197,7 @@ function AdminPageContent() {
           <div className="ym-admin-gate">
             <h1 className="ym-admin-gate-title">Sign in</h1>
             <p className="ym-admin-gate-lead">
-              Manage loan plans and review website analytics.
+              Manage loan plans, gold rates, and website analytics.
             </p>
 
             <form
@@ -304,6 +320,14 @@ function AdminPageContent() {
                   speed={0.5}
                 />
               ) : null}
+              {tab === "gold-rates" ? (
+                <AdminLottiePreview
+                  animation="gold-rates"
+                  className="ym-admin-title-lottie"
+                  size={80}
+                  speed={0.5}
+                />
+              ) : null}
               {tab === "engagement" ? (
                 <AdminLottiePreview
                   animation="favorites"
@@ -328,6 +352,8 @@ function AdminPageContent() {
           <div role="tabpanel" className="ym-admin-main-content">
             {tab === "analytics" ? (
               <AnalyticsAdminPanel />
+            ) : tab === "gold-rates" ? (
+              <GoldRatesAdminPanel />
             ) : tab === "engagement" ? (
               <EngagementAdminPanel />
             ) : (

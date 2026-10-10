@@ -1,8 +1,9 @@
-export type AdminTab = "loan-plans" | "analytics" | "engagement";
+export type AdminTab = "loan-plans" | "analytics" | "engagement" | "gold-rates";
 
 export function parseAdminTab(value: string | null): AdminTab {
   if (value === "loan-plans") return "loan-plans";
   if (value === "engagement") return "engagement";
+  if (value === "gold-rates") return "gold-rates";
   return "analytics";
 }
 

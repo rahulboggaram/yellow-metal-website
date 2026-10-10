@@ -6,6 +6,7 @@ const COOKIE_DEV = "ym_admin_session";
 const PROTECTED_PREFIXES = [
   "/api/analytics",
   "/api/engagement",
+  "/api/gold-rates",
 ];
 
 function isProtectedMutation(pathname: string, method: string): boolean {
@@ -19,7 +20,11 @@ function isProtectedMutation(pathname: string, method: string): boolean {
   ) {
     return true;
   }
-  if (pathname === "/api/analytics" || pathname === "/api/engagement") {
+  if (
+    pathname === "/api/analytics" ||
+    pathname === "/api/engagement" ||
+    pathname === "/api/gold-rates"
+  ) {
     return method === "GET";
   }
   return false;
@@ -110,6 +115,7 @@ export const config = {
   matcher: [
     "/api/analytics",
     "/api/engagement",
+    "/api/gold-rates",
     "/api/loan-plans",
     "/api/loan-plans/:path*",
   ],

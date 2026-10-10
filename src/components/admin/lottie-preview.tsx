@@ -9,6 +9,7 @@ import loan from "../../../public/lottie/loan.json";
 const ANIMATIONS = {
   favorites: addToFavorites,
   "financial-graph": financialGraphLoader,
+  "gold-rates": financialGraphLoader,
   loan,
 } as const;
 

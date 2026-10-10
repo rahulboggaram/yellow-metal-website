@@ -23,22 +23,20 @@ const SPOT_SUPABASE_ANON_KEY = process.env.SPOT_SUPABASE_ANON_KEY ?? "";
 
 const SPOT_APP_URL = "https://spot-app-bice.vercel.app";
 
-type MarketPriceRow = {
+export type MarketPriceRow = {
   id: number;
   gold_999_base: number;
   silver_base: number | null;
   updated_at: string;
 };
 
-async function fetchMarketPrices(): Promise<MarketPriceRow[]> {
+const HISTORY_PAGE_SIZE = 1000;
+const HISTORY_MAX_ROWS = 20000;
+
+async function requestMarketPrices(url: URL): Promise<MarketPriceRow[]> {
   if (!SPOT_SUPABASE_URL || !SPOT_SUPABASE_ANON_KEY) {
     throw new Error("SPOT_SUPABASE_URL / SPOT_SUPABASE_ANON_KEY are not configured");
   }
-
-  const url = new URL(`${SPOT_SUPABASE_URL}/rest/v1/market_prices`);
-  url.searchParams.set("select", "id,gold_999_base,silver_base,updated_at");
-  url.searchParams.set("order", "updated_at.desc");
-  url.searchParams.set("limit", "60");
 
   const res = await fetch(url, {
     headers: {
@@ -58,6 +56,36 @@ async function fetchMarketPrices(): Promise<MarketPriceRow[]> {
   }
 
   return rows as MarketPriceRow[];
+}
+
+async function fetchMarketPrices(): Promise<MarketPriceRow[]> {
+  const url = new URL(`${SPOT_SUPABASE_URL}/rest/v1/market_prices`);
+  url.searchParams.set("select", "id,gold_999_base,silver_base,updated_at");
+  url.searchParams.set("order", "updated_at.desc");
+  url.searchParams.set("limit", "60");
+  return requestMarketPrices(url);
+}
+
+/** Every spot print from `sinceIso` onward, oldest first. Paged past the 1,000-row cap. */
+export async function fetchMarketPricesSince(sinceIso: string): Promise<MarketPriceRow[]> {
+  const rows: MarketPriceRow[] = [];
+  let offset = 0;
+
+  while (rows.length < HISTORY_MAX_ROWS) {
+    const url = new URL(`${SPOT_SUPABASE_URL}/rest/v1/market_prices`);
+    url.searchParams.set("select", "id,gold_999_base,silver_base,updated_at");
+    url.searchParams.set("updated_at", `gte.${sinceIso}`);
+    url.searchParams.set("order", "updated_at.asc");
+    url.searchParams.set("limit", String(HISTORY_PAGE_SIZE));
+    url.searchParams.set("offset", String(offset));
+
+    const page = await requestMarketPrices(url);
+    rows.push(...page);
+    if (page.length < HISTORY_PAGE_SIZE) break;
+    offset += HISTORY_PAGE_SIZE;
+  }
+
+  return rows.slice(0, HISTORY_MAX_ROWS);
 }
 
 function pickPmRateForSession(

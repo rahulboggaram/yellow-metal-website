@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type PointerEvent } from "react";
 import { AdminInfoTip } from "@/components/admin/admin-info-tip";
 import { DateRangeFilter } from "@/components/admin/date-range-filter";
 import { StatCard } from "@/components/admin/stat-card";
@@ -20,6 +20,12 @@ function changeClass(delta: number | null): string {
 }
 
 function GoldRateChart({ rows }: { rows: SeenGoldRateDay[] }) {
+  const [index, setIndex] = useState(() => Math.max(rows.length - 1, 0));
+
+  useEffect(() => {
+    setIndex(Math.max(rows.length - 1, 0));
+  }, [rows]);
+
   if (rows.length < 2) return null;
 
   const values = rows.map((row) => row.rate24kPerGramInr);
@@ -29,26 +35,51 @@ function GoldRateChart({ rows }: { rows: SeenGoldRateDay[] }) {
   const width = 1000;
   const height = 180;
   const padY = 10;
-  const coords = values.map((value, index) => {
-    const x = (index / (values.length - 1)) * width;
+  const points = values.map((value, pointIndex) => {
+    const x = (pointIndex / (values.length - 1)) * width;
     const y = padY + (1 - (value - min) / span) * (height - padY * 2);
-    return `${x.toFixed(1)},${y.toFixed(1)}`;
+    return { x, y };
   });
-  const line = coords.join(" ");
+  const line = points.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
   const area = `0,${height} ${line} ${width},${height}`;
+  const selectedIndex = Math.min(Math.max(index, 0), rows.length - 1);
+  const selected = rows[selectedIndex];
+  const selectedPoint = points[selectedIndex];
   const first = rows[0];
   const last = rows[rows.length - 1];
   const fromLabel = formatAdminDate(first.shownOn);
   const toLabel = formatAdminDate(last.shownOn);
+  const selectedLabel = formatAdminDate(selected.shownOn);
+  const xPct = (selectedIndex / (rows.length - 1)) * 100;
+  const yPct = (selectedPoint.y / height) * 100;
+
+  function selectFromPointer(event: PointerEvent<HTMLDivElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    const ratio = (event.clientX - rect.left) / rect.width;
+    const next = Math.round(Math.min(1, Math.max(0, ratio)) * (rows.length - 1));
+    setIndex(next);
+  }
 
   return (
     <figure className="ym-admin-chart">
-      <figcaption>
-        <p className="ym-admin-chart-title">24K gold price per gram</p>
-        <p className="ym-admin-chart-caption">
-          The price on the site each day. The top line is the highest price,
-          and the bottom line is the lowest.
-        </p>
+      <figcaption className="ym-admin-chart-head">
+        <div>
+          <p className="ym-admin-chart-title">24K gold price per gram</p>
+          <p className="ym-admin-chart-caption">
+            Move along the line to see one day’s price. The top line is the
+            highest price, and the bottom line is the lowest.
+          </p>
+        </div>
+        <div className="ym-admin-chart-readout">
+          <p className="ym-admin-chart-readout-date">{selectedLabel}</p>
+          <p className="ym-admin-chart-readout-price">
+            {formatInr(selected.rate24kPerGramInr)}
+          </p>
+          <p className="ym-admin-chart-readout-loan">
+            Lending rate {formatInr(selected.loanPerGramInr)}
+          </p>
+        </div>
       </figcaption>
       <div className="ym-admin-chart-body">
         <div className="ym-admin-chart-scale" aria-hidden>
@@ -56,44 +87,74 @@ function GoldRateChart({ rows }: { rows: SeenGoldRateDay[] }) {
           <span>{formatInr(min)}</span>
         </div>
         <div>
-          <svg
-            className="ym-admin-chart-svg"
-            viewBox={`0 0 ${width} ${height}`}
-            preserveAspectRatio="none"
-            role="img"
-            aria-label={`24K gold price per gram from ${fromLabel} to ${toLabel}. Highest ${formatInr(max)}, lowest ${formatInr(min)}.`}
+          <div
+            className="ym-admin-chart-plot"
+            role="slider"
+            tabIndex={0}
+            aria-label="Choose a day on the gold price line"
+            aria-valuemin={0}
+            aria-valuemax={rows.length - 1}
+            aria-valuenow={selectedIndex}
+            aria-valuetext={`${selectedLabel}, ${formatInr(selected.rate24kPerGramInr)} per gram`}
+            onPointerDown={(event) => {
+              event.currentTarget.setPointerCapture(event.pointerId);
+              selectFromPointer(event);
+            }}
+            onPointerMove={selectFromPointer}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                setIndex((current) => Math.max(0, current - 1));
+              }
+              if (event.key === "ArrowRight") {
+                event.preventDefault();
+                setIndex((current) => Math.min(rows.length - 1, current + 1));
+              }
+            }}
           >
-            <line
-              x1="0"
-              y1={padY}
-              x2={width}
-              y2={padY}
-              stroke="currentColor"
-              strokeOpacity="0.12"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
+            <svg
+              className="ym-admin-chart-svg"
+              viewBox={`0 0 ${width} ${height}`}
+              preserveAspectRatio="none"
+              aria-hidden
+            >
+              <line
+                x1="0"
+                y1={padY}
+                x2={width}
+                y2={padY}
+                stroke="currentColor"
+                strokeOpacity="0.12"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+              <line
+                x1="0"
+                y1={height - padY}
+                x2={width}
+                y2={height - padY}
+                stroke="currentColor"
+                strokeOpacity="0.12"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+              <polygon points={area} fill="currentColor" fillOpacity="0.06" />
+              <polyline
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                vectorEffect="non-scaling-stroke"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                points={line}
+              />
+            </svg>
+            <div className="ym-admin-chart-guide" style={{ left: `${xPct}%` }} />
+            <div
+              className="ym-admin-chart-dot"
+              style={{ left: `${xPct}%`, top: `${yPct}%` }}
             />
-            <line
-              x1="0"
-              y1={height - padY}
-              x2={width}
-              y2={height - padY}
-              stroke="currentColor"
-              strokeOpacity="0.12"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-            />
-            <polygon points={area} fill="currentColor" fillOpacity="0.06" />
-            <polyline
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              vectorEffect="non-scaling-stroke"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              points={line}
-            />
-          </svg>
+          </div>
           <div className="ym-admin-chart-axis" aria-hidden>
             <span>{fromLabel}</span>
             <span>{toLabel}</span>

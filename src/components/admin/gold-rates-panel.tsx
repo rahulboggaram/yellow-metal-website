@@ -141,15 +141,6 @@ export function GoldRatesAdminPanel() {
               A 5:30 PM close appears on the site from the next midnight,
               and stays up through the weekend.
             </p>
-            <p className="ym-admin-section-lead ym-admin-section-lead--follow">
-              The website went live on {formatAdminDate(history.inception)}.
-              {history.firstShownOn
-                ? ` This feed’s first rate is ${formatAdminDate(history.firstShownOn)}.`
-                : " This feed does not have a rate for that period yet."}
-              {history.rows.length > 0
-                ? ` Showing ${formatAdminDate(history.from)} to ${formatAdminDate(history.to)}.`
-                : ""}
-            </p>
           </div>
 
           {stats ? (

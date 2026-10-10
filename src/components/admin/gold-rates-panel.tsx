@@ -136,7 +136,7 @@ export function GoldRatesAdminPanel() {
         <section className="ym-admin-panel">
           <div className="ym-admin-section-head">
             <div className="ym-admin-heading-row">
-              <h2 className="ym-admin-heading">Rates visitors saw</h2>
+              <h2 className="ym-admin-heading">Gold rates</h2>
               <AdminInfoTip text="The 24K gold price per gram for each day, next to the lending rate the homepage showed. A 5:30 PM close appears on the site from the next midnight, and stays up through the weekend." />
             </div>
           </div>

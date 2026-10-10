@@ -2371,25 +2371,25 @@ body:has(.ym-admin-root),
 
 .ym-admin-table--rates th,
 .ym-admin-table--rates td {
-  padding: 0.7rem 1.25rem;
+  box-sizing: border-box;
+  width: 25%;
+  padding: 0.75rem 1.25rem;
 }
 
 .ym-admin-table--rates th:first-child,
 .ym-admin-table--rates td:first-child {
-  width: 28%;
-  padding-left: 0;
+  padding-left: 1.75rem;
   text-align: left;
 }
 
 .ym-admin-table--rates th:nth-child(n + 2),
 .ym-admin-table--rates td:nth-child(n + 2) {
-  width: 24%;
   text-align: right;
 }
 
 .ym-admin-table--rates th:last-child,
 .ym-admin-table--rates td:last-child {
-  padding-right: 0;
+  padding-right: 1.75rem;
 }
 
 .ym-admin-chart {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { AdminInfoTip } from "@/components/admin/admin-info-tip";
 import { DateRangeFilter } from "@/components/admin/date-range-filter";
 import { StatCard } from "@/components/admin/stat-card";
 import { buildAdminDateQuery, formatAdminDate } from "@/lib/admin-session";
@@ -134,13 +135,10 @@ export function GoldRatesAdminPanel() {
       {history && (
         <section className="ym-admin-panel">
           <div className="ym-admin-section-head">
-            <h2 className="ym-admin-heading">Rates visitors saw</h2>
-            <p className="ym-admin-section-lead">
-              The 24K gold price per gram for each day, next to the lending
-              rate the homepage showed.
-              A 5:30 PM close appears on the site from the next midnight,
-              and stays up through the weekend.
-            </p>
+            <div className="ym-admin-heading-row">
+              <h2 className="ym-admin-heading">Rates visitors saw</h2>
+              <AdminInfoTip text="The 24K gold price per gram for each day, next to the lending rate the homepage showed. A 5:30 PM close appears on the site from the next midnight, and stays up through the weekend." />
+            </div>
           </div>
 
           {stats ? (

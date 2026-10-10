@@ -1862,6 +1862,16 @@ body:has(.ym-admin-root),
   margin-bottom: 0.35rem;
 }
 
+.ym-admin-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.ym-admin-heading-row .ym-admin-heading {
+  margin-bottom: 0;
+}
+
 .ym-admin-section-lead {
   margin: 0;
   font-size: 0.85rem;

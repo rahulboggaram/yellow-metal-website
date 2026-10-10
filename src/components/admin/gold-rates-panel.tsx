@@ -102,20 +102,11 @@ export function GoldRatesAdminPanel() {
   const stats = useMemo(() => {
     if (!history || history.rows.length === 0) return null;
     const rows = history.rows;
-    const latest = rows[rows.length - 1];
-    const first = rows[0];
-    const loans = rows.map((row) => row.loanPerGramInr);
     return {
       days: rows.length,
-      latest,
-      first,
-      high: Math.max(...loans),
-      low: Math.min(...loans),
-      change: latest.loanPerGramInr - first.loanPerGramInr,
+      latest: rows[rows.length - 1],
     };
   }, [history]);
-
-  const coversLaunch = history?.from === history?.inception;
 
   return (
     <div className="ym-admin-stack">
@@ -176,25 +167,6 @@ export function GoldRatesAdminPanel() {
                   label="Latest 24K gold"
                   value={`${formatInr(stats.latest.rate24kPerGramInr)}/g`}
                   info="The pure gold price per gram from that day’s 5:30 PM close."
-                />
-                <StatCard
-                  label="Highest lending rate"
-                  value={`${formatInr(stats.high)}/g`}
-                />
-                <StatCard
-                  label="Lowest lending rate"
-                  value={`${formatInr(stats.low)}/g`}
-                />
-                <StatCard
-                  label={
-                    coversLaunch && stats.first.shownOn === history.inception
-                      ? "Change since launch"
-                      : coversLaunch
-                        ? "Change since first rate"
-                        : "Change in this period"
-                  }
-                  value={formatSignedInr(stats.change)}
-                  info={`From ${formatAdminDate(stats.first.shownOn)} to ${formatAdminDate(stats.latest.shownOn)}.`}
                 />
               </div>
               <RateSparkline rows={history.rows} />

@@ -216,7 +216,6 @@ export function GoldRatesAdminPanel() {
                       <th>24K gold / g</th>
                       <th>Lending rate / g</th>
                       <th>Change</th>
-                      <th>Price from</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -228,7 +227,6 @@ export function GoldRatesAdminPanel() {
                         <td className={changeClass(row.changeInr)}>
                           {row.changeInr === null ? "—" : formatSignedInr(row.changeInr)}
                         </td>
-                        <td>{formatAdminDate(row.spotSession)}</td>
                       </tr>
                     ))}
                   </tbody>

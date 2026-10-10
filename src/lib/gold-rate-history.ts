@@ -6,10 +6,7 @@ import {
   type GoldRateQuery,
   type SeenGoldRateDay,
 } from "@/lib/gold-rate-history-types";
-import {
-  loanRatePerGramFromRaw,
-  spotKaratRates,
-} from "@/lib/gold-price-format";
+import { loanRatePerGramFromRaw } from "@/lib/gold-price-format";
 import { fetchMarketPricesSince, type MarketPriceRow } from "@/lib/spot-rates";
 import {
   getIstYmd,
@@ -122,7 +119,7 @@ function toSeenDay(shownOn: string, row: MarketPriceRow): Omit<SeenGoldRateDay, 
   return {
     shownOn,
     spotSession: getIstYmd(new Date(row.updated_at)),
-    rate22kPerGramInr: spotKaratRates(gold999Base, "22K").perGramInr,
+    rate24kPerGramInr: Math.round(gold999Base),
     loanPerGramInr: loanRatePerGramFromRaw(gold999Base, "22K"),
     updatedAt: row.updated_at,
   };

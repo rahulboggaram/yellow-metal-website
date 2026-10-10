@@ -13,7 +13,7 @@ export type SeenGoldRateDay = {
   shownOn: string;
   /** IST day of the 5:30 PM close that rate came from. */
   spotSession: string;
-  rate22kPerGramInr: number;
+  rate24kPerGramInr: number;
   loanPerGramInr: number;
   /** Lending-rate change versus the previous listed day. Null on the first day. */
   changeInr: number | null;

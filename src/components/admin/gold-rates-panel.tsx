@@ -147,8 +147,8 @@ export function GoldRatesAdminPanel() {
           <div className="ym-admin-section-head">
             <h2 className="ym-admin-heading">Rates visitors saw</h2>
             <p className="ym-admin-section-lead">
-              The 22K gold price per gram, and the lending rate at 75% of that
-              price, for each day they were on the website.
+              The 24K gold price per gram for each day, next to the lending
+              rate the homepage showed.
               A 5:30 PM close appears on the site from the next midnight,
               and stays up through the weekend.
             </p>
@@ -170,12 +170,12 @@ export function GoldRatesAdminPanel() {
                 <StatCard
                   label="Latest lending rate"
                   value={`${formatInr(stats.latest.loanPerGramInr)}/g`}
-                  info="This is the amount on the homepage flip clock: 1 gram of 22K gold at 75% of the gold price."
+                  info="This is the amount on the homepage flip clock: 1 gram at 75% of the 22K price."
                 />
                 <StatCard
-                  label="Latest 22K gold"
-                  value={`${formatInr(stats.latest.rate22kPerGramInr)}/g`}
-                  info="The 22K gold price per gram behind that lending rate."
+                  label="Latest 24K gold"
+                  value={`${formatInr(stats.latest.rate24kPerGramInr)}/g`}
+                  info="The pure gold price per gram from that day’s 5:30 PM close."
                 />
                 <StatCard
                   label="Highest lending rate"
@@ -213,7 +213,7 @@ export function GoldRatesAdminPanel() {
                   <thead>
                     <tr>
                       <th>Date on the site</th>
-                      <th>22K gold / g</th>
+                      <th>24K gold / g</th>
                       <th>Lending rate / g</th>
                       <th>Change</th>
                       <th>Price from</th>
@@ -223,7 +223,7 @@ export function GoldRatesAdminPanel() {
                     {newestFirst.map((row) => (
                       <tr key={row.shownOn}>
                         <td>{formatAdminDate(row.shownOn)}</td>
-                        <td>{formatInr(row.rate22kPerGramInr)}</td>
+                        <td>{formatInr(row.rate24kPerGramInr)}</td>
                         <td>{formatInr(row.loanPerGramInr)}</td>
                         <td className={changeClass(row.changeInr)}>
                           {row.changeInr === null ? "—" : formatSignedInr(row.changeInr)}

@@ -22,12 +22,15 @@ import { brandFont } from "@/lib/fonts";
 import { useCalculatorEngagement } from "@/hooks/use-calculator-engagement";
 
 const LOAN_STOPS = [
-  { amount: 25_000, label: "₹25K" },
-  { amount: 50_000, label: "₹50K" },
+  { amount: 20_000, label: "₹20K" },
   { amount: 100_000, label: "₹1L" },
-  { amount: 200_000, label: "₹2L" },
   { amount: 500_000, label: "₹5L" },
+  { amount: 1_000_000, label: "₹10L" },
+  { amount: 5_000_000, label: "₹50L" },
 ] as const;
+
+/** Everyday estimate. Index of ₹1L in LOAN_STOPS. */
+const DEFAULT_STOP_INDEX = 1;
 
 const SLIDER_MAX = 1000;
 const SNAP_DISTANCE = 36;
@@ -84,7 +87,7 @@ export function GoldLoanCalculator() {
   const [price, setPrice] = useState<GoldPriceSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [sliderPos, setSliderPos] = useState(() => stopPosition(2));
+  const [sliderPos, setSliderPos] = useState(() => stopPosition(DEFAULT_STOP_INDEX));
   const [karat, setKarat] = useState<GoldKarat>("22K");
 
   useEffect(() => {

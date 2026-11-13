@@ -241,36 +241,6 @@ export function GoldLoanCalculator() {
               <div className="ym-loan-calculator-card-inner">
                 <div className="ym-loan-dash-controls">
                   <div className="ym-loan-entry">
-                  <div
-                    className={[
-                      "ym-loan-field ym-loan-field--weight",
-                      weightFieldActive ? "ym-loan-field--active" : "ym-loan-field--idle",
-                    ].join(" ")}
-                  >
-                    <FloatingInput
-                      id="ym-gold-weight"
-                      label="Enter gold weight (g)"
-                      type="number"
-                      inputMode="decimal"
-                      min="0"
-                      step="0.1"
-                      value={weightInput}
-                      onChange={(event) => {
-                        setDriver("weight");
-                        setWeightInput(event.target.value);
-                      }}
-                      onFocus={() => setWeightFocused(true)}
-                      onBlur={() => {
-                        setWeightFocused(false);
-                        recordWeightEntry();
-                      }}
-                      className={numericBindings.className}
-                      style={numericBindings.style}
-                    />
-                  </div>
-
-                  <p className="ym-loan-either">or</p>
-
                   <div className="ym-loan-slider">
                     <div className="ym-loan-slider-readout">
                       <p className="ym-loan-eligible-label">Loan amount</p>
@@ -352,6 +322,36 @@ export function GoldLoanCalculator() {
                       })}
                     </div>
                   </div>
+
+                  <p className="ym-loan-either">or</p>
+
+                  <div
+                    className={[
+                      "ym-loan-field ym-loan-field--weight",
+                      weightFieldActive ? "ym-loan-field--active" : "ym-loan-field--idle",
+                    ].join(" ")}
+                  >
+                    <FloatingInput
+                      id="ym-gold-weight"
+                      label="Enter gold weight (g)"
+                      type="number"
+                      inputMode="decimal"
+                      min="0"
+                      step="0.1"
+                      value={weightInput}
+                      onChange={(event) => {
+                        setDriver("weight");
+                        setWeightInput(event.target.value);
+                      }}
+                      onFocus={() => setWeightFocused(true)}
+                      onBlur={() => {
+                        setWeightFocused(false);
+                        recordWeightEntry();
+                      }}
+                      className={numericBindings.className}
+                      style={numericBindings.style}
+                    />
+                  </div>
                   </div>
 
                   <div className="ym-purity-pills">
@@ -378,6 +378,7 @@ export function GoldLoanCalculator() {
                               .filter(Boolean)
                               .join(" ")}
                             onClick={() => {
+                              setDriver("amount");
                               setKarat(option);
                               window.setTimeout(() => recordWeightEntry(), 0);
                             }}

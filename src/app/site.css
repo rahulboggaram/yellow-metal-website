@@ -918,92 +918,143 @@ body.ym-jewels-flying .ym-hero-ornament {
   gap: 1.35rem;
 }
 
-.ym-loan-input-mode {
+.ym-loan-slider {
+  --ym-slider-thumb: 1.7rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
-  padding: 0.3rem;
-  border: 1px solid var(--ym-dash-input-border);
-  border-radius: 9999px;
-  background: var(--ym-dash-input-bg);
+  gap: 0.35rem;
 }
 
-.ym-loan-input-mode-btn {
-  margin: 0;
-  padding: 0.7rem 0.5rem;
-  border: none;
-  border-radius: 9999px;
-  background: transparent;
-  font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: rgb(0 0 0 / 0.5);
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.ym-loan-input-mode-btn:hover {
-  color: #000000;
-  background: rgb(0 0 0 / 0.06);
-}
-
-.ym-loan-input-mode-btn--selected {
-  background: #000000;
-  color: #ffffff;
-}
-
-.ym-loan-input-mode-btn--selected:hover {
-  background: #000000;
-  color: #ffffff;
-}
-
-.ym-loan-amount-entry {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.ym-amount-pills {
-  display: grid;
-  gap: 0.55rem;
-}
-
-.ym-amount-pills-row {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.25rem;
-  padding: 0.3rem;
-  border: 1px solid var(--ym-dash-input-border);
-  border-radius: 9999px;
-  background: var(--ym-dash-input-bg);
-}
-
-.ym-amount-pill {
-  margin: 0;
-  padding: 0.65rem 0.15rem;
-  border: none;
-  border-radius: 9999px;
-  background: transparent;
-  font-family: inherit;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: rgb(0 0 0 / 0.5);
+.ym-loan-slider-readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
   text-align: center;
+}
+
+.ym-loan-slider-rail {
+  position: relative;
+  height: var(--ym-slider-thumb);
+}
+
+.ym-loan-slider-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ym-loan-slider-dot {
+  position: absolute;
+  top: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.28);
+  transform: translate(-50%, -50%);
+}
+
+.ym-loan-slider-dot--reached {
+  background: #ffffff;
+}
+
+.ym-loan-range {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ym-loan-range:active {
+  cursor: grabbing;
+}
+
+.ym-loan-range:focus {
+  outline: none;
+}
+
+.ym-loan-range::-webkit-slider-runnable-track {
+  height: 0.25rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    #ffffff var(--ym-slider-fill, 50%),
+    rgb(255 255 255 / 0.22) var(--ym-slider-fill, 50%),
+    rgb(255 255 255 / 0.22) 100%
+  );
+}
+
+.ym-loan-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--ym-slider-thumb);
+  height: var(--ym-slider-thumb);
+  margin-top: calc((0.25rem - var(--ym-slider-thumb)) / 2);
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.4);
+}
+
+.ym-loan-range:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.ym-loan-range::-moz-range-track {
+  height: 0.25rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.22);
+}
+
+.ym-loan-range::-moz-range-progress {
+  height: 0.25rem;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+.ym-loan-range::-moz-range-thumb {
+  width: var(--ym-slider-thumb);
+  height: var(--ym-slider-thumb);
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.4);
+}
+
+.ym-loan-slider-labels {
+  position: relative;
+  height: 1.35rem;
+  margin-top: 0.15rem;
+}
+
+.ym-loan-slider-label {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  padding: 0.15rem 0;
+  border: 0;
+  background: transparent;
+  transform: translateX(-50%);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: rgb(255 255 255 / 0.45);
+  white-space: nowrap;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
 }
 
-.ym-amount-pill:hover {
-  color: #000000;
-  background: rgb(0 0 0 / 0.06);
-}
-
-.ym-amount-pill--selected {
-  background: #000000;
-  color: #ffffff;
-}
-
-.ym-amount-pill--selected:hover {
-  background: #000000;
+.ym-loan-slider-label--current {
   color: #ffffff;
 }
 

@@ -203,19 +203,19 @@ export function GoldLoanCalculator() {
   const weightFieldActive = weightFocused || weightInput.trim().length > 0;
   const numericBindings = interFontBindings("font-tabular-nums");
 
-  function useAmount(position: number) {
+  function applyAmount(position: number) {
     setDriver("amount");
     setSliderPos(position);
   }
 
   function commitSlider(position = sliderPos) {
     const snapped = nearestStopIndex(position);
-    useAmount(snapped === null ? position : stopPosition(snapped));
+    applyAmount(snapped === null ? position : stopPosition(snapped));
     window.setTimeout(() => recordWeightEntry(), 0);
   }
 
   function selectStop(index: number) {
-    useAmount(stopPosition(index));
+    applyAmount(stopPosition(index));
     window.setTimeout(() => recordWeightEntry(), 0);
   }
 
@@ -317,7 +317,7 @@ export function GoldLoanCalculator() {
                           } as CSSProperties
                         }
                         onChange={(event) =>
-                          useAmount(Number(event.target.value))
+                          applyAmount(Number(event.target.value))
                         }
                         onPointerUp={(event) =>
                           commitSlider(Number(event.currentTarget.value))

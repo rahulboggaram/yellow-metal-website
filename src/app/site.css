@@ -883,6 +883,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 
 .ym-loan-slider {
   --ym-slider-thumb: 1.7rem;
+  --ym-slider-track: #3a3a3a;
   display: grid;
   gap: 0.35rem;
 }
@@ -909,7 +910,7 @@ body.ym-jewels-flying .ym-hero-ornament {
   right: calc(var(--ym-slider-thumb) / 2);
   height: 2px;
   border-radius: 999px;
-  background: #3a3a3a;
+  background: var(--ym-slider-track);
   transform: translateY(-50%);
   pointer-events: none;
 }
@@ -933,11 +934,11 @@ body.ym-jewels-flying .ym-hero-ornament {
   position: absolute;
   top: 50%;
   box-sizing: border-box;
-  width: 0.625rem;
-  height: 0.625rem;
-  border: 1.5px solid rgb(255 255 255 / 0.72);
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2.5px solid var(--ym-dash-surface);
   border-radius: 50%;
-  background: var(--ym-dash-surface);
+  background: var(--ym-slider-track);
   transform: translate(-50%, -50%);
 }
 

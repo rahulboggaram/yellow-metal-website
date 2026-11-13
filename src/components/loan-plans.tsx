@@ -43,9 +43,9 @@ export function LoanPlanCard({ plan }: { plan: LoanPlan }) {
   );
 }
 
-export function useLoanPlans() {
-  const [plans, setPlans] = useState<LoanPlan[]>([]);
-  const [loading, setLoading] = useState(true);
+export function useLoanPlans(initialPlans: LoanPlan[] = []) {
+  const [plans, setPlans] = useState(initialPlans);
+  const [loading, setLoading] = useState(initialPlans.length === 0);
   const [error, setError] = useState(false);
 
   useEffect(() => {

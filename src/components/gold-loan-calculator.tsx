@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { FloatingInput } from "@/components/ui/floating-field";
 import type { GoldKarat, GoldPriceSnapshot } from "@/lib/gold-price-format";
@@ -16,6 +16,7 @@ import {
   formatPlanRate,
   formatPlanRepaymentLabel,
   getMatchingLoanPlansByType,
+  type LoanPlan,
 } from "@/lib/loan-plans-shared";
 import { useLoanPlans } from "@/components/loan-plans";
 import { InterNumeric } from "@/components/inter-numeric";
@@ -106,10 +107,54 @@ function dotStyle(index: number): CSSProperties {
   };
 }
 
-export function GoldLoanCalculator() {
-  const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
-  const [price, setPrice] = useState<GoldPriceSnapshot | null>(null);
-  const [loading, setLoading] = useState(true);
+const COUNT_UP_MS = 900;
+
+function useFoldCountUp(active: boolean) {
+  const [progress, setProgress] = useState(0);
+  const cancelRef = useRef(false);
+
+  useEffect(() => {
+    if (!active) return;
+    if (
+      cancelRef.current ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setProgress(1);
+      return;
+    }
+
+    const start = performance.now();
+    let frame = 0;
+    const tick = (now: number) => {
+      if (cancelRef.current) {
+        setProgress(1);
+        return;
+      }
+      const t = Math.min(1, (now - start) / COUNT_UP_MS);
+      setProgress(1 - (1 - t) ** 3);
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [active]);
+
+  const finish = () => {
+    cancelRef.current = true;
+    setProgress(1);
+  };
+
+  return { progress: cancelRef.current ? 1 : progress, finish };
+}
+
+export function GoldLoanCalculator({
+  initialPlans = [],
+  initialPrice = null,
+}: {
+  initialPlans?: LoanPlan[];
+  initialPrice?: GoldPriceSnapshot | null;
+}) {
+  const { plans, loading: plansLoading, error: plansError } = useLoanPlans(initialPlans);
+  const [price, setPrice] = useState<GoldPriceSnapshot | null>(initialPrice);
   const [sliderPos, setSliderPos] = useState(() =>
     positionFromAmount(DEFAULT_LOAN_AMOUNT),
   );
@@ -117,6 +162,22 @@ export function GoldLoanCalculator() {
   const [weightFocused, setWeightFocused] = useState(false);
   const [driver, setDriver] = useState<EstimateDriver>("amount");
   const [karat, setKarat] = useState<GoldKarat>("22K");
+  const sectionRef = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
+  const { progress, finish } = useFoldCountUp(inView);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -130,8 +191,6 @@ export function GoldLoanCalculator() {
         if (!cancelled) setPrice(data);
       } catch {
         if (!cancelled) setPrice(null);
-      } finally {
-        if (!cancelled) setLoading(false);
       }
     }
 
@@ -168,9 +227,17 @@ export function GoldLoanCalculator() {
     driver === "weight" && loanFromWeight !== null && loanFromWeight > 0
       ? loanFromWeight
       : sliderAmount;
+  const shownLoan = progress >= 1 ? loanAmount : Math.round(loanAmount * progress);
 
   const activeGrams =
     driver === "weight" && typedGrams > 0 ? typedGrams : gramsFromSlider;
+  const shownGrams = progress >= 1 ? activeGrams : activeGrams * progress;
+  const weightValue =
+    weightFocused || progress >= 1
+      ? weightInput
+      : shownGrams <= 0
+        ? "0"
+        : formatWeightInput(shownGrams) || "0";
 
   useEffect(() => {
     if (!price || driver !== "weight" || loanFromWeight === null || loanFromWeight <= 0) {
@@ -205,6 +272,7 @@ export function GoldLoanCalculator() {
   const numericBindings = interFontBindings("font-tabular-nums");
 
   function applyAmount(position: number) {
+    finish();
     setDriver("amount");
     setSliderPos(position);
   }
@@ -222,6 +290,7 @@ export function GoldLoanCalculator() {
 
   return (
     <section
+      ref={sectionRef}
       className="ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash"
       aria-labelledby="ym-loan-calculator-title"
     >
@@ -247,7 +316,7 @@ export function GoldLoanCalculator() {
                         as="p"
                         className="ym-loan-eligible-value font-tabular-nums"
                       >
-                        {formatInr(loanAmount)}
+                        {formatInr(shownLoan)}
                       </InterNumeric>
                     </div>
 
@@ -342,8 +411,9 @@ export function GoldLoanCalculator() {
                       inputMode="decimal"
                       min="0"
                       step="0.1"
-                      value={weightInput}
+                      value={weightValue}
                       onChange={(event) => {
+                        finish();
                         setDriver("weight");
                         setWeightInput(event.target.value);
                       }}
@@ -382,6 +452,7 @@ export function GoldLoanCalculator() {
                               .filter(Boolean)
                               .join(" ")}
                             onClick={() => {
+                              finish();
                               setDriver("amount");
                               setKarat(option);
                               window.setTimeout(() => recordWeightEntry(), 0);
@@ -395,7 +466,7 @@ export function GoldLoanCalculator() {
                   </div>
                 </div>
 
-                {!loading && !plansLoading && !plansError && matchedPlans.length > 0 && (
+                {!plansLoading && !plansError && matchedPlans.length > 0 && (
                   <div className="ym-loan-eligible-amount" aria-live="polite">
                     <div className="ym-loan-interest-section">
                         <div
@@ -423,7 +494,11 @@ export function GoldLoanCalculator() {
                                   as="p"
                                   className="ym-loan-interest-value font-tabular-nums"
                                 >
-                                  {formatInr(monthlyInterest)}
+                                  {formatInr(
+                                    progress >= 1
+                                      ? monthlyInterest
+                                      : Math.round(monthlyInterest * progress),
+                                  )}
                                 </InterNumeric>
                                 <p className="ym-loan-interest-period">Per Month</p>
                                 <p className="ym-loan-interest-charges">Including All Charges</p>

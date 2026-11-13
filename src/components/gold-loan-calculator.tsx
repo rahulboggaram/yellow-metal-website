@@ -18,7 +18,6 @@ import {
   getMatchingLoanPlansByType,
 } from "@/lib/loan-plans-shared";
 import { useLoanPlans } from "@/components/loan-plans";
-import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
 import { InterNumeric } from "@/components/inter-numeric";
 import { brandFont, interFontBindings } from "@/lib/fonts";
 import { useCalculatorEngagement } from "@/hooks/use-calculator-engagement";
@@ -235,8 +234,6 @@ export function GoldLoanCalculator() {
           </h2>
 
           <div className="ym-loan-calculator-card-stage">
-            <LoanCalculatorJewels weightGrams={activeGrams} />
-
             <div className="ym-loan-calculator-card ym-loan-calculator-card--inputs">
               <div className="ym-loan-calculator-card-inner">
                 <div className="ym-loan-dash-controls">

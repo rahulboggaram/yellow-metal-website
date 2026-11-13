@@ -426,6 +426,7 @@ export function GoldLoanCalculator() {
                                   {formatInr(monthlyInterest)}
                                 </InterNumeric>
                                 <p className="ym-loan-interest-period">Per Month</p>
+                                <p className="ym-loan-interest-charges">Including all charges</p>
                                 <p className="ym-loan-interest-meta">
                                   <span className="ym-loan-interest-plan-type">
                                     {formatPlanRepaymentLabel(plan.repaymentType)}

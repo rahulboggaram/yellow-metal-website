@@ -1192,6 +1192,15 @@ body.ym-jewels-flying .ym-hero-ornament {
   margin-top: 0.25rem;
 }
 
+.ym-loan-interest-charges {
+  margin: 0.15rem 0 0;
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--ym-dash-muted);
+}
+
 .ym-loan-interest-meta {
   position: relative;
   display: flex;

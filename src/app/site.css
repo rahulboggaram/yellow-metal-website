@@ -901,6 +901,27 @@ body.ym-jewels-flying .ym-hero-ornament {
   height: var(--ym-slider-thumb);
 }
 
+.ym-loan-slider-track {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: calc(var(--ym-slider-thumb) / 2);
+  right: calc(var(--ym-slider-thumb) / 2);
+  height: 2px;
+  border-radius: 999px;
+  background: #3a3a3a;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.ym-loan-slider-track-fill {
+  display: block;
+  width: var(--ym-slider-fill, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: #ffffff;
+}
+
 .ym-loan-slider-dots {
   position: absolute;
   inset: 0;
@@ -911,14 +932,17 @@ body.ym-jewels-flying .ym-hero-ornament {
 .ym-loan-slider-dot {
   position: absolute;
   top: 50%;
-  width: 0.5rem;
-  height: 0.5rem;
+  box-sizing: border-box;
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 1.5px solid rgb(255 255 255 / 0.72);
   border-radius: 50%;
-  background: rgb(255 255 255 / 0.28);
+  background: var(--ym-dash-surface);
   transform: translate(-50%, -50%);
 }
 
 .ym-loan-slider-dot--reached {
+  border-color: #ffffff;
   background: #ffffff;
 }
 
@@ -945,22 +969,16 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-range::-webkit-slider-runnable-track {
-  height: 0.25rem;
+  height: 2px;
   border-radius: 999px;
-  background: linear-gradient(
-    to right,
-    #ffffff 0%,
-    #ffffff var(--ym-slider-fill, 50%),
-    rgb(255 255 255 / 0.22) var(--ym-slider-fill, 50%),
-    rgb(255 255 255 / 0.22) 100%
-  );
+  background: transparent;
 }
 
 .ym-loan-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: var(--ym-slider-thumb);
   height: var(--ym-slider-thumb);
-  margin-top: calc((0.25rem - var(--ym-slider-thumb)) / 2);
+  margin-top: calc((2px - var(--ym-slider-thumb)) / 2);
   border: 0;
   border-radius: 50%;
   background: #ffffff;
@@ -973,16 +991,16 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-range::-moz-range-track {
-  height: 0.25rem;
+  height: 2px;
   border: 0;
   border-radius: 999px;
-  background: rgb(255 255 255 / 0.22);
+  background: transparent;
 }
 
 .ym-loan-range::-moz-range-progress {
-  height: 0.25rem;
+  height: 2px;
   border-radius: 999px;
-  background: #ffffff;
+  background: transparent;
 }
 
 .ym-loan-range::-moz-range-thumb {

@@ -249,7 +249,17 @@ export function GoldLoanCalculator() {
                       </InterNumeric>
                     </div>
 
-                    <div className="ym-loan-slider-rail">
+                    <div
+                      className="ym-loan-slider-rail"
+                      style={
+                        {
+                          "--ym-slider-fill": `${(sliderPos / SLIDER_MAX) * 100}%`,
+                        } as CSSProperties
+                      }
+                    >
+                      <div className="ym-loan-slider-track" aria-hidden="true">
+                        <span className="ym-loan-slider-track-fill" />
+                      </div>
                       <div className="ym-loan-slider-dots" aria-hidden="true">
                         {LOAN_STOPS.map((stop, index) => (
                           <span
@@ -278,11 +288,6 @@ export function GoldLoanCalculator() {
                         aria-valuemax={LOAN_STOPS[LOAN_STOPS.length - 1].amount}
                         aria-valuenow={loanAmount}
                         aria-valuetext={formatInr(loanAmount)}
-                        style={
-                          {
-                            "--ym-slider-fill": `${(sliderPos / SLIDER_MAX) * 100}%`,
-                          } as CSSProperties
-                        }
                         onChange={(event) =>
                           applyAmount(Number(event.target.value))
                         }

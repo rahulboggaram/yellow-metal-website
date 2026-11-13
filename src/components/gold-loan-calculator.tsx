@@ -2,11 +2,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
+import { FloatingInput } from "@/components/ui/floating-field";
 import type { GoldKarat, GoldPriceSnapshot } from "@/lib/gold-price-format";
 import {
   GOLD_KARAT_OPTIONS,
   formatInr,
   isGoldPriceSnapshot,
+  loanAmountFromWeightGrams,
   weightGramsFromLoanAmount,
 } from "@/lib/gold-price-format";
 import {
@@ -18,7 +20,7 @@ import {
 import { useLoanPlans } from "@/components/loan-plans";
 import { LoanCalculatorJewels } from "@/components/loan-calculator-jewels";
 import { InterNumeric } from "@/components/inter-numeric";
-import { brandFont } from "@/lib/fonts";
+import { brandFont, interFontBindings } from "@/lib/fonts";
 import { useCalculatorEngagement } from "@/hooks/use-calculator-engagement";
 
 const LOAN_STOPS = [
@@ -66,14 +68,37 @@ function amountFromPosition(position: number): number {
   return Math.min(LOAN_STOPS[LOAN_STOPS.length - 1].amount, Math.max(LOAN_STOPS[0].amount, rounded));
 }
 
-function formatGoldGrams(grams: number): string {
-  const digits = grams < 1 ? 2 : 1;
-  const factor = 10 ** digits;
-  const rounded = Math.round(grams * factor) / factor;
-  return `${rounded.toLocaleString("en-IN", {
-    minimumFractionDigits: Number.isInteger(rounded) ? 0 : digits,
-    maximumFractionDigits: digits,
-  })} g`;
+const MIN_LOAN = LOAN_STOPS[0].amount;
+const MAX_LOAN = LOAN_STOPS[LOAN_STOPS.length - 1].amount;
+
+type EstimateDriver = "weight" | "amount";
+
+function parseWeight(value: string): number {
+  const parsed = Number.parseFloat(value.replace(/,/g, "").trim());
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+}
+
+function formatWeightInput(grams: number): string {
+  if (!Number.isFinite(grams) || grams <= 0) return "";
+  const rounded = Math.round(grams * 10) / 10;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
+function positionFromAmount(amount: number): number {
+  const clamped = Math.min(MAX_LOAN, Math.max(MIN_LOAN, amount));
+  for (let index = 0; index < LOAN_STOPS.length - 1; index += 1) {
+    const start = LOAN_STOPS[index].amount;
+    const end = LOAN_STOPS[index + 1].amount;
+    if (clamped <= end || index === LOAN_STOPS.length - 2) {
+      const span = end - start;
+      const local = span === 0 ? 0 : (clamped - start) / span;
+      const bounded = Math.min(1, Math.max(0, local));
+      return Math.round(
+        ((index + bounded) / (LOAN_STOPS.length - 1)) * SLIDER_MAX,
+      );
+    }
+  }
+  return SLIDER_MAX;
 }
 
 function dotStyle(index: number): CSSProperties {
@@ -86,8 +111,10 @@ export function GoldLoanCalculator() {
   const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
   const [price, setPrice] = useState<GoldPriceSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [sliderPos, setSliderPos] = useState(() => stopPosition(DEFAULT_STOP_INDEX));
+  const [weightInput, setWeightInput] = useState("");
+  const [weightFocused, setWeightFocused] = useState(false);
+  const [driver, setDriver] = useState<EstimateDriver>("amount");
   const [karat, setKarat] = useState<GoldKarat>("22K");
 
   useEffect(() => {
@@ -99,12 +126,9 @@ export function GoldLoanCalculator() {
         if (!res.ok) throw new Error("fetch failed");
         const data: unknown = await res.json();
         if (!isGoldPriceSnapshot(data)) throw new Error("invalid payload");
-        if (!cancelled) {
-          setPrice(data);
-          setError(false);
-        }
+        if (!cancelled) setPrice(data);
       } catch {
-        if (!cancelled) setError(true);
+        if (!cancelled) setPrice(null);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -116,46 +140,82 @@ export function GoldLoanCalculator() {
     };
   }, []);
 
-  const loanAmount = amountFromPosition(sliderPos);
+  const sliderAmount = amountFromPosition(sliderPos);
+  const typedGrams = useMemo(() => parseWeight(weightInput), [weightInput]);
 
-  const gramsFromAmount = useMemo(() => {
-    if (!price || loanAmount <= 0) return 0;
-    return weightGramsFromLoanAmount(
-      loanAmount,
+  const loanFromWeight = useMemo(() => {
+    if (!price || typedGrams <= 0) return null;
+    return loanAmountFromWeightGrams(
+      typedGrams,
       karat,
       price.gold999BaseRaw,
       price.rate22kPerGramInr,
     );
-  }, [price, loanAmount, karat]);
+  }, [price, typedGrams, karat]);
+
+  const gramsFromSlider = useMemo(() => {
+    if (!price || sliderAmount <= 0) return 0;
+    return weightGramsFromLoanAmount(
+      sliderAmount,
+      karat,
+      price.gold999BaseRaw,
+      price.rate22kPerGramInr,
+    );
+  }, [price, sliderAmount, karat]);
+
+  const loanAmount =
+    driver === "weight" && loanFromWeight !== null && loanFromWeight > 0
+      ? loanFromWeight
+      : sliderAmount;
+
+  const activeGrams =
+    driver === "weight" && typedGrams > 0 ? typedGrams : gramsFromSlider;
+
+  useEffect(() => {
+    if (!price || driver !== "weight" || loanFromWeight === null || loanFromWeight <= 0) {
+      return;
+    }
+    setSliderPos(positionFromAmount(loanFromWeight));
+  }, [price, driver, loanFromWeight]);
+
+  useEffect(() => {
+    if (!price || driver !== "amount" || weightFocused) return;
+    const next = formatWeightInput(gramsFromSlider);
+    setWeightInput((current) => (current === next ? current : next));
+  }, [price, driver, gramsFromSlider, weightFocused]);
 
   const matchedPlans = useMemo(() => {
     if (loanAmount <= 0) return [];
     return getMatchingLoanPlansByType(loanAmount, plans);
   }, [loanAmount, plans]);
 
-  const resultText =
-    !error && gramsFromAmount > 0 ? formatGoldGrams(gramsFromAmount) : "—";
-
   const recordedWeight =
-    gramsFromAmount > 0
-      ? String(Math.round(gramsFromAmount * 10) / 10)
-      : "";
+    weightInput.trim() ||
+    (activeGrams > 0 ? formatWeightInput(activeGrams) : "");
 
   const { recordWeightEntry } = useCalculatorEngagement({
     weightInput: recordedWeight,
-    weightGrams: gramsFromAmount,
+    weightGrams: activeGrams,
     karat,
     loanAmountInr: loanAmount,
   });
 
+  const weightFieldActive = weightFocused || weightInput.trim().length > 0;
+  const numericBindings = interFontBindings("font-tabular-nums");
+
+  function useAmount(position: number) {
+    setDriver("amount");
+    setSliderPos(position);
+  }
+
   function commitSlider(position = sliderPos) {
     const snapped = nearestStopIndex(position);
-    if (snapped !== null) setSliderPos(stopPosition(snapped));
+    useAmount(snapped === null ? position : stopPosition(snapped));
     window.setTimeout(() => recordWeightEntry(), 0);
   }
 
   function selectStop(index: number) {
-    setSliderPos(stopPosition(index));
+    useAmount(stopPosition(index));
     window.setTimeout(() => recordWeightEntry(), 0);
   }
 
@@ -175,11 +235,42 @@ export function GoldLoanCalculator() {
           </h2>
 
           <div className="ym-loan-calculator-card-stage">
-            <LoanCalculatorJewels weightGrams={gramsFromAmount} />
+            <LoanCalculatorJewels weightGrams={activeGrams} />
 
             <div className="ym-loan-calculator-card ym-loan-calculator-card--inputs">
               <div className="ym-loan-calculator-card-inner">
                 <div className="ym-loan-dash-controls">
+                  <div className="ym-loan-entry">
+                  <div
+                    className={[
+                      "ym-loan-field ym-loan-field--weight",
+                      weightFieldActive ? "ym-loan-field--active" : "ym-loan-field--idle",
+                    ].join(" ")}
+                  >
+                    <FloatingInput
+                      id="ym-gold-weight"
+                      label="Enter gold weight (g)"
+                      type="number"
+                      inputMode="decimal"
+                      min="0"
+                      step="0.1"
+                      value={weightInput}
+                      onChange={(event) => {
+                        setDriver("weight");
+                        setWeightInput(event.target.value);
+                      }}
+                      onFocus={() => setWeightFocused(true)}
+                      onBlur={() => {
+                        setWeightFocused(false);
+                        recordWeightEntry();
+                      }}
+                      className={numericBindings.className}
+                      style={numericBindings.style}
+                    />
+                  </div>
+
+                  <p className="ym-loan-either">or</p>
+
                   <div className="ym-loan-slider">
                     <div className="ym-loan-slider-readout">
                       <p className="ym-loan-eligible-label">Loan amount</p>
@@ -226,7 +317,7 @@ export function GoldLoanCalculator() {
                           } as CSSProperties
                         }
                         onChange={(event) =>
-                          setSliderPos(Number(event.target.value))
+                          useAmount(Number(event.target.value))
                         }
                         onPointerUp={(event) =>
                           commitSlider(Number(event.currentTarget.value))
@@ -260,6 +351,7 @@ export function GoldLoanCalculator() {
                         );
                       })}
                     </div>
+                  </div>
                   </div>
 
                   <div className="ym-purity-pills">
@@ -298,18 +390,9 @@ export function GoldLoanCalculator() {
                   </div>
                 </div>
 
-                {!loading && (
+                {!loading && !plansLoading && !plansError && matchedPlans.length > 0 && (
                   <div className="ym-loan-eligible-amount" aria-live="polite">
-                    <p className="ym-loan-eligible-label">Gold required</p>
-                    <InterNumeric
-                      as="p"
-                      className="ym-loan-eligible-value font-tabular-nums"
-                    >
-                      {resultText}
-                    </InterNumeric>
-
-                    {!plansLoading && !plansError && matchedPlans.length > 0 && (
-                      <div className="ym-loan-interest-section">
+                    <div className="ym-loan-interest-section">
                         <div
                           className={[
                             "ym-loan-interest-cards",
@@ -351,7 +434,6 @@ export function GoldLoanCalculator() {
                           })}
                         </div>
                       </div>
-                    )}
                   </div>
                 )}
               </div>

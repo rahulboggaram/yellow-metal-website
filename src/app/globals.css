@@ -20,7 +20,10 @@ html {
   scroll-behavior: smooth;
   overflow-x: hidden;
   background-color: #000000;
-  --font-inter-stack: var(--font-display-family, Inter), ui-sans-serif, system-ui,
+  --font-display-family: "Inter";
+  --font-brand-family: "Bricolage Grotesque";
+  --font-kannada-family: "Noto Sans Kannada";
+  --font-inter-stack: var(--font-display-family), ui-sans-serif, system-ui,
     sans-serif;
   --font-kannada-stack: var(--font-kannada-family), ui-sans-serif, system-ui,
     sans-serif;

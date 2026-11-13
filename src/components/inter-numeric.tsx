@@ -7,7 +7,7 @@ type InterNumericProps<T extends ElementType> = {
   style?: CSSProperties;
 } & Omit<HTMLAttributes<HTMLElement>, "className" | "style">;
 
-/** Amounts and numeric copy — Inter via next/font class + inline style. */
+/** Amounts and numeric copy in Inter. */
 export function InterNumeric<T extends ElementType = "span">({
   as,
   className,

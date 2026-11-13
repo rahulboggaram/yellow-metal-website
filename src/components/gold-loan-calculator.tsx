@@ -19,7 +19,7 @@ import {
 } from "@/lib/loan-plans-shared";
 import { useLoanPlans } from "@/components/loan-plans";
 import { InterNumeric } from "@/components/inter-numeric";
-import { brandFont, interFontBindings } from "@/lib/fonts";
+import { interFontBindings } from "@/lib/fonts";
 import { useCalculatorEngagement } from "@/hooks/use-calculator-engagement";
 
 const LOAN_STOPS = [
@@ -230,7 +230,7 @@ export function GoldLoanCalculator() {
           <p className="ym-eyebrow">How much can you borrow</p>
           <h2
             id="ym-loan-calculator-title"
-            className={`ym-section-title ym-loan-calculator-title ${brandFont.className}`}
+            className="ym-section-title ym-loan-calculator-title"
           >
             Loan Estimate
           </h2>

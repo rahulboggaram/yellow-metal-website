@@ -1,8 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { brandFont, displayFont, kannadaFont } from "@/lib/fonts";
 import { AnalyticsBeacon } from "@/components/analytics-beacon";
 import { SiteFrame } from "@/components/site-frame";
+import "@fontsource/inter/latin-300.css";
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/inter/latin-700.css";
+import "@fontsource/bricolage-grotesque/latin-700.css";
+import "@fontsource/bricolage-grotesque/latin-800.css";
+import "@fontsource/noto-sans-kannada/kannada-400.css";
+import "@fontsource/noto-sans-kannada/kannada-500.css";
+import "@fontsource/noto-sans-kannada/kannada-600.css";
+import "@fontsource/noto-sans-kannada/kannada-700.css";
 import "./globals.css";
 import "./site.css";
 
@@ -39,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${brandFont.variable} ${displayFont.variable} ${kannadaFont.variable}`}
+      className="h-full antialiased"
     >
       <head>
         <link
@@ -50,7 +60,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className={`min-h-dvh ${displayFont.className}`}>
+      <body className="min-h-dvh">
         <div className="ym-site">
           <SiteFrame>{children}</SiteFrame>
           <Suspense fallback={null}>

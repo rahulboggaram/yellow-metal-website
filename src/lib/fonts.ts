@@ -26,33 +26,13 @@ export const kannadaFont = Noto_Sans_Kannada({
 });
 
 /**
- * Inter OpenType features — site-wide (Figma Alternatives + Stylistic Sets).
- * ss01, ss03, ss07 ON; cv01,03,04,06,07,08,09,10,11 ON; cv05,12,13 OFF.
- * Include liga/calt — font-feature-settings replaces the full set, it does not cascade.
+ * Calculator numbers use the ym-loan-calculator-inter class.
+ * The next/font class and inline style are applied once on <body>.
+ * Repeating them in client components makes the first paint disagree with the live page.
  */
-export const INTER_OPENTYPE_FEATURES =
-  '"liga" 1, "calt" 1, "ss01" 1, "ss03" 1, "ss07" 1, "cv01" 1, "cv03" 1, "cv04" 1, "cv06" 1, "cv07" 1, "cv08" 1, "cv09" 1, "cv10" 1, "cv11" 1';
-
-export const INTER_TABULAR_OPENTYPE_FEATURES = `${INTER_OPENTYPE_FEATURES}, "tnum" 1, "lnum" 1`;
-
-/**
- * Bind Inter on calculator numbers — mirrors flip-clock-amount.tsx exactly,
- * plus a self-hosted @font-face fallback in globals.css.
- */
-export const interFontClassName = displayFont.className;
-
-export const calculatorInterStyle: CSSProperties = {
-  ...displayFont.style,
-  fontWeight: 600,
-  fontSynthesis: "none",
-  fontFeatureSettings: INTER_TABULAR_OPENTYPE_FEATURES,
-};
-
 export function interFontBindings(className?: string, style?: CSSProperties) {
   return {
-    className: [interFontClassName, "ym-loan-calculator-inter", className]
-      .filter(Boolean)
-      .join(" "),
-    style: { ...calculatorInterStyle, ...style },
+    className: ["ym-loan-calculator-inter", className].filter(Boolean).join(" "),
+    style,
   };
 }

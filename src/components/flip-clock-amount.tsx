@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import { displayFont, INTER_TABULAR_OPENTYPE_FEATURES } from "@/lib/fonts";
 import {
   colsForSolariLine,
   createSolariBoard,
@@ -49,14 +48,7 @@ function SolariLineDisplay({
   return (
     <div
       ref={containerRef}
-      className={["ym-solari-amount", displayFont.className, className]
-        .filter(Boolean)
-        .join(" ")}
-      style={{
-        ...displayFont.style,
-        fontWeight: 600,
-        fontFeatureSettings: INTER_TABULAR_OPENTYPE_FEATURES,
-      }}
+      className={["ym-solari-amount", className].filter(Boolean).join(" ")}
       aria-hidden
     />
   );

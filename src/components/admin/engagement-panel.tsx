@@ -167,8 +167,8 @@ export function EngagementAdminPanel() {
             <div className="ym-admin-section-head">
               <h2 className="ym-admin-heading">Loan estimate calculator</h2>
               <p className="ym-admin-section-lead">
-                Type a weight, then tap outside the box. We save the grams
-                entered and the loan estimate shown.
+                Enter a weight or a loan amount, then tap outside the box. We
+                save the grams, the amount, and the estimate shown.
               </p>
             </div>
             <div className="ym-admin-stats">

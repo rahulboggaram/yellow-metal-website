@@ -143,6 +143,19 @@ export function loanAmountFromWeightGrams(
   return Math.round(loanPerGram * weightGrams);
 }
 
+/** Grams of gold needed to support a chosen loan amount at the current lending rate. */
+export function weightGramsFromLoanAmount(
+  loanAmountInr: number,
+  karat: GoldKarat,
+  gold999BaseRaw: number | null,
+  rate22kPerGramInr: number,
+): number {
+  if (!Number.isFinite(loanAmountInr) || loanAmountInr <= 0) return 0;
+  const perGram = loanRatePerGram(karat, gold999BaseRaw, rate22kPerGramInr);
+  if (!Number.isFinite(perGram) || perGram <= 0) return 0;
+  return loanAmountInr / perGram;
+}
+
 export function loanRatePerGram(
   karat: GoldKarat,
   gold999BaseRaw: number | null,

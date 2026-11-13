@@ -63,7 +63,7 @@ export const CONSENT_NOTICE = {
         enables: "Keep the site readable on the devices people use.",
       },
       {
-        data: "The gold weight you type in the loan estimator, the purity you pick, and the loan estimate shown.",
+        data: "The gold weight or loan amount you enter in the loan estimator, the purity you pick, and the loan estimate shown.",
         purpose: "To see whether the loan estimator is useful.",
         enables: "Improve the calculator.",
       },

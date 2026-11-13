@@ -1192,6 +1192,7 @@ body.ym-jewels-flying .ym-hero-ornament {
 }
 
 .ym-loan-interest-meta {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1200,8 +1201,18 @@ body.ym-jewels-flying .ym-hero-ornament {
   width: 100%;
   margin-top: 0.7rem;
   padding-top: 0.6rem;
-  border-top: 1px solid var(--ym-dash-border);
   white-space: normal;
+}
+
+.ym-loan-interest-meta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 1px;
+  background: var(--ym-dash-border);
+  transform: translateX(-50%);
 }
 
 .ym-loan-interest-plan-type {

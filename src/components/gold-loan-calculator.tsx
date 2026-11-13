@@ -107,10 +107,22 @@ function dotStyle(index: number): CSSProperties {
   };
 }
 
-const COUNT_UP_MS = 900;
+const INTRO_MS = 1900;
 
-function useFoldCountUp(active: boolean) {
-  const [progress, setProgress] = useState(0);
+function glide(t: number) {
+  const c1 = 1.15;
+  const c3 = c1 + 1;
+  return 1 + c3 * (t - 1) ** 3 + c1 * (t - 1) ** 2;
+}
+
+function delayedMix(mix: number, delayMs: number, durationMs: number) {
+  const elapsed = mix * INTRO_MS;
+  const t = Math.min(1, Math.max(0, (elapsed - delayMs) / durationMs));
+  return 1 - (1 - t) ** 3;
+}
+
+function useFoldIntro(active: boolean) {
+  const [mix, setMix] = useState(0);
   const cancelRef = useRef(false);
 
   useEffect(() => {
@@ -119,7 +131,7 @@ function useFoldCountUp(active: boolean) {
       cancelRef.current ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-      setProgress(1);
+      setMix(1);
       return;
     }
 
@@ -127,11 +139,11 @@ function useFoldCountUp(active: boolean) {
     let frame = 0;
     const tick = (now: number) => {
       if (cancelRef.current) {
-        setProgress(1);
+        setMix(1);
         return;
       }
-      const t = Math.min(1, (now - start) / COUNT_UP_MS);
-      setProgress(1 - (1 - t) ** 3);
+      const t = Math.min(1, (now - start) / INTRO_MS);
+      setMix(t);
       if (t < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
@@ -140,10 +152,60 @@ function useFoldCountUp(active: boolean) {
 
   const finish = () => {
     cancelRef.current = true;
-    setProgress(1);
+    setMix(1);
   };
 
-  return { progress: cancelRef.current ? 1 : progress, finish };
+  const settled = mix >= 1;
+  return { mix: settled ? 1 : mix, settled, finish };
+}
+
+function RollingFigure({
+  text,
+  spin,
+  delay = 0,
+}: {
+  text: string;
+  spin: boolean;
+  delay?: number;
+}) {
+  const digitCount = [...text].filter((ch) => /\d/.test(ch)).length;
+  let seen = 0;
+
+  return (
+    <span className="ym-roll-figure" aria-hidden>
+      {[...text].map((ch, index) => {
+        if (!/\d/.test(ch)) {
+          return (
+            <span key={`${ch}-${index}`} className="ym-roll-mark">
+              {ch}
+            </span>
+          );
+        }
+        const fromRight = digitCount - 1 - seen;
+        seen += 1;
+        const turns = 1 + Math.min(2, Math.floor(fromRight / 2));
+        return (
+          <span
+            key={`d-${index}`}
+            className="ym-roll"
+            style={
+              {
+                "--ym-roll-index": spin ? turns * 10 + Number(ch) : 0,
+                "--ym-roll-delay": `${delay + fromRight * 48}ms`,
+                "--ym-roll-ms": `${760 + fromRight * 80}ms`,
+              } as CSSProperties
+            }
+          >
+            <span className="ym-roll-strip">
+              {Array.from({ length: turns * 10 + 10 }, (_, step) => (
+                <span key={step}>{step % 10}</span>
+              ))}
+            </span>
+          </span>
+        );
+      })}
+    </span>
+  );
 }
 
 export function GoldLoanCalculator({
@@ -164,7 +226,7 @@ export function GoldLoanCalculator({
   const [karat, setKarat] = useState<GoldKarat>("22K");
   const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
-  const { progress, finish } = useFoldCountUp(inView);
+  const { mix, settled, finish } = useFoldIntro(inView);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -227,17 +289,22 @@ export function GoldLoanCalculator({
     driver === "weight" && loanFromWeight !== null && loanFromWeight > 0
       ? loanFromWeight
       : sliderAmount;
-  const shownLoan = progress >= 1 ? loanAmount : Math.round(loanAmount * progress);
 
   const activeGrams =
     driver === "weight" && typedGrams > 0 ? typedGrams : gramsFromSlider;
-  const shownGrams = progress >= 1 ? activeGrams : activeGrams * progress;
+  const weightMix = settled ? 1 : delayedMix(mix, 280, 980);
+  const shownGrams = settled ? activeGrams : activeGrams * weightMix;
   const weightValue =
-    weightFocused || progress >= 1
+    weightFocused || settled
       ? weightInput
       : shownGrams <= 0
         ? "0"
         : formatWeightInput(shownGrams) || "0";
+  const sliderGlide = settled ? 1 : glide(mix);
+  const visualPos = settled
+    ? sliderPos
+    : Math.max(0, Math.min(SLIDER_MAX, Math.round(sliderPos * sliderGlide)));
+  const markerAmount = settled ? loanAmount : amountFromPosition(visualPos);
 
   useEffect(() => {
     if (!price || driver !== "weight" || loanFromWeight === null || loanFromWeight <= 0) {
@@ -291,7 +358,13 @@ export function GoldLoanCalculator({
   return (
     <section
       ref={sectionRef}
-      className="ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash"
+      className={[
+        "ym-loan-estimate-fold ym-loan-calculator-section ym-loan-calculator--dash",
+        inView && !settled ? "ym-loan-estimate-fold--play" : "",
+        settled ? "ym-loan-estimate-fold--settled" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
       aria-labelledby="ym-loan-calculator-title"
     >
       <div className="ym-loan-estimate-fold-inner ym-loan-estimate-column">
@@ -316,7 +389,15 @@ export function GoldLoanCalculator({
                         as="p"
                         className="ym-loan-eligible-value font-tabular-nums"
                       >
-                        {formatInr(shownLoan)}
+                        <span className="ym-sr-only">{formatInr(loanAmount)}</span>
+                        {settled ? (
+                          <span aria-hidden>{formatInr(loanAmount)}</span>
+                        ) : (
+                          <RollingFigure
+                            text={formatInr(loanAmount)}
+                            spin={inView}
+                          />
+                        )}
                       </InterNumeric>
                     </div>
 
@@ -324,7 +405,7 @@ export function GoldLoanCalculator({
                       className="ym-loan-slider-rail"
                       style={
                         {
-                          "--ym-slider-fill": `${(sliderPos / SLIDER_MAX) * 100}%`,
+                          "--ym-slider-fill": `${(visualPos / SLIDER_MAX) * 100}%`,
                         } as CSSProperties
                       }
                     >
@@ -337,7 +418,7 @@ export function GoldLoanCalculator({
                             key={stop.amount}
                             className={[
                               "ym-loan-slider-dot",
-                              loanAmount >= stop.amount
+                              markerAmount >= stop.amount
                                 ? "ym-loan-slider-dot--reached"
                                 : "",
                             ]
@@ -353,7 +434,7 @@ export function GoldLoanCalculator({
                         min={0}
                         max={SLIDER_MAX}
                         step={1}
-                        value={sliderPos}
+                        value={visualPos}
                         aria-label="Loan amount"
                         aria-valuemin={LOAN_STOPS[0].amount}
                         aria-valuemax={LOAN_STOPS[LOAN_STOPS.length - 1].amount}
@@ -402,7 +483,10 @@ export function GoldLoanCalculator({
                     className={[
                       "ym-loan-field ym-loan-field--weight",
                       weightFieldActive ? "ym-loan-field--active" : "ym-loan-field--idle",
-                    ].join(" ")}
+                      !settled ? "ym-loan-field--reeling" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
                   >
                     <FloatingInput
                       id="ym-gold-weight"
@@ -417,7 +501,10 @@ export function GoldLoanCalculator({
                         setDriver("weight");
                         setWeightInput(event.target.value);
                       }}
-                      onFocus={() => setWeightFocused(true)}
+                      onFocus={() => {
+                        finish();
+                        setWeightFocused(true);
+                      }}
                       onBlur={() => {
                         setWeightFocused(false);
                         recordWeightEntry();
@@ -425,6 +512,15 @@ export function GoldLoanCalculator({
                       className={numericBindings.className}
                       style={numericBindings.style}
                     />
+                    {!settled && activeGrams > 0 && (
+                      <span className="ym-loan-weight-reel">
+                        <RollingFigure
+                          text={formatWeightInput(activeGrams)}
+                          spin={inView}
+                          delay={280}
+                        />
+                      </span>
+                    )}
                   </div>
                   </div>
 
@@ -467,7 +563,17 @@ export function GoldLoanCalculator({
                 </div>
 
                 {!plansLoading && !plansError && matchedPlans.length > 0 && (
-                  <div className="ym-loan-eligible-amount" aria-live="polite">
+                  <div className="ym-loan-eligible-amount">
+                    <p className="ym-sr-only" aria-live="polite">
+                      {settled
+                        ? matchedPlans
+                            .map(
+                              (plan) =>
+                                `${formatInr(calculateMonthlyInterestInr(loanAmount, plan))} per month, ${formatPlanRepaymentLabel(plan.repaymentType)}`,
+                            )
+                            .join(". ")
+                        : ""}
+                    </p>
                     <div className="ym-loan-interest-section">
                         <div
                           className={[
@@ -479,7 +585,7 @@ export function GoldLoanCalculator({
                             .filter(Boolean)
                             .join(" ")}
                         >
-                          {matchedPlans.map((plan) => {
+                          {matchedPlans.map((plan, planIndex) => {
                             const monthlyInterest = calculateMonthlyInterestInr(
                               loanAmount,
                               plan,
@@ -494,10 +600,14 @@ export function GoldLoanCalculator({
                                   as="p"
                                   className="ym-loan-interest-value font-tabular-nums"
                                 >
-                                  {formatInr(
-                                    progress >= 1
-                                      ? monthlyInterest
-                                      : Math.round(monthlyInterest * progress),
+                                  {settled ? (
+                                    formatInr(monthlyInterest)
+                                  ) : (
+                                    <RollingFigure
+                                      text={formatInr(monthlyInterest)}
+                                      spin={inView}
+                                      delay={180 + planIndex * 160}
+                                    />
                                   )}
                                 </InterNumeric>
                                 <p className="ym-loan-interest-period">Per Month</p>

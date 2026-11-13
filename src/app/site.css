@@ -1131,6 +1131,90 @@ body.ym-jewels-flying .ym-hero-ornament {
   color: var(--ym-dash-text);
 }
 
+.ym-roll-figure {
+  display: inline-flex;
+  align-items: flex-end;
+  height: 1em;
+  line-height: 1;
+  vertical-align: bottom;
+}
+
+.ym-roll,
+.ym-roll-mark {
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+}
+
+.ym-roll {
+  overflow: hidden;
+}
+
+.ym-roll-strip {
+  display: block;
+  transform: translateY(calc(var(--ym-roll-index, 0) * -1em));
+  transition: transform var(--ym-roll-ms, 0.9s) cubic-bezier(0.16, 1.05, 0.3, 1);
+  transition-delay: var(--ym-roll-delay, 0ms);
+}
+
+.ym-roll-strip > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+.ym-loan-estimate-fold:not(.ym-loan-estimate-fold--settled) .ym-loan-interest-card {
+  opacity: 0;
+  transform: translateY(1.15rem) scale(0.97);
+}
+
+.ym-loan-estimate-fold--play .ym-loan-interest-card {
+  animation: ym-loan-card-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.ym-loan-estimate-fold--play .ym-loan-interest-card:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+@keyframes ym-loan-card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.15rem) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ym-roll-strip,
+  .ym-loan-estimate-fold--play .ym-loan-interest-card {
+    animation: none;
+    transition: none;
+  }
+}
+
+.ym-loan-field--reeling {
+  position: relative;
+}
+
+.ym-loan-field--reeling input {
+  color: transparent !important;
+}
+
+.ym-loan-weight-reel {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.72rem;
+  z-index: 2;
+  color: #000000;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1;
+  pointer-events: none;
+}
+
 .ym-loan-interest-section {
   display: grid;
   gap: 0.5rem;

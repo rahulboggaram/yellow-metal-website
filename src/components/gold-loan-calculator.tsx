@@ -30,8 +30,8 @@ const LOAN_STOPS = [
   { amount: 5_000_000, label: "₹50L" },
 ] as const;
 
-/** Everyday estimate. Index of ₹1L in LOAN_STOPS. */
-const DEFAULT_STOP_INDEX = 1;
+/** Everyday estimate. Sits between ₹1L and ₹5L. */
+const DEFAULT_LOAN_AMOUNT = 250_000;
 
 const SLIDER_MAX = 1000;
 const SNAP_DISTANCE = 36;
@@ -110,7 +110,9 @@ export function GoldLoanCalculator() {
   const { plans, loading: plansLoading, error: plansError } = useLoanPlans();
   const [price, setPrice] = useState<GoldPriceSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
-  const [sliderPos, setSliderPos] = useState(() => stopPosition(DEFAULT_STOP_INDEX));
+  const [sliderPos, setSliderPos] = useState(() =>
+    positionFromAmount(DEFAULT_LOAN_AMOUNT),
+  );
   const [weightInput, setWeightInput] = useState("");
   const [weightFocused, setWeightFocused] = useState(false);
   const [driver, setDriver] = useState<EstimateDriver>("amount");
